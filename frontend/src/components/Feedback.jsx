@@ -10,7 +10,7 @@ const feedbacks = [
     name: "Happy Yadav",
     position: "Business Owner",
     feedback:
-      "The platform's services are exceptional! The team understood my requirements perfectly and delivered beyond my expectations. Highly recommend their expertise to anyone looking for quality work.",
+      "The platform's services are exceptional! The team understood my requirements perfectly and delivered beyond my expectations. Highly recommend their expertise to anyone looking for quality work. The platform's services are exceptional! The team understood my requirements perfectly and delivered beyond my expectations. Highly recommend their expertise to anyone looking for quality work. ",
     image: feedbackimg2, // Replace with the actual image URL
   },
   {
@@ -18,7 +18,7 @@ const feedbacks = [
     name: "Hishita Gupta",
     position: "Tech Enthusiast",
     feedback:
-      "Incredible experience! The team was professional, attentive, and delivered solutions that truly met my needs. I’m impressed with their commitment to quality and innovation.",
+      "Incredible experience! The team was professional, attentive, and delivered solutions that truly met my needs. I’m impressed with their commitment to quality and innovation.The platform's services are exceptional! The team understood my requirements perfectly and delivered beyond my expectations. Highly recommend their expertise to anyone looking for quality work. ",
     image: feedbackimg3, // Replace with the actual image URL
   },
   {
@@ -26,7 +26,7 @@ const feedbacks = [
     name: "Kunal Singh",
     position: "Startup Founder",
     feedback:
-      "Amazing service! They made the entire process seamless and delivered a top-notch solution that’s helping my business grow. I’ll definitely be working with them again.",
+      "Amazing service! They made the entire process seamless and delivered a top-notch solution that’s helping my business grow. I’ll definitely be working with them again.The platform's services are exceptional! The team understood my requirements perfectly and delivered beyond my expectations. Highly recommend their expertise to anyone looking for quality work. ",
     image: feedbackimg, // Replace with the actual image URL
   },
   
@@ -44,30 +44,30 @@ const FeedbackSlider = () => {
   };
 
   return (
-    <div className="px-[5vw] py-10 sm:py-10 lg:py-16 sm:px-[5vw] md:px-[7vw] lg:px-[10vw] ">
-    <div className="bg-black rounded-lg p-10 lg:p-12 lg:px-20 text-center w-full  mx-auto">
+    <div className="px-[5vw] py-10 sm:py-10 lg:py-16 sm:px-[5vw] md:px-[7vw] lg:px-[8vw] ">
+    <div className="bg-lightSeaGreen/30 backdrop-blur-lg border border-white/30 shadow-lg rounded-lg p-10 lg:p-12 lg:px-20 text-center w-full  mx-auto">
       <img
         src={feedbacks[current].image}
         alt={feedbacks[current].name}
         className="w-20 h-20 rounded-full mx-auto mb-4 text-whit border border-primary "
       />
-      <p className="text-lg font-semibold font-heading mb-4 w-full lg:min-h-16 text-white">
+      <p className="w-3/4 text-lg font-semibold font-heading mb-4 text-center lg:min-h-16 text-darkGray flex justify-center mx-auto">
         “{feedbacks[current].feedback}”
       </p>
-      <p className="text-sm font-bold font-heading text-white">{feedbacks[current].name}</p>
-      <p className="text-xs text-gray-500 font-body text-white">{feedbacks[current].position}</p>
+      <p className="text-sm font-bold font-heading text-primary">{feedbacks[current].name}</p>
+      <p className="text-xs text-gray-500 font-body text-slate-600">{feedbacks[current].position}</p>
 
       {/* Navigation Buttons */}
       <div className="flex items-center justify-center mt-6 gap-2">
         <button
           onClick={prevFeedback}
-          className="p-3 hover:text-black border border-white hover:bg-white text-white rounded-full hover:bg-gray-300 transition"
+          className="p-3 hover:text-primary border border-white text-white rounded-full bg-primary hover:bg-darkGray transition"
         >
           <FaArrowLeft />
         </button>
         <button
           onClick={nextFeedback}
-          className="p-3  hover:text-black border border-white hover:bg-white text-white rounded-full hover:bg-gray-300 transition"
+          className="p-3  hover:text-primary border border-white text-white rounded-full bg-primary hover:bg-darkGray  transition"
         >
           <FaArrowRight />
         </button>
