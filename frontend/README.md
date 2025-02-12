@@ -1,8 +1,4 @@
-# React + Vite
-
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+# sample websites : https://colorwhistle.com && https://innostax.com
+# target : a website for foreign clients to act as a dropservice provider for creating, managing their web applications.
+# features : chatbot, good user interface with animations and design components, backend db for login signup, firebase login signup integration.
+# focus : ui & design
