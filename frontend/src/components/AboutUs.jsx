@@ -13,7 +13,7 @@ const AboutUs = () => {
                 <img src={serviceellipse} alt="" />
             </div>
             {/* Background Image and Content */}
-            <div className="relative w-full py-12 px-4 sm:px-[5vw] md:px-[7vw] lg:px-[8vw] flex flex-col lg:flex-row gap-8 lg:gap-28 items-center bg-white/20 backdrop-blur-lg border border-white/30  transition duration-300 ease-in-out group z-50">
+            <div className="relative w-full py-12 px-4 sm:px-[5vw] md:px-[7vw] lg:px-[8vw] flex flex-col lg:flex-row gap-8 lg:gap-28 items-center bg-white/20 backdrop-blur-lg border border-white/30  z-50">
 
                 {/* Left */}
                 <div className="relative lg:w-1/2 flex items-center justify-center">

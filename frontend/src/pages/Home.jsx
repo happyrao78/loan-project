@@ -10,6 +10,9 @@ import ContactUs from '../components/ContactUs'
 import ChatBot from '../components/Chatbot'
 import Team from '../components/Team'
 import Steps from '../components/Steps'
+import Advantages from '../components/Advantages'
+import Partners from '../components/Partners'
+import FAQ from '../components/Faq'
 
 const Home = () => {
   return (
@@ -20,11 +23,14 @@ const Home = () => {
         <AboutUs/>
         {/* <Projects/> */}
         <Steps/>
+        <Advantages/>
+        <Partners/>
         <ChatBot />
-        <Team/>
+        {/* <Team/> */}
         <FeedbackSlider/>
+        <FAQ/>
         
-        <ContactUs/>
+        {/* <ContactUs/> */}
        
         <Footer/>
     </div>

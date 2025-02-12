@@ -73,6 +73,7 @@
 import React from 'react';
 import homeabout from '../assets/home-about.png';
 import { IoIosArrowForward } from 'react-icons/io';
+import heroellipse from '../assets/hero-ellipse.png';
 import serviceellipse from '../assets/service-ellipse.png';
 import InteractiveButton from './Button';
 
@@ -86,16 +87,30 @@ const steps = [
 
 const Steps = () => {
     return (
-        <div className="relative w-full h-full bg-white border" id='about'>
+        <div className="relative w-full h-full  bg-white/20 backdrop-blur-lg border border-white/30  " id='about'>
             <div className="absolute text-white right-0 top-0 z-0">
-                <img src={serviceellipse} alt="" style={{ transform: "scaleX(-1)" }}/>
+                <img src={heroellipse} alt="" style={{ transform: "scaleX(-1)" }} />
             </div>
-            <div className="relative w-full py-20 px-4 sm:px-[5vw] md:px-[7vw] lg:px-[8vw] flex flex-col lg:flex-row gap-8 lg:gap-28 items-center  group z-50">
+
+            <div
+                className="absolute  text-white left-0 z-[-1]"
+            >
+                <img src={heroellipse} alt="" />
+            </div>
+
+            <div className='text-center mt-16'>
+                <p className="text-body font-heading text-primary font-bold mb-2">Four Step Procedure</p>
+                <h2 className="text-3xl md:text-4xl lg:text-5xl font-semibold mb-4 font-heading text-darkGray lg:leading-tight ">
+                    You deserve a better business loan
+                </h2>
+            </div>
+
+            <div className="relative w-full py-10 px-4 sm:px-[5vw] md:px-[7vw] lg:px-[8vw] flex flex-col lg:flex-row gap-8 lg:gap-28 items-center  group z-50">
 
                 {/* Left - Steps List */}
-                <div className="flex flex-col w-full lg:w-1/2 bg-white/30 backdrop-blur-lg border border-gray/30  shadow-lg shadow-lightSeaGreen rounded-lg">
+                <div className=" flex flex-col w-full lg:w-1/2 bg-lightSeaGreen/30 backdrop-blur-lg border border-gray/30  shadow-lg shadow-lightSeaGreen rounded-lg z-50">
                     {steps.map((step, index) => (
-                        <div key={index} className="p-4 border-b border-gray flex items-start gap-4">
+                        <div key={index} className="p-4 border-b border-gray flex items-start gap-4 z-50">
                             <h3 className="text-primary font-bold text-lg">{`0${index + 1}.`}</h3>
                             <div>
                                 <h4 className="text-lg font-semibold text-darkGray font-body">{step.title}</h4>
@@ -111,13 +126,16 @@ const Steps = () => {
                     <img src={homeabout} alt="Radial Blur" className="w-full h-full object-cover overflow-hidden" />
                 </div> */}
 
-                <div className="flex-1 bg-lightGray shadow-lg p-6 rounded-lg w-full">
+                <div className="flex-1  bg-primary/40 backdrop-blur-lg border border-gray/30  shadow-lg shadow-lightSeaGreen rounded-lg  p-6  w-full">
+                    <h2 className="text-center text-3xl md:text-4xl lg:text-2xl font-semibold  mb-8 font-heading text-darkGray lg:leading-tight ">
+                        How much do you need?
+                    </h2>
                     <form className="space-y-4">
                         {/* First and Last Name */}
                         <div className="flex flex-col md:flex-row gap-4">
                             <div className="flex flex-col items-start gap-2 text-body w-full">
-                                <label htmlFor="firstName" className="text-sm sm:text-base text-gray-600 font-body">
-                                    First name
+                                <label htmlFor="firstName" className="text-sm sm:text-base text-slate-800 font-body">
+                                    Name
                                 </label>
                                 <input
                                     id="firstName"
@@ -130,8 +148,8 @@ const Steps = () => {
                                 />
                             </div>
                             <div className="flex flex-col items-start gap-2 text-body w-full">
-                                <label htmlFor="lastName" className="text-sm sm:text-base text-gray-600 font-body">
-                                    Last name
+                                <label htmlFor="lastName" className="text-sm sm:text-base text-slate-800 font-body">
+                                    Email
                                 </label>
                                 <input
                                     id="lastName"
@@ -148,8 +166,8 @@ const Steps = () => {
                         {/* Email and Phone */}
                         <div className="flex flex-col md:flex-row gap-4">
                             <div className="flex flex-col items-start gap-2 text-body w-full">
-                                <label htmlFor="email" className="text-sm sm:text-base text-gray-600 font-body">
-                                    Email
+                                <label htmlFor="email" className="text-sm sm:text-base text-slate-800 font-body">
+                                    Phone Number
                                 </label>
                                 <input
                                     id="email"
@@ -162,8 +180,8 @@ const Steps = () => {
                                 />
                             </div>
                             <div className="flex flex-col items-start gap-2 text-body w-full">
-                                <label htmlFor="phone" className="text-sm sm:text-base text-gray-600 font-body">
-                                    Phone number
+                                <label htmlFor="phone" className="text-sm sm:text-base text-slate-800 font-body">
+                                    Loan Amount
                                 </label>
                                 <input
                                     id="phone"
@@ -178,7 +196,7 @@ const Steps = () => {
 
                         {/* Message */}
                         <div className="flex flex-col gap-2">
-                            <label htmlFor="message" className="text-sm sm:text-base text-gray-600 font-body">
+                            <label htmlFor="message" className="text-sm sm:text-base text-slate-800 font-body">
                                 Message
                             </label>
                             <textarea
@@ -192,7 +210,7 @@ const Steps = () => {
                         </div>
 
                         {/* Submit Button */}
-                        <InteractiveButton
+                        {/* <InteractiveButton
                             buttonText="Submit Form"
                             hoverText="Submit Form"
                             bgColor="bg-black"
@@ -201,7 +219,18 @@ const Steps = () => {
                             hoverTextColor="hover:text-black"
                             property="mt-6 mx-auto md:mx-0"
                             icon={<IoIosArrowForward />}
-                        />
+                        /> */}
+
+
+                        <InteractiveButton
+                            buttonText="Start your Free Trial"
+                            hoverText="Start your Free Trial"
+                            bgColor="bg-darkGray"
+                            textColor="text-white"
+                            hoverBgColor="hover:bg-primary"
+                            hoverTextColor="hover:text-white"
+                            property="mt-6 mx-auto md:mx-0" to="/contact"
+                            icon=<IoIosArrowForward /> />
                     </form>
                 </div>
             </div>
