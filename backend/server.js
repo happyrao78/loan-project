@@ -6,6 +6,7 @@ import userRouter from "./routes/userRoute.js";
 import jobRouter from "./routes/jobRoute.js";
 import applicationRoutes from "./routes/applicationRoute.js";
 import eventRoute from "./routes/eventRoute.js";
+import bankRoute from "./routes/bankRoute.js";
 
 const app = express();
 connectDB();
@@ -31,6 +32,7 @@ app.use("/api/user", userRouter);
 app.use("/api/jobs", jobRouter);
 app.use("/api/applications", applicationRoutes);
 app.use("/api/events", eventRoute);
+app.use("/api/bank",bankRoute); 
 
 app.get("/", (req, res) => {
     res.send("BACKEND WORKING");

@@ -13,6 +13,7 @@ import ApplicationDisplay from './pages/ApplicationDisplay'
 import ApplicationDetail from './pages/DetailedApplication'
 import DisplayEvents from './pages/DisplayEvents'
 import AddEvent from './pages/AddEvent'
+import EditBank from './pages/EditBank'
 
 
 
@@ -48,6 +49,7 @@ const App = () => {
               <Routes>
                 <Route path="/add" element={<Add token={token}/>} />
                 <Route path="/list" element={<List token={token}/>} />
+                <Route path="/edit-bank/:bankId" element={<EditBank />} />
                 <Route path="/applications" element={<ApplicationDisplay token={token}/>} />
                 <Route path="/application/:id" element={<ApplicationDetail />} />
                 <Route path="/apply" element={<ApplicationForm token={token}/>} />
