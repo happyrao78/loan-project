@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const applicationInfoSchema = new mongoose.Schema({
+const loanApplicationSchema = new mongoose.Schema({
   fullName : { type: String, required: true },
   phoneNumber : { type: Number, required: true },
   email : { type: String, required: true },
@@ -16,5 +16,5 @@ const applicationInfoSchema = new mongoose.Schema({
   timestamps: true,
 });
 
-const Application = mongoose.model("Applications", applicationInfoSchema);
-export default Application;
+const LoanApplication = mongoose.model("LoanApplications", loanApplicationSchema);
+export default LoanApplication;

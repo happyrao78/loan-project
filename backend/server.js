@@ -7,6 +7,7 @@ import jobRouter from "./routes/jobRoute.js";
 import applicationRoutes from "./routes/applicationRoute.js";
 import eventRoute from "./routes/eventRoute.js";
 import bankRoute from "./routes/bankRoute.js";
+import loanApplicationRouter from "./routes/loanApplication.route.js";
 
 const app = express();
 connectDB();
@@ -21,7 +22,7 @@ app.use(cors({
       callback(new Error("Not allowed by CORS"));
     }
   },
-  credentials: true, // ✅ Allow cookies/auth headers if needed
+  credentials: true, 
 }));
 
 
@@ -33,6 +34,7 @@ app.use("/api/jobs", jobRouter);
 app.use("/api/applications", applicationRoutes);
 app.use("/api/events", eventRoute);
 app.use("/api/bank",bankRoute); 
+app.use("/api/loan",loanApplicationRouter)
 
 app.get("/", (req, res) => {
     res.send("BACKEND WORKING");
