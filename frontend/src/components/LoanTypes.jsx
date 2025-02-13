@@ -62,7 +62,7 @@ const loantypes = [
 const LoanTypes = () => {
   return (
     <div className="relative py-16 bg-white px-4 sm:px-[5vw] md:px-[7vw] lg:px-[8vw] " id="services">
-      <div className="absolute text-white right-0 top-0 z-10">
+      <div className="absolute text-white right-0 top-0 sm:z-[-1] z-[-1] lg:z-10">
         <img src={serviceellipse} alt="" style={{ transform: "scaleX(-1)" }} />
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
@@ -71,7 +71,7 @@ const LoanTypes = () => {
             key={index}
             className="p-6 rounded-2xl flex flex-col items-center justify-center
                        bg-lightSeaGreen/30 backdrop-blur-lg border border-white/30 shadow-lg 
-                       transition duration-300 ease-in-out group hover:bg-white/20 hover:-translate-y-2 z-50"
+                       transition duration-300 ease-in-out group hover:bg-white/20 hover:-translate-y-2 z-0 sm:z-0 lg:z-50"
           >
             <div className="text-4xl mb-6 flex items-center justify-center text-primary p-4 rounded-full">
               {loantype.icon}

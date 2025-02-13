@@ -24,7 +24,7 @@ const Hero = () => {
             {/* Background Image and Content */}
             
 
-            <div className="relative w-full py-10 px-4 sm:px-[5vw] md:px-[7vw] lg:px-[8vw] flex flex-col lg:flex-row gap-8 lg:gap-5 items-center  z-20">
+            <div className="relative w-full py-10 px-4 sm:px-[5vw] md:px-[7vw] lg:px-[8vw] flex flex-col lg:flex-row gap-8 lg:gap-5 items-center z-0 sm:z-0  lg:z-20">
             <div
                 className="absolute inset-0  text-white left-0 top-12 "
                 
@@ -40,12 +40,12 @@ const Hero = () => {
                         All in One Place
                     </h2>
 
-                    <ul className="font-body text-sm sm:text-sm md:text-md lg:text-md mb-6 text-gray-700 text-body w-full lg:w-[80%] space-y-2">
+                    <ul className="font-body text-sm sm:text-sm md:text-md lg:text-md mb-6 text-gray-700 text-body w-[70%] sm:w-[90%] lg:w-[80%] space-y-2  sm:text-center sm:flex sm:flex-col sm:justify-center sm:items-center flex flex-col justify-center items-center lg:justify-start lg:items-start">
                         <li className="flex items-center gap-2 text-slate-600">
                             <span className="text-white bg-green-500 h-5 w-5 p-1 rounded-full flex justify-center items-center">✔</span> Rates from 5.20% - 35.99% APR
                         </li>
                         <li className="flex items-center gap-2 text-slate-600">
-                            <span className="text-white bg-green-500 h-5 w-5 p-1 rounded-full flex justify-center items-center">✔</span> Loan amounts from $600 to $200,000
+                            <span className="text-white bg-green-500 h-5 w-5 p-1 rounded-full flex justify-center items-center">✔</span> Rates from 5.20% - 35.99% APR
                         </li>
                     </ul>
                     {/* <button className="px-4 py-2 bg-white text-black hover:bg-black hover:text-white rounded-full transition-all w-max-w-fit sm:max-w-fit lg:max-w-fit text-body flex items-center justify-center gap-2 mx-auto lg:mx-0 ease-in-out group z-50">
@@ -86,7 +86,7 @@ const Hero = () => {
                 {/* Right */}
                 <div className="relative lg:w-1/2 flex items-center justify-center w-full h-full">
                     {/* Circular Design */}
-                    <div className="relative lg:absolute w-[300px] h-[300px] sm:w-[400px] sm:h-[400px] lg:w-full lg:h-[500px] lg:right-7">
+                    <div className="relative lg:absolute w-[100%] h-auto  sm:w-[100%] sm:h-auto lg:w-full lg:h-[500px] lg:right-7">
                         <img src={heroimg} alt="Radial Blur" className=" w-full h-full  scale-110" />
                        
                     </div>

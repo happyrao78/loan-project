@@ -88,12 +88,12 @@ const steps = [
 const Steps = () => {
     return (
         <div className="relative w-full h-full  bg-white/20 backdrop-blur-lg border border-white/30  " id='about'>
-            <div className="absolute text-white right-0 top-0 z-0">
+            <div className="absolute text-white right-0 top-0 lg:z-0 sm:hidden hidden lg:block">
                 <img src={heroellipse} alt="" style={{ transform: "scaleX(-1)" }} />
             </div>
 
             <div
-                className="absolute  text-white left-0 z-[-1]"
+                className="absolute  text-white left-0 lg:z-[-1] sm:hidden hidden lg:block"
             >
                 <img src={heroellipse} alt="" />
             </div>

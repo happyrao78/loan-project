@@ -13,8 +13,8 @@ import { Link } from "react-router-dom";
 
 const About = () => {
     return (
-        <div className="relative bg-white">
-            <Navbar />
+        <div className="relative bg-white z-0">
+            <Navbar z={10}/>
             <div className="relative">
                 <img src={loan} alt="" className="w-[100vw] h-[60vh] object-cover object-center" />
                 {/* Black Overlay */}

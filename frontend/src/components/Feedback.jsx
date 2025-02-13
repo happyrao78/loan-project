@@ -51,7 +51,7 @@ const FeedbackSlider = () => {
         alt={feedbacks[current].name}
         className="w-20 h-20 rounded-full mx-auto mb-4 text-whit border border-primary "
       />
-      <p className="w-3/4 text-lg font-semibold font-heading mb-4 text-center lg:min-h-16 text-darkGray flex justify-center mx-auto">
+      <p className="w-full sm:w-full lg:w-3/4 text-sm lg:text-lg font-semibold font-heading mb-4 text-center lg:min-h-16 text-darkGray flex justify-center mx-auto">
         “{feedbacks[current].feedback}”
       </p>
       <p className="text-sm font-bold font-heading text-primary">{feedbacks[current].name}</p>

@@ -60,7 +60,7 @@ const ContactUs = () => {
     <div className=" w-full" id="contact">
       <Toaster />
 
-      <Navbar />
+      <Navbar z={50}/>
       <div className="relative">
         <img src={loan} alt="" className="w-[100vw] h-[60vh] object-cover object-center" />
         {/* Black Overlay */}

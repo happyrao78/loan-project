@@ -8,7 +8,7 @@ import { FaUserCircle } from 'react-icons/fa';
 import InteractiveButton from './Button';
 // import { Link} from 'react-router-dom';
 
-const Navbar = () => {
+const Navbar = ({z}) => {
     const { isLoggedIn, setIsLoggedIn } = useAuth(); // Access authentication state and setter
     const [menuVisible, setMenuVisible] = useState(false);
     const [dropdownVisible, setDropdownVisible] = useState(false);
@@ -43,7 +43,7 @@ const Navbar = () => {
                 <img
                     src={logo}
                     alt="Logo"
-                    className="w-full h-full"
+                    className="w-0.8 h-auto sm:w-0.8 sm:h-auto lg:w-full lg:h-full"
                 />
             </Link>
 
@@ -80,6 +80,12 @@ const Navbar = () => {
                     className="relative font-body hover:text-gray-400 transition after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-[1px] after:rounded-full after:bg-white after:transition-all after:duration-300 hover:after:w-full"
                 >
                     Apply Loan
+                </a>
+                <a
+                    href="/track-loan"
+                    className="relative font-body hover:text-gray-400 transition after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-[1px] after:rounded-full after:bg-white after:transition-all after:duration-300 hover:after:w-full"
+                >
+                    Track Loan
                 </a>
                 <a
                     href="/emi-calculator"
@@ -140,12 +146,12 @@ const Navbar = () => {
                     textColor="text-white"
                     hoverBgColor="hover:bg-darkGray"
                     hoverTextColor="hover:text-white"
-                    property="" to="/contact"
+                    property="w-full hidden  sm:hidden lg:block" to="/contact"
                     icon=<IoMdCall/> />
 
                 {/* Mobile Menu Toggle */}
                 <RiMenu5Fill
-                    className="text-xl cursor-pointer md:hidden "
+                    className="text-xl text-primary cursor-pointer block  md:hidden "
                     onClick={toggleMenu}
                 />
             </div>
@@ -154,35 +160,35 @@ const Navbar = () => {
             )}
 
             {/* Mobile Menu */}
-            {menuVisible && (
-                <div className="fixed top-0  right-0 w-2/3 h-screen  text-white font-heading flex flex-col items-center gap-0 transition-all justify-start border border-black ease-in-out z-60 overflow-hidden bg-black bg-opacity-50 backdrop-blur-md">
-                    <div
-                        onClick={toggleMenu}
-                        className="flex items-center text-lg hover:text-gray-400 py-2 pl-6 border w-full text-left "
-                    >
-                        <IoIosArrowBack className="text-gray" />
-                        <p>Back</p>
-                    </div>
-                    {/* <a
-                        href="#home"
-                        className="text-lg hover:text-gray-400 py-2 pl-6 border w-full text-left"
-                        onClick={toggleMenu}
-                    >
-                        Home
-                    </a> */}
+                        {menuVisible && (
+                            <div className="fixed top-0 right-0 w-4/5 h-screen text-darkGray font-heading flex flex-col items-center gap-0 transition-all justify-start border border-white ease-in-out overflow-hidden bg-white/50 backdrop-blur-lg" style={{ zIndex: z }}>
+                                <div
+                                    onClick={toggleMenu}
+                                    className="flex items-center text-lg hover:text-gray-400 py-2 pl-6 border-b border-primary w-full text-left "
+                                >
+                                    <IoIosArrowBack className="text-primary" />
+                                    <p>Back</p>
+                                </div>
+                                {/* <a
+                                    href="#home"
+                                    className="text-lg hover:text-gray-400 py-2 pl-6 border w-full text-left"
+                                    onClick={toggleMenu}
+                                >
+                                    Home
+                                </a> */}
                     <a
-                        href="#about"
-                        className="text-lg hover:text-gray-400 py-2 pl-6 border w-full text-left"
+                        href="/about"
+                        className="text-lg hover:text-gray-400 py-2 pl-6 border-b border-primary w-full text-left"
                         onClick={toggleMenu}
                     >
                         About
                     </a>
                     <a
-                        href="#services"
-                        className="text-lg hover:text-gray-400 py-2 pl-6 border w-full text-left"
+                        href="/apply-form"
+                        className="text-lg hover:text-gray-400 py-2 pl-6 border-b border-primary w-full text-left"
                         onClick={toggleMenu}
                     >
-                        Services
+                        Apply Loan
                     </a>
                     {/* <a
                         href="#projects"
@@ -191,16 +197,39 @@ const Navbar = () => {
                     >
                         Projects
                     </a> */}
+
+<a
+                        href="/track-loan"
+                        className="text-lg hover:text-gray-400 py-2 pl-6 border-b border-primary w-full text-left"
+                        onClick={toggleMenu}
+                    >
+                        Track Loan
+                    </a>
                     <a
-                        href="#contact"
-                        className="text-lg hover:text-gray-400 py-2 pl-6 border w-full text-left"
+                        href="/emi-calculator"
+                        className="text-lg hover:text-gray-400 py-2 pl-6 border-b border-primary w-full text-left"
+                        onClick={toggleMenu}
+                    >
+                        Emi Calculator
+                    </a>
+
+                    <a
+                        href="/contact"
+                        className="text-lg hover:text-gray-400 py-2 pl-6 border-b border-primary w-full text-left"
                         onClick={toggleMenu}
                     >
                         Contact Us
                     </a>
-                    {!isLoggedIn ? (
+                    <a
+                        href="/emi-calculator"
+                        className="text-lg hover:text-gray-400 py-2 pl-6 border-b border-primary w-full text-left"
+                        onClick={toggleMenu}
+                    >
+                        Call Now
+                    </a>
+                    {/* {!isLoggedIn ? (
                         <button
-                            className="text-lg hover:text-gray-400 py-2 pl-6 border w-full text-left"
+                            className="text-lg hover:text-gray-400 py-2 pl-6 border-b w-full text-left"
                             onClick={() => {
                                 toggleMenu();
                                 handleLogin();
@@ -210,7 +239,7 @@ const Navbar = () => {
                         </button>
                     ) : (
                         <button
-                            className="text-lg hover:text-gray-400 py-2 pl-6 border w-full text-left"
+                            className="text-lg hover:text-gray-400 py-2 pl-6 border-b w-full text-left"
                             onClick={() => {
                                 toggleMenu();
                                 handleLogout();
@@ -218,7 +247,7 @@ const Navbar = () => {
                         >
                             Logout
                         </button>
-                    )}
+                    )} */}
                 </div>
             )}
         </nav>

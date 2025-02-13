@@ -47,7 +47,7 @@ const Form = () => {
 
     return (
         <div className="relative bg-white">
-            <Navbar />
+            <Navbar z={50}/>
             <div className="relative">
                 <img src={loan} alt="" className="w-[100vw] h-[60vh] object-cover object-center" />
                 <div className="absolute inset-0 bg-darkGray opacity-70"></div>

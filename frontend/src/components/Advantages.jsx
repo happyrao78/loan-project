@@ -32,7 +32,7 @@ const Advantages = () => {
 
             <p className="text-body font-heading text-primary font-bold mb-2 text-center">Easy , Simple , Free</p>
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-semibold mb-12 font-heading text-darkGray lg:leading-tight text-center">
-            Why Choose Clear Credit AI <br />for Your Personal Loans Needs?
+            Why Choose Credit  <br />for Your Personal Loans Needs?
             </h2>
 
 
