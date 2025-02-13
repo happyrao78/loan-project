@@ -11,6 +11,10 @@
 @tailwind components;
 @tailwind utilities;
 
+html,body{
+    overflow-x: hidden;
+}
+
 .zoomed-logo {
     object-fit: cover;
     object-position: center;
