@@ -10,6 +10,8 @@ const applyLoan = async (req, res) => {
       return res.status(400).json({ error: "All fields are required." });
     }
 
+    console.log(req.body)
+
 
     const application = new LoanApplication({
         fullName,
@@ -93,4 +95,32 @@ const listApplications = async (req, res) => {
     }
   };
   
-export { applyLoan, listApplications, updateLoanApplication, updateStatus };
+  const getApplicationsByPhone = async (req, res) => {
+    try {
+      console.log("entered")
+      console.log(req.body)
+      const { phoneNumber } = req.body;
+  
+      if (!phoneNumber) {
+        return res.status(400).json({ error: "Phone number is required." });
+      }
+  
+      const applications = await LoanApplication.find({ phoneNumber
+       });
+  
+      if (applications.length === 0) {
+        return res.status(404).json({ error: "No applications found for this phone number." });
+      }
+
+      console.log(applications)
+  
+      res.status(200).json({ success: true, applications });
+    } catch (error) {
+      console.error("Error fetching applications by phone number:", error);
+      res.status(500).json({ error: "Failed to fetch applications. Please try again later." });
+    }
+  };
+
+
+
+export { applyLoan, listApplications, updateLoanApplication, updateStatus ,getApplicationsByPhone};

@@ -12,7 +12,7 @@ import loanApplicationRouter from "./routes/loanApplication.route.js";
 const app = express();
 connectDB();
 
-const allowedOrigins = ["http://localhost:5174"];
+const allowedOrigins = ["http://localhost:5174","http://localhost:5173"];
 
 app.use(cors({
   origin: function (origin, callback) {

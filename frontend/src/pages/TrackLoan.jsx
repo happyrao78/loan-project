@@ -167,12 +167,14 @@ const TrackLoan = () => {
         setLoanStatus(null);
 
         try {
-            const response = await axios.post("http://localhost:5000/api/track-loan", {
-                phone: phoneNumber
+            const response = await axios.post("http://localhost:5000/api/loan/track-loan", {
+                phoneNumber: phoneNumber,
             });
-            setLoanStatus(response.data);
+            setLoanStatus(response.data.applications);
+            console.log(response.data);
         } catch (error) {
             setError("Unable to fetch loan status. Please try again later.");
+            console.log(error);
         } finally {
             setLoading(false);
         }
@@ -234,6 +236,7 @@ const TrackLoan = () => {
                             hoverTextColor="hover:text-white"
                             property="w-full"
                             icon={<IoIosArrowForward />}
+                            type="submit"
                         />
                     </form>
 
@@ -241,24 +244,65 @@ const TrackLoan = () => {
                     {loanStatus && !error && (
                         <div className="mt-8 p-6 rounded-lg bg-white">
                             <h4 className="text-lg font-semibold text-darkGray mb-4">Application Details</h4>
-                            <div className="space-y-4">
-                                <div className="flex justify-between items-center">
-                                    <span className="text-gray-600">Application ID</span>
-                                    {/* <span className="font-semibold">{loanStatus.applicationId}</span> */}
-                                    <span className="font-semibold"></span>
-                                </div>
-                                <div className="flex justify-between items-center">
-                                    <span className="text-gray-600">Status</span>
-                                    <span className={`font-semibold px-3 py-1 rounded-full ${getStatusColor(loanStatus.status)}`}>
-                                        {loanStatus.status}
-                                    </span>
-                                </div>
-                                {loanStatus.message && (
-                                    <div className="text-sm text-gray-600 mt-4 p-4 bg-gray-50 rounded-lg">
-                                        {loanStatus.message}
+                            {loanStatus.map((application, index) => (
+                                <div key={index} className="space-y-4 mb-6 p-4 border rounded-lg">
+                                    <div className="flex justify-between items-center">
+                                        <span className="text-gray-600">Full Name</span>
+                                        <span className="font-semibold">{application.fullName}</span>
                                     </div>
-                                )}
-                            </div>
+                                    <div className="flex justify-between items-center">
+                                        <span className="text-gray-600">Phone Number</span>
+                                        <span className="font-semibold">{application.phoneNumber}</span>
+                                    </div>
+                                    <div className="flex justify-between items-center">
+                                        <span className="text-gray-600">Email</span>
+                                        <span className="font-semibold">{application.email}</span>
+                                    </div>
+                                    <div className="flex justify-between items-center">
+                                        <span className="text-gray-600">Aadhar Number</span>
+                                        <span className="font-semibold">{application.aadharNumber}</span>
+                                    </div>
+                                    <div className="flex justify-between items-center">
+                                        <span className="text-gray-600">PAN Number</span>
+                                        <span className="font-semibold">{application.panNumber}</span>
+                                    </div>
+                                    <div className="flex justify-between items-center">
+                                        <span className="text-gray-600">Account Number</span>
+                                        <span className="font-semibold">{application.accountNumber}</span>
+                                    </div>
+                                    <div className="flex justify-between items-center">
+                                        <span className="text-gray-600">IFSC Code</span>
+                                        <span className="font-semibold">{application.ifscCode}</span>
+                                    </div>
+                                    <div className="flex justify-between items-center">
+                                        <span className="text-gray-600">Loan Amount</span>
+                                        <span className="font-semibold">{application.loanAmount}</span>
+                                    </div>
+                                    <div className="flex justify-between items-center">
+                                        <span className="text-gray-600">Bank Name</span>
+                                        <span className="font-semibold">{application.bankName}</span>
+                                    </div>
+                                    <div className="flex justify-between items-center">
+                                        <span className="text-gray-600">Loan Type</span>
+                                        <span className="font-semibold">{application.loanType}</span>
+                                    </div>
+                                    <div className="flex justify-between items-center">
+                                        <span className="text-gray-600">Duration</span>
+                                        <span className="font-semibold">{application.duration} Year(s)</span>
+                                    </div>
+                                    <div className="flex justify-between items-center">
+                                        <span className="text-gray-600">Status</span>
+                                        <span className={`font-semibold px-3 py-1 rounded-full ${getStatusColor(application.loanStatus)}`}>
+                                            {application.loanStatus}
+                                        </span>
+                                    </div>
+                                    {application.message && (
+                                        <div className="text-sm text-gray-600 mt-4 p-4 bg-gray-50 rounded-lg">
+                                            {application.message}
+                                        </div>
+                                    )}
+                                </div>
+                            ))}
                         </div>
                     )}
                 </div>
