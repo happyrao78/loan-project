@@ -11,6 +11,7 @@ import WebDesign from './pages/WebDesign'
 import WebDev from './pages/WebDev'
 import AppDev from './pages/AppDev'
 import ContactUs from './pages/Contact'
+import Form from './pages/Form'
 
 const App = () => {
   return (
@@ -26,6 +27,7 @@ const App = () => {
         <Route path='/web-dev' element={<WebDev/>} />
         <Route path='/app-dev' element={<AppDev/>} />
         <Route path='/contact' element={<Contact/>} />
+        <Route path='/apply-form' element={<Form/>} />
         
       </Routes>
       
