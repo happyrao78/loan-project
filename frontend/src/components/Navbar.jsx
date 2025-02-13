@@ -82,7 +82,7 @@ const Navbar = () => {
                     Apply Loan
                 </a>
                 <a
-                    href="#contact"
+                    href="/contact"
                     className="relative font-body hover:text-gray-400 transition after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-[1px] after:rounded-full after:bg-white after:transition-all after:duration-300 hover:after:w-full"
                 >
                     Contact Us
