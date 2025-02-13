@@ -11,7 +11,7 @@ const Sidebar = () => {
                 <p className='hidden md:block '>Add Bank</p>
             </NavLink>
 
-            <NavLink to="/list" className="flex items-center gap-3 border px-2 border-gray-300 border-r-0 py-2 rounded-l" >
+            <NavLink to="/listbanks" className="flex items-center gap-3 border px-2 border-gray-300 border-r-0 py-2 rounded-l" >
                 <img className="w-5 h-5" src={assets.order_icon} alt="" />
                 <p className='hidden md:block '>All Banks</p>
             </NavLink>
@@ -21,7 +21,7 @@ const Sidebar = () => {
                 <p className='hidden md:block '>Manage Openings</p>
             </NavLink> */}
 
-            <NavLink to="/applications" className="flex items-center gap-3 border px-2 border-gray-300 border-r-0 py-2 rounded-l" >
+            <NavLink to="/loan-applications" className="flex items-center gap-3 border px-2 border-gray-300 border-r-0 py-2 rounded-l" >
                 <img className="w-5 h-5" src={assets.order_icon} alt="" />
                 <p className='hidden md:block '>Loan Applications</p>
             </NavLink>

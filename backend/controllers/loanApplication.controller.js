@@ -43,6 +43,54 @@ const listApplications = async (req, res) => {
       res.status(500).json({ success: false, message: error.message });
     }
   };
-  
 
-export { applyLoan, listApplications };
+  const updateLoanApplication = async (req, res) => {
+    try {
+      const { id } = req.params;
+      const updateData = req.body;
+  
+      // Find the application and update it
+      const updatedApplication = await LoanApplication.findByIdAndUpdate(id, updateData, { new: true });
+  
+      if (!updatedApplication) {
+        return res.status(404).json({ success: false, message: "Application not found" });
+      }
+  
+      res.status(200).json({ success: true, message: "Application updated successfully", application: updatedApplication });
+    } catch (error) {
+      console.error("Error updating loan application:", error);
+      res.status(500).json({ success: false, message: "Failed to update application. Please try again." });
+    }
+  };
+
+  const updateStatus = async (req, res) => {
+    try {
+      const { id } = req.params;
+      const { status } = req.body;
+  
+      if (!status) {
+        return res.status(400).json({ error: "Status is required." });
+      }
+  
+      const application = await LoanApplication.findById(id);
+      if (!application) {
+        return res.status(404).json({ error: "Application not found." });
+      }
+  
+      // Update the loanStatus field
+      application.loanStatus = status;
+      await application.save();
+  
+      return res.status(200).json({ 
+        success: true, 
+        message: "Status updated successfully",
+        application 
+      });
+  
+    } catch (err) {
+      console.error("Error updating loan application status:", err);
+      res.status(500).json({ error: "Failed to update loan application status. Please try again later." });
+    }
+  };
+  
+export { applyLoan, listApplications, updateLoanApplication, updateStatus };

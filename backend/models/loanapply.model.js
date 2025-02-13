@@ -12,6 +12,7 @@ const loanApplicationSchema = new mongoose.Schema({
   duration : { type: Number, required: true },
   loanAmount : { type: Number, required: true },
   bankName : { type: String, required: true },
+  loanStatus :{ type: String, default: "Processing" },
 },{
   timestamps: true,
 });
