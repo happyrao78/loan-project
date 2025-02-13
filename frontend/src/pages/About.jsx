@@ -76,7 +76,7 @@ const About = () => {
             </form> */}
 
 
-            <AboutUs />
+            {/* <AboutUs /> */}
             <LoanTypes/>
             <Partners/>
             <FeedbackSlider/>
