@@ -4,7 +4,7 @@ import { backendUrl } from "../App";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom"; // Correct import for useNavigate
 
-const List = ({ token }) => {
+const ListBank = ({ token }) => {
   const [banks, setBanks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -144,4 +144,4 @@ const List = ({ token }) => {
   );
 };
 
-export default List;
+export default ListBank;
