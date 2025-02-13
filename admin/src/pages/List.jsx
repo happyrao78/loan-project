@@ -2,111 +2,142 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { backendUrl } from "../App";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom"; // Correct import for useNavigate
 
 const List = ({ token }) => {
-  const [teams, setTeams] = useState([]);
+  const [banks, setBanks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const navigate = useNavigate(); // Use navigate for programmatic navigation
 
-  const fetchTeams = async () => {
+  const fetchBanks = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(`${backendUrl}/api/jobs/list`, {
+      const response = await axios.get(`${backendUrl}/api/bank/list`, {
         headers: { token },
       });
 
-      if (response.data && Array.isArray(response.data.teams)) {
-        setTeams(response.data.teams);
+      if (response.data && response.data.success) {
+        setBanks(response.data.banks);
       } else {
         toast.error("Unexpected response format");
       }
     } catch (err) {
-      console.error("Error fetching teams:", err);
-      toast.error("Failed to load teams");
+      console.error("Error fetching banks:", err);
+      toast.error("Failed to load banks");
       setError("Failed to fetch data. Please try again.");
     } finally {
       setLoading(false);
     }
   };
 
-  useEffect(() => {
-    fetchTeams();
-  }, []);
-
-  // Group teams by name
-  const groupedTeams = teams.reduce((acc, team) => {
-    if (!acc[team.name]) acc[team.name] = [];
-    acc[team.name].push(team);
-    return acc;
-  }, {});
-
-  const handleDeletePosition = async (teamId, position) => {
+  const deleteBank = async (bankId) => {
     try {
-      const response = await axios.delete(`${backendUrl}/api/jobs/remove`, {
-        headers: { token },
-        data: { teamId, position },
-      });
-
-      if (response.data.success) {
-        toast.success(response.data.message);
-        // Reload the team list to reflect the changes
-        fetchTeams(); 
-      } else {
-        toast.error(response.data.message);
+      const confirmDelete = window.confirm("Are you sure you want to delete this bank?");
+      if (confirmDelete) {
+        await axios.delete(`${backendUrl}/api/bank/remove/${bankId}`, {
+          headers: { token },
+        });
+        setBanks(banks.filter((bank) => bank._id !== bankId));
+        toast.success("Bank deleted successfully!");
       }
     } catch (err) {
-      console.error("Error removing position:", err);
-      toast.error("Failed to remove position");
+      console.error("Error deleting bank:", err);
+      toast.error("Failed to delete bank");
     }
   };
 
-  // Remove teams that no longer have positions
-  const filteredTeams = teams.filter(team => team.position.length > 0);
+  const handleEdit = (bankId) => {
+    navigate(`/edit-bank/${bankId}`); // Navigate to the edit bank page using navigate
+  };
+
+  useEffect(() => {
+    fetchBanks();
+  }, []);
 
   return (
     <div className="p-4">
-      <h2 className="text-2xl font-bold mb-6 text-center">All Teams</h2>
+      <h2 className="text-2xl font-bold mb-6 text-center">Bank Accounts</h2>
 
       {loading ? (
-        <p className="text-blue-500 text-center">Loading teams...</p>
+        <p className="text-blue-500 text-center">Loading banks...</p>
       ) : error ? (
         <p className="text-red-500 text-center">{error}</p>
-      ) : filteredTeams.length === 0 ? (
-        <p className="text-gray-500 text-center">No teams available</p>
+      ) : banks.length === 0 ? (
+        <p className="text-gray-500 text-center">No banks available</p>
       ) : (
-        <div className="space-y-6">
-          {Object.entries(groupedTeams).map(([teamName, positions]) => {
-            const team = positions[0]; // Each team should only have one entry, using the first one
-            return (
-              <div key={team._id} className="bg-white border rounded-lg shadow-md p-6">
-                {/* Team Name */}
-                <h3 className="text-xl font-bold text-orange-600 mb-4">{teamName}</h3>
-
-                {/* Open Positions */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {team.position.map((position, index) => (
-                    <div
-                      key={index}
-                      className="bg-gray-100 border rounded-lg p-6 shadow-sm hover:shadow-lg transition-shadow"
-                    >
-                      <h4 className="text-lg font-semibold text-gray-700">{position}</h4>
-                      <p className="text-gray-400 text-xs mt-2">
-                        <strong>Created:</strong> {new Date(team.createdAt).toLocaleDateString()}
-                      </p>
-
-                      {/* Delete Position Button */}
-                      <button
-                        onClick={() => handleDeletePosition(team._id, position)}
-                        className="mt-4 bg-red-600 text-white p-2 rounded-lg hover:bg-red-700"
-                      >
-                        Delete Position
-                      </button>
-                    </div>
-                  ))}
-                </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {banks.map((bank) => (
+            <div key={bank._id} className="bg-white border rounded-lg shadow-md p-6">
+              <div className="flex justify-between items-start mb-4">
+                <h3 className="text-xl font-bold text-blue-600">{bank.Holdername}</h3>
+                <span className="text-sm text-gray-500">
+                  {new Date(bank.createdAt).toLocaleDateString()}
+                </span>
               </div>
-            );
-          })}
+
+              <div className="space-y-2">
+                <p className="text-gray-700">
+                  <span className="font-semibold">Account Number:</span>{" "}
+                  {bank.accountNumber}
+                </p>
+                <p className="text-gray-700">
+                  <span className="font-semibold">Bank Name:</span> {bank.bankName}
+                </p>
+                <p className="text-gray-700">
+                  <span className="font-semibold">Account Type:</span>{" "}
+                  {bank.accountType}
+                </p>
+                <p className="text-gray-700">
+                  <span className="font-semibold">IFSC Code:</span> {bank.ifscCode}
+                </p>
+                <p className="text-gray-700">
+                  <span className="font-semibold">Mobile:</span> {bank.mobileNumber}
+                </p>
+                <p className="text-gray-700">
+                  <span className="font-semibold">Email:</span> {bank.email}
+                </p>
+                <p className="text-gray-700">
+                  <span className="font-semibold">Processing Fee:</span>{" "}
+                  ₹{bank.processingFee}
+                </p>
+                <p className="text-gray-700">
+                  <span className="font-semibold">Agreement Fee:</span>{" "}
+                  ₹{bank.agreementFee}
+                </p>
+              </div>
+
+              {/* QR Code Image */}
+              <div className="mt-4">
+                <img
+                  src={bank.qr}
+                  alt="Bank QR Code"
+                  className="w-full h-auto max-w-[200px] mx-auto"
+                />
+              </div>
+
+              <div className="mt-4">
+                <p className="text-sm text-gray-500">
+                  <span className="font-semibold">Address:</span> {bank.address}
+                </p>
+              </div>
+
+              <div className="mt-6 flex justify-between items-center">
+                <button
+                  onClick={() => handleEdit(bank._id)}
+                  className="text-blue-500 hover:underline"
+                >
+                  Edit
+                </button>
+                <button
+                  onClick={() => deleteBank(bank._id)}
+                  className="text-red-500 hover:underline"
+                >
+                  Delete
+                </button>
+              </div>
+            </div>
+          ))}
         </div>
       )}
     </div>
