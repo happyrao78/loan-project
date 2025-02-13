@@ -12,6 +12,7 @@ import WebDev from './pages/WebDev'
 import AppDev from './pages/AppDev'
 import ContactUs from './pages/Contact'
 import Form from './pages/Form'
+import EmiCalculator from './pages/EmiCalculator'
 
 const App = () => {
   return (
@@ -27,7 +28,10 @@ const App = () => {
         <Route path='/web-dev' element={<WebDev/>} />
         <Route path='/app-dev' element={<AppDev/>} />
         <Route path='/contact' element={<Contact/>} />
+
         <Route path='/apply-form' element={<Form/>} />
+        <Route path='/about' element={<About/>} />
+        <Route path='/emi-calculator' element={<EmiCalculator/>} />
         
       </Routes>
       

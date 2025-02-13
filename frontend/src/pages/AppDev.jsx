@@ -172,7 +172,7 @@ const AppDev = () => {
                             Transform Your Ideas into Cutting-Edge Mobile Apps
                         </h2>
                         <p className="font-body text-sm sm:text-sm md:text-md lg:text-md mb-6 text-gray text-body w-full lg:w-[80%]">
-                        We're a team of strategic creators and digital innovators, united in our pursuit of mastery and joy.
+                            We're a team of strategic creators and digital innovators, united in our pursuit of mastery and joy.
                         </p>
 
                         <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4 text-center lg:text-left">
@@ -247,18 +247,18 @@ const AppDev = () => {
                 {/* <div className="py-8 px-4 sm:px-[5vw] md:px-[7vw] lg:px-[10vw] bg-white"> */}
                 <div className="mt-12 relative bg-gray-800 bg-lightGray rounded-xl overflow-hidden flex flex-col items-center justify-center p-8">
 
-{/* Content */}
-<div className="relative z-10 text-start lg:flex justify-center items-center sm:gap-1 gap-1 lg:gap-8 lg:w-full">
-    <h2 className="w-full sm:w-full md:w-1/2 text-md md:text-4xl lg:text-3xl font-semibold font-heading text-black lg:leading-tight flex justify-center items-center lg:w-full text-center lg:text-left">
-    Turn your vision into reality with a high-quality app for just $900    </h2>
-    <Link to="/contact" className="px-4 py-2 bg-white text-black rounded-full transition min-w-fit text-body flex items-center justify-center gap-2 lg:mx-0 mt-4 sm:mt-4 lg:mt-0">
-        <span className="bg-black text-body rounded-full p-1">
-            <IoIosArrowForward className="text-white" />
-        </span>
-        <p className="text-sm sm:text-sm font-body flex justify-center items-center">Get Started</p>
-    </Link>
-</div>
-</div>
+                    {/* Content */}
+                    <div className="relative z-10 text-start lg:flex justify-center items-center sm:gap-1 gap-1 lg:gap-8 lg:w-full">
+                        <h2 className="w-full sm:w-full md:w-1/2 text-md md:text-4xl lg:text-3xl font-semibold font-heading text-black lg:leading-tight flex justify-center items-center lg:w-full text-center lg:text-left">
+                            Turn your vision into reality with a high-quality app for just $900    </h2>
+                        <Link to="/contact" className="px-4 py-2 bg-white text-black rounded-full transition min-w-fit text-body flex items-center justify-center gap-2 lg:mx-0 mt-4 sm:mt-4 lg:mt-0">
+                            <span className="bg-black text-body rounded-full p-1">
+                                <IoIosArrowForward className="text-white" />
+                            </span>
+                            <p className="text-sm sm:text-sm font-body flex justify-center items-center">Get Started</p>
+                        </Link>
+                    </div>
+                </div>
 
                 {/* </div> */}
             </div>
@@ -286,24 +286,24 @@ const AppDev = () => {
                     ))}
                 </Marquee>
             </div>
-            
+
 
             <div className="py-8 px-4 sm:px-[5vw] md:px-[7vw] lg:px-[10vw] bg-white">
-    <div className="relative bg-gray-800 text-white bg-darkGray rounded-xl overflow-hidden flex flex-col items-center justify-center p-8">
-        {/* Content */}
-        <div className="relative z-10 text-start flex flex-col sm:flex-row justify-center items-center sm:gap-4 gap-4 lg:gap-8">
-            <h2 className="w-full sm:w-1/2 lg:w-full text-xl md:text-3xl lg:text-4xl font-semibold font-heading text-white lg:leading-tight text-center sm:text-left">
-                Enough talk, let's get to work
-            </h2>
-            <Link to="/contact" className="px-4 py-2 bg-white text-black rounded-full transition min-w-fit text-body flex items-center justify-center gap-2 mt-4 sm:mt-0 mx-auto lg:mx-0">
-                <span className="bg-black text-body rounded-full p-1">
-                    <IoIosArrowForward className="text-white" />
-                </span>
-                <p className="text-sm sm:text-sm font-body flex justify-center items-center">Contact Us</p>
-            </Link>
-        </div>
-    </div>
-</div>
+                <div className="relative bg-gray-800 text-white bg-darkGray rounded-xl overflow-hidden flex flex-col items-center justify-center p-8">
+                    {/* Content */}
+                    <div className="relative z-10 text-start flex flex-col sm:flex-row justify-center items-center sm:gap-4 gap-4 lg:gap-8">
+                        <h2 className="w-full sm:w-1/2 lg:w-full text-xl md:text-3xl lg:text-4xl font-semibold font-heading text-white lg:leading-tight text-center sm:text-left">
+                            Enough talk, let's get to work
+                        </h2>
+                        <Link to="/contact" className="px-4 py-2 bg-white text-black rounded-full transition min-w-fit text-body flex items-center justify-center gap-2 mt-4 sm:mt-0 mx-auto lg:mx-0">
+                            <span className="bg-black text-body rounded-full p-1">
+                                <IoIosArrowForward className="text-white" />
+                            </span>
+                            <p className="text-sm sm:text-sm font-body flex justify-center items-center">Contact Us</p>
+                        </Link>
+                    </div>
+                </div>
+            </div>
 
 
 

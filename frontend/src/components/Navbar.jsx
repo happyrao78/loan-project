@@ -52,18 +52,18 @@ const Navbar = () => {
             <ul className="hidden md:flex gap-8 text-[16px] text-darkGray font-semibold ">
                 {/* <a href='#home' className="hover:text-gray-400 transition font-body">Home</a> */}
                 <a
-                    href="#about"
+                    href="/about"
                     className="relative font-body hover:text-gray-400 transition after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-[1px] after:rounded-full after:bg-white after:transition-all after:duration-300 hover:after:w-full"
                 >
                     About
                 </a>
-                <a
+                {/* <a
                     href="#services"
                     className="relative font-body hover:text-gray-400 transition after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-[1px] after:rounded-full after:bg-white after:transition-all after:duration-300 hover:after:w-full"
                 >
                     Services
-                </a>
-                <a
+                </a> */}
+                {/* <a
                     href="#projects"
                     className="relative font-body hover:text-gray-400 transition after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-[1px] after:rounded-full after:bg-white after:transition-all after:duration-300 hover:after:w-full"
                 >
@@ -74,9 +74,21 @@ const Navbar = () => {
                     className="relative font-body hover:text-gray-400 transition after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-[2px] after:bg-gray-400 after:transition-all after:duration-300 hover:after:w-full"
                 >
                     Feedback
+                </a> */}
+                <a
+                    href="/apply-form"
+                    className="relative font-body hover:text-gray-400 transition after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-[1px] after:rounded-full after:bg-white after:transition-all after:duration-300 hover:after:w-full"
+                >
+                    Apply Loan
                 </a>
                 <a
-                    href="#contact"
+                    href="/emi-calculator"
+                    className="relative font-body hover:text-gray-400 transition after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-[1px] after:rounded-full after:bg-white after:transition-all after:duration-300 hover:after:w-full"
+                >
+                    EMI Calculator
+                </a>
+                <a
+                    href="/contact"
                     className="relative font-body hover:text-gray-400 transition after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-[1px] after:rounded-full after:bg-white after:transition-all after:duration-300 hover:after:w-full"
                 >
                     Contact Us
