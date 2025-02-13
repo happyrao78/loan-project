@@ -26,6 +26,16 @@ const LoanApplications = ({ token }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const [filterStatus, setFilterStatus] = useState("All");
+  const [filteredApplications, setFilteredApplications] = useState([]);
+
+  useEffect(() => {
+    if (filterStatus === "All") {
+      setFilteredApplications(applications);
+    } else {
+      setFilteredApplications(applications.filter(app => app.loanStatus === filterStatus));
+    }
+  }, [filterStatus, applications]);
 
   const fetchApplications = async () => {
     try {
@@ -59,7 +69,7 @@ const LoanApplications = ({ token }) => {
       if (response.data && response.data.success) {
         toast.success("Status updated successfully");
         // Update the local state with the new loanStatus
-        setApplications(applications.map(app => 
+        setApplications(applications.map(app =>
           app._id === id ? { ...app, loanStatus: newStatus } : app
         ));
       } else {
@@ -68,6 +78,25 @@ const LoanApplications = ({ token }) => {
     } catch (error) {
       console.error("Error updating status:", error);
       toast.error("Failed to update status");
+    }
+  };
+
+  const deleteApplication = async (id) => {
+    try {
+      const response = await axios.delete(`${backendUrl}/api/loan/delete/${id}`, {
+        headers: { token },
+      });
+
+      if (response.data && response.data.success) {
+        toast.success("Application deleted successfully");
+        // Update the local state by removing the deleted application
+        setApplications(applications.filter(app => app._id !== id));
+      } else {
+        toast.error("Failed to delete application");
+      }
+    } catch (error) {
+      console.error("Error deleting application:", error);
+      toast.error("Failed to delete application");
     }
   };
 
@@ -86,10 +115,10 @@ const LoanApplications = ({ token }) => {
 
   const downloadPDF = (application, type) => {
     const doc = new jsPDF();
-    
+
     doc.setFontSize(20);
     doc.text(type === "agreement" ? "Loan Agreement" : "Approval Letter", 105, 20, { align: "center" });
-    
+
     doc.setFontSize(12);
     doc.text("Loan Application Details:", 20, 40);
     doc.text(`Name: ${application.fullName}`, 20, 55);
@@ -98,10 +127,10 @@ const LoanApplications = ({ token }) => {
     doc.text(`Duration: ${application.duration} Years`, 20, 100);
     doc.text(`Status: ${application.loanStatus}`, 20, 115);
     doc.text(`Date: ${new Date(application.createdAt).toLocaleDateString()}`, 20, 130);
-    
+
     doc.setFontSize(10);
     doc.text("This document is system generated.", 105, 280, { align: "center" });
-    
+
     doc.save(`loan-${type}-${application.fullName}.pdf`);
   };
 
@@ -120,16 +149,54 @@ const LoanApplications = ({ token }) => {
     }
   };
 
+  const handleCheckboxChange = async (applicationId, field, value) => {
+    try {
+      // Send a PUT request to update the application with the new checkbox value
+      const response = await axios.put(
+        `${backendUrl}/api/loan/update-fee-status/${applicationId}`,
+        { [field]: value },  // Dynamically set the field name (agreementFeePaid or processingFeePaid)
+        { headers: { token } }
+      );
+  
+      if (response.data && response.data.success) {
+        toast.success("Fee status updated successfully!");
+        // Update local state to reflect changes
+        setApplications(applications.map(app =>
+          app._id === applicationId ? { ...app, [field]: value } : app
+        ));
+      } else {
+        toast.error("Failed to update fee status");
+      }
+    } catch (error) {
+      console.error("Error updating fee status:", error);
+      toast.error("Failed to update fee status");
+    }
+  };
+  
+
   if (loading) return <div className="flex justify-center items-center h-64"><p className="text-blue-500">Loading applications...</p></div>;
   if (error) return <div className="flex justify-center items-center h-64"><p className="text-red-500">{error}</p></div>;
   if (applications.length === 0) return <div className="flex justify-center items-center h-64"><p className="text-gray-500">No applications available</p></div>;
 
   return (
     <div className="p-6 space-y-6">
-      <h2 className="text-3xl font-bold text-center mb-8">Loan Applications</h2>
-      
+      {/* <h2 className="text-3xl font-bold text-center mb-8">Loan Applications</h2> */}
+      <div className="flex justify-between items-center">
+        <h2 className="text-3xl font-bold">Loan Applications</h2>
+        <select
+          value={filterStatus}
+          onChange={(e) => setFilterStatus(e.target.value)}
+          className="px-3 py-2 border rounded-md text-sm"
+        >
+          <option value="All">All</option>
+          <option value="Processing">Processing</option>
+          <option value="Approved">Approved</option>
+          <option value="Rejected">Rejected</option>
+        </select>
+      </div>
+
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {applications.map((app, index) => (
+        {filteredApplications.map((app, index) => (
           <Card key={app._id}>
             <CardHeader>
               <div className="flex justify-between items-center">
@@ -142,16 +209,16 @@ const LoanApplications = ({ token }) => {
                 <div className="grid grid-cols-2 gap-2 text-sm">
                   <div className="text-gray-500">Phone:</div>
                   <div>{app.phoneNumber}</div>
-                  
+
                   <div className="text-gray-500">Email:</div>
                   <div className="truncate">{app.email}</div>
-                  
+
                   <div className="text-gray-500">Loan Type:</div>
                   <div>{app.loanType}</div>
-                  
+
                   <div className="text-gray-500">Amount:</div>
                   <div>₹{app.loanAmount}</div>
-                  
+
                   <div className="text-gray-500">Duration:</div>
                   <div>{app.duration} Years</div>
                 </div>
@@ -163,13 +230,13 @@ const LoanApplications = ({ token }) => {
                       className="flex items-center gap-2 bg-blue-500 text-white px-3 py-1.5 rounded text-sm hover:bg-blue-600 transition-colors"
                     >
                       Send Agreement
-                      <Download size={16} />
+                      {/* <Download size={16} /> */}
                     </button>
                     <button
                       onClick={() => downloadPDF(app, "agreement")}
                       className="flex items-center gap-2 bg-green-500 text-white px-3 py-1.5 rounded text-sm hover:bg-green-600 transition-colors"
                     >
-                      Download
+                      Download Agreement
                       <Download size={16} />
                     </button>
                   </div>
@@ -180,42 +247,71 @@ const LoanApplications = ({ token }) => {
                       className="flex items-center gap-2 bg-blue-500 text-white px-3 py-1.5 rounded text-sm hover:bg-blue-600 transition-colors"
                     >
                       Send Approval
-                      <Download size={16} />
+                      {/* <Download size={16} /> */}
                     </button>
                     <button
                       onClick={() => downloadPDF(app, "approval")}
                       className="flex items-center gap-2 bg-green-500 text-white px-3 py-1.5 rounded text-sm hover:bg-green-600 transition-colors"
                     >
-                      Download
+                      Download Approval
                       <Download size={16} />
                     </button>
                   </div>
-                </div>
+                  <div className="space-y-2 pt-4">
+                    <div className="flex items-center gap-2">
+                      <input
+                        type="checkbox"
+                        checked={app.agreementFeePaid || false}
+                        onChange={(e) => handleCheckboxChange(app._id, 'agreementFeePaid', e.target.checked)}
+                        className="form-checkbox"
+                      />
+                      <span className="text-sm">Agreement Fee Paid</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <input
+                        type="checkbox"
+                        checked={app.processingFeePaid || false}
+                        onChange={(e) => handleCheckboxChange(app._id, 'processingFeePaid', e.target.checked)}
+                        className="form-checkbox"
+                      />
+                      <span className="text-sm">Processing Fee Paid</span>
+                    </div>
+                  </div>
+               
 
-                <div className="pt-4 flex justify-between items-center">
-                  <select
-                    value={app.loanStatus || "Processing"}
-                    onChange={(e) => updateApplicationStatus(app._id, e.target.value)}
-                    className={`px-3 py-1 rounded text-sm cursor-pointer transition-colors ${getStatusStyles(app.loanStatus)}`}
-                  >
-                    <option value="Processing">Processing</option>
-                    <option value="Approved">Approved</option>
-                    <option value="Rejected">Rejected</option>
-                  </select>
-                  
-                  <button
-                    onClick={() => navigate(`/edit-application/${app._id}`)}
-                    className="bg-yellow-500 text-white px-3 py-1 rounded text-sm hover:bg-yellow-600 transition-colors"
-                  >
-                    Edit
-                  </button>
-                </div>
+              <div className="pt-4 flex justify-between items-center">
+                <select
+                  value={app.loanStatus || "Processing"}
+                  onChange={(e) => updateApplicationStatus(app._id, e.target.value)}
+                  className={`px-3 py-1 rounded text-sm cursor-pointer transition-colors ${getStatusStyles(app.loanStatus)}`}
+                >
+                  <option value="Processing">Processing</option>
+                  <option value="Approved">Approved</option>
+                  <option value="Rejected">Rejected</option>
+                </select>
+
+                <button
+                  onClick={() => navigate(`/edit-application/${app._id}`)}
+                  className="bg-yellow-500 text-white px-3 py-1 rounded text-sm hover:bg-yellow-600 transition-colors"
+                >
+                  Edit
+                </button>
+
+                <button
+                  onClick={() => deleteApplication(app._id)}
+                  className="bg-red-500 text-white px-3 py-1 rounded text-sm hover:bg-red-600 transition-colors"
+                >
+                  Delete
+                </button>
+                
               </div>
-            </CardContent>
+            </div>
+            </div>
+          </CardContent>
           </Card>
         ))}
-      </div>
     </div>
+    </div >
   );
 };
 

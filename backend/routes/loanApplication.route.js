@@ -1,4 +1,4 @@
-import { applyLoan,getApplicationsByPhone,listApplications,updateLoanApplication,updateStatus } from "../controllers/loanApplication.controller.js";
+import { applyLoan,getApplicationsByPhone,listApplications,updateLoanApplication,updateStatus,updateFeeStatus,deleteLoanApplication } from "../controllers/loanApplication.controller.js";
 import express from "express";
 import { sendEmail } from "../services/mailservice.js";
 
@@ -14,5 +14,7 @@ loanApplicationRouter.post("/send-email", async (req, res) => {
 loanApplicationRouter.put("/update/:id", updateLoanApplication);
 loanApplicationRouter.put("/update-status/:id", updateStatus);
 loanApplicationRouter.post("/track-loan", getApplicationsByPhone);
+loanApplicationRouter.put("/update-fee-status/:id", updateFeeStatus);
+loanApplicationRouter.delete("/delete/:id", deleteLoanApplication);
 
 export default loanApplicationRouter;
