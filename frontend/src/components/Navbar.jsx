@@ -104,52 +104,14 @@ const Navbar = ({z}) => {
 
             {/* Action Buttons */}
             <div className="flex items-center gap-4 ">
-                {/* {!isLoggedIn ? (
-                    <>
-                        <button
-                            className="px-4 py-2 transition font-body hidden md:flex gap-8 text-[17px] bg-white text-black rounded-full"
-                            onClick={handleLogin}
-                        >
-                            Login
-                        </button>
-                        <Link
-                            to="/contact" className="px-4 py-2 transition font-body hidden md:flex gap-8 text-[17px] bg-white text-black rounded-full"
-                        >
-                            Get in Touch
-                        </Link>
-                    </>
-                ) : (
-                    <div className="relative">
-                        
-                        <FaUserCircle
-                            className="text-2xl cursor-pointer"
-                            onClick={() => setDropdownVisible(!dropdownVisible)}
-                        />
-                       
-                        {dropdownVisible && (
-                            <div className="font-body absolute right-0 mt-2 w-48 bg-white text-black rounded-lg ">
-                                <button
-                                    className="block w-full text-left px-4 py-2 hover:bg-gray-100"
-                                    onClick={handleLogout}
-                                >
-                                    Logout
-                                </button>
-                            </div>
-                        )}
-                    </div>
-                )} */}
-
-                <InteractiveButton
-                    buttonText="Call Now"
-                    hoverText="+91 xxxxxx"
-                    bgColor="bg-primary"
-                    textColor="text-white"
-                    hoverBgColor="hover:bg-darkGray"
-                    hoverTextColor="hover:text-white"
-                    property="w-full hidden  sm:hidden lg:block" to="/contact"
-                    icon=<IoMdCall/> />
-
-                {/* Mobile Menu Toggle */}
+                <a href="tel:+918595864036">
+                <button
+                    className="px-8 py-2 transition font-body hidden md:flex gap-8 text-md bg-primary text-white rounded-lg hover:bg-darkGray hover:text-white"
+                    
+                >
+                    Call Now
+                </button>
+                </a>
                 <RiMenu5Fill
                     className="text-xl text-primary cursor-pointer block  md:hidden "
                     onClick={toggleMenu}
@@ -221,7 +183,7 @@ const Navbar = ({z}) => {
                         Contact Us
                     </a>
                     <a
-                        href="/emi-calculator"
+                        href="tel:+918595864036"
                         className="text-lg hover:text-gray-400 py-2 pl-6 border-b border-primary w-full text-left"
                         onClick={toggleMenu}
                     >

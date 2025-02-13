@@ -56,13 +56,13 @@ const Hero = () => {
                     </button> */}
 
                     <InteractiveButton
-                        buttonText="Start your Free Trial"
-                        hoverText="Start your Free Trial"
+                        buttonText="Get Started"
+                        hoverText="Apply Loan"
                         bgColor="bg-primary"
                         textColor="text-white"
                         hoverBgColor="hover:bg-darkGray"
                         hoverTextColor="hover:text-white"
-                        property="" to="/contact"
+                        property="" to="/apply-form"
                         icon=<IoIosArrowForward /> />
 
                     {/* Trusted logos */}

@@ -33,12 +33,12 @@ const AboutUs = () => {
 
                     <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4 text-center lg:text-left">
                         <div className="flex flex-col justify-center lg:justify-start items-center lg:items-start gap-1">
-                            <h2 className="text-3xl text-primary font-heading">30+</h2>
-                            <p className="font-body text-sm text-black">Companies helped</p>
+                            <h2 className="text-3xl text-primary font-heading">3k+</h2>
+                            <p className="font-body text-sm text-black">People Helped</p>
                         </div>
                         <div className="flex flex-col justify-center lg:justify-start items-center lg:items-start gap-1">
-                            <h2 className="text-3xl text-primary font-heading">25.8%</h2>
-                            <p className="font-body text-sm text-black">Revenue Generated</p>
+                            <h2 className="text-3xl text-primary font-heading">4k+</h2>
+                            <p className="font-body text-sm text-black">Loans Provided</p>
                         </div>
                     </div>
 
@@ -50,13 +50,13 @@ const AboutUs = () => {
                         </button> */}
 
                     <InteractiveButton
-                        buttonText="Start your Free Trial"
-                        hoverText="Start your Free Trial"
+                        buttonText="See More"
+                        hoverText="See More"
                         bgColor="bg-primary"
                         textColor="text-white"
                         hoverBgColor="hover:bg-darkGray"
                         hoverTextColor="hover:text-white"
-                        property="mt-8" to="/contact"
+                        property="mt-8" to="/about"
                         icon=<IoIosArrowForward /> />
 
                 </div>

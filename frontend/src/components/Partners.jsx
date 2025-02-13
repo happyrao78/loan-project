@@ -58,6 +58,59 @@ const Partners = () => {
     ];
 
 
+    // const skills = [
+    //     {
+    //         name: "State Bank of India",
+    //         description: "India's largest public sector bank offering comprehensive banking services.",
+    //         imageUrl: "https://www.onlinesbi.sbi/documents/43611/1122261/SBI_Logo.svg"
+    //     },
+    //     {
+    //         name: "HDFC Bank",
+    //         description: "One of India's leading private sector banks known for digital banking solutions.",
+    //         imageUrl: "https://www.hdfcbank.com/content/api/contentstream-id/723fb80a-2dde-42a3-9793-7ae1be57c87f/dc043313-44d6-4501-af71-22e18df86c0f/common/logo.svg"
+    //     },
+    //     {
+    //         name: "ICICI Bank",
+    //         description: "Major private sector bank providing innovative banking and financial services.",
+    //         imageUrl: "https://www.icicibank.com/content/dam/icicibank/india/managed-assets/images/Revamp-2021/icici-new-logo.svg"
+    //     },
+    //     {
+    //         name: "Punjab National Bank",
+    //         description: "One of the largest public sector banks with extensive branch network.",
+    //         imageUrl: "https://www.pnbindia.in/images/PNB_Logo.png"
+    //     },
+    //     {
+    //         name: "Axis Bank",
+    //         description: "Private sector bank offering comprehensive retail and corporate banking solutions.",
+    //         imageUrl: "https://www.axisbank.com/assets/images/logo-white.png"
+    //     },
+    //     {
+    //         name: "Bank of Baroda",
+    //         description: "Major public sector bank with strong presence in rural and urban areas.",
+    //         imageUrl: "https://www.bankofbaroda.in/-/media/project/bob/countrywebsites/india/home/logo.svg"
+    //     },
+    //     {
+    //         name: "Kotak Mahindra Bank",
+    //         description: "Private sector bank known for innovative financial products and services.",
+    //         imageUrl: "https://www.kotak.com/content/dam/Kotak/kotak-logo.png"
+    //     },
+    //     {
+    //         name: "Canara Bank",
+    //         description: "Public sector bank with extensive network and diverse banking solutions.",
+    //         imageUrl: "https://canarabank.com/assets/images/Canara_Bank.png"
+    //     },
+    //     {
+    //         name: "Union Bank of India",
+    //         description: "Large public sector bank offering comprehensive banking services.",
+    //         imageUrl: "https://www.unionbankofindia.co.in/assets/images/logo.png"
+    //     },
+    //     {
+    //         name: "IndusInd Bank",
+    //         description: "Private sector bank known for innovative banking solutions and services.",
+    //         imageUrl: "https://www.indusind.com/content/dam/indusind-corporate/common/logo/indusind-bank-logo.svg"
+    //     }
+    // ];
+
     return (
         <div className="relative py-8  px-4 sm:px-[5vw] md:px-[7vw] lg:px-[8vw] " >
             <div

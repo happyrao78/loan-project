@@ -223,14 +223,16 @@ const Steps = () => {
 
 
                         <InteractiveButton
-                            buttonText="Start your Free Trial"
-                            hoverText="Start your Free Trial"
+                            buttonText="Submit Form"
+                            hoverText="Submit Form"
                             bgColor="bg-darkGray"
                             textColor="text-white"
                             hoverBgColor="hover:bg-primary"
                             hoverTextColor="hover:text-white"
-                            property="mt-6 mx-auto md:mx-0" to="/contact"
-                            icon=<IoIosArrowForward /> />
+                            property="mt-6 mx-auto md:mx-0" 
+                            type="submit"
+                            icon=<IoIosArrowForward /> 
+                            />
                     </form>
                 </div>
             </div>
