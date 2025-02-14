@@ -13,7 +13,7 @@ import bodyParser from 'body-parser';
 const app = express();
 connectDB();
 
-const allowedOrigins = ["http://localhost:5174","http://localhost:5173","https://loan-project-admin.vercel.app"];
+const allowedOrigins = ["http://localhost:5174","http://localhost:5173","https://loan-project-admin.vercel.app","https://loan-project-flame.vercel.app"];
 
 app.use(cors({
   origin: function (origin, callback) {
