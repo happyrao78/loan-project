@@ -106,7 +106,7 @@ const Navbar = ({z}) => {
             <div className="flex items-center gap-4 ">
                 <a href="tel:+918595864036">
                 <button
-                    className="px-8 py-2 transition font-body hidden md:flex gap-8 text-md bg-primary text-white rounded-lg hover:bg-darkGray hover:text-white"
+                    className="px-8 py-2 transition font-body hidden md:flex gap-8 text-md bg-primary text-white rounded-md hover:bg-darkGray hover:text-white"
                     
                 >
                     Call Now
