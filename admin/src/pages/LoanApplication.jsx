@@ -197,11 +197,13 @@ const LoanApplications = ({ token }) => {
         }
   
         // Create PDF with compression
-        pdfDoc = new jsPDF({
-          compress: true,
-          unit: 'pt',
-          format: 'a4'
-        });
+        pdfDoc = new jsPDF(
+        //   {
+        //   compress: true,
+        //   unit: 'pt',
+        //   format: 'a4'
+        // }
+      );
 
         
       
