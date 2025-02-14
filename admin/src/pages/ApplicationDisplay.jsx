@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { io } from 'socket.io-client';
 import Papa from 'papaparse';
-
+import {backendUrl} from '../App';
 const ApplicationDisplay = () => {
   const [applications, setApplications] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -12,7 +12,7 @@ const ApplicationDisplay = () => {
   useEffect(() => {
     const fetchApplications = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/applications');
+        const response = await fetch(`${backendUrl}/api/applications`);
         const result = await response.json();
         if (response.ok) {
           setApplications(result);
@@ -28,7 +28,7 @@ const ApplicationDisplay = () => {
 
     fetchApplications();
 
-    const socket = io('http://localhost:5000');
+    const socket = io(backendUrl);
     socket.on('newApplication', (newApplication) => {
       setApplications((prevApps) => [...prevApps, newApplication]);
     });

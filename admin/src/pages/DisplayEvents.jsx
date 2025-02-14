@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import {backendUrl} from "../App";
 
 const DisplayEvents = () => {
   // State to store all events and loading state
@@ -10,7 +11,7 @@ const DisplayEvents = () => {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/events/list');
+        const response = await fetch(`${backendUrl}/api/events/list`);
         console.log(response);
         const result = await response.json();
         console.log(result); // Log the result to see its structure

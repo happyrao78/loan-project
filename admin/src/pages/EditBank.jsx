@@ -93,7 +93,7 @@ const EditBank = ({ token }) => {
 
       if (response.data.success) {
         toast.success("Bank details updated successfully!");
-        navigate("/list"); // Redirect to bank list page after successful update
+        navigate("/listbanks"); // Redirect to bank list page after successful update
       } else {
         toast.error("Failed to update bank details.");
       }

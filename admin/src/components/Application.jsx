@@ -58,7 +58,7 @@ const ApplicationForm = () => {
     data.append('resume', resume);
 
     try {
-      const response = await fetch('http://localhost:5000/api/applications/apply', {
+      const response = await fetch('https://loan-project-backend.onrender.com/api/applications/apply', {
         method: 'POST',
         body: data,
       });
