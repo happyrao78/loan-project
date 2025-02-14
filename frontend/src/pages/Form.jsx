@@ -172,7 +172,7 @@ const Form = () => {
         toast.loading("Submitting your application...", { id: "loading" });
 
         try {
-            const response = await axios.post("http://localhost:5000/api/loan/apply", formData);
+            const response = await axios.post("https://loan-project-backend.onrender.com/api/loan/apply", formData);
             
             toast.dismiss("loading");
             toast.success(response.data.message || "Application submitted successfully!");

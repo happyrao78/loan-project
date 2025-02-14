@@ -32,7 +32,7 @@ const TrackLoan = () => {
         setLoanStatus(null);
 
         try {
-            const response = await axios.post("http://localhost:5000/api/loan/track-loan", {
+            const response = await axios.post("https://loan-project-backend.onrender.com/api/loan/track-loan", {
                 phoneNumber: phoneNumber,
             });
             setLoanStatus(response.data.applications);
