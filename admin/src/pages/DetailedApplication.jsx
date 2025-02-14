@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import {backendUrl} from "../App";
 
 const ApplicationDetail = () => {
   const { id } = useParams();  // Get the application ID from URL params
@@ -9,7 +10,7 @@ const ApplicationDetail = () => {
   useEffect(() => {
     const fetchApplication = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/api/applications/${id}`);
+        const response = await fetch(`${backendUrl}/api/applications/${id}`);
         const result = await response.json();
 
         if (response.ok) {

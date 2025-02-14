@@ -17,7 +17,7 @@ import LoanApplication from './pages/LoanApplication'
 import EditLoanApplication from './pages/EditApplication'
 
 
-export const backendUrl = "http://localhost:5000";
+export const backendUrl = "https://loan-project-backend.onrender.com";
 export const currency = "₹ ";
 
 const App = () => {

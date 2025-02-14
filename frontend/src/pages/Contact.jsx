@@ -100,7 +100,7 @@ const ContactUs = () => {
           </div>
           <div className="flex space-x-4">
             <a
-              href="https://wa.me/917015064173"
+              href="https://wa.me/918595864036"
 
               className="hover:text-gray-400 p-2 bg-white text-primary rounded-full hover:text-white hover:bg-darkGray flex items-center justify-center"
             >
