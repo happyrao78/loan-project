@@ -108,6 +108,7 @@ const LoanApplications = ({ token }) => {
   };
 
   
+  
   // const sendEmail = async (email, type, application) => {
   //   try {
   //     let pdfDoc;
@@ -174,8 +175,6 @@ const LoanApplications = ({ token }) => {
   //     }
   //   }
   // };
-
-
   const sendEmail = async (email, type, application) => {
     try {
       let pdfDoc;
@@ -204,10 +203,6 @@ const LoanApplications = ({ token }) => {
         //   format: 'a4'
         // }
       );
-
-        
-      
-    
         // Generate the approval/rejection letter
         generateApprovalPDF(pdfDoc, application, roi);
         
@@ -257,6 +252,52 @@ const LoanApplications = ({ token }) => {
       }
     }
   };
+
+  const sendFeePaymentEmail = async (email, type, application) => {
+    try {
+      let subject = "Payment Confirmation from DigitalFinserve";
+      let message = "";
+      // Payment type ke basis pe message decide karna
+      switch (type) {
+        case "processing":
+          message = "Your loan processing fee payment has been successfully received. Your loan application is now under review.";
+          break;
+        case "agreement":
+          message = "Your agreement fee payment has been successfully received. Your loan agreement is now processed.";
+          break;
+        case "transferCharge":
+          message = "Your transfer charge payment has been successfully received. Your loan transfer request is now being processed.";
+          break;
+        case "serviceCharge":
+          message = "Your TDS payment has been successfully received. The tax deduction has been applied to your transaction.";
+          break;
+        default:
+          message = "Your payment has been successfully received.";
+      }
+  
+      await axios.post(
+        `${backendUrl}/api/loan/send-email`,
+        {
+          email,
+          subject,
+          message,
+        },
+        {
+          headers: {
+            token,
+            'Content-Type': 'application/json'
+          }
+        }
+      );
+
+      toast.success("Payment Email sent successfully!");
+  
+    } catch (error) {
+      console.error("Error sending email:", error);
+      toast.error("Failed to send email. Please try again.");
+    }
+  };
+  
   
   // Separate function to generate approval/rejection PDF
   // const generateApprovalPDF = (doc, application, roi) => {
@@ -731,7 +772,34 @@ const generateAgreementPDF = (application) => {
       toast.error("Failed to update fee status");
     }
   };
+  
+  const handlePaymentModal = async (applicationId, field, value) => {
+    try {
+      // Send a PUT request to update the payment status with the new checkbox value
+      const response = await axios.put(
+        `${backendUrl}/api/loan/show-payments/${applicationId}`,
+        { [field]: value },  
+        { headers: { token } }
+      );
 
+      if (response.data && response.data.success) {
+        if (value) {
+          toast.success("Payment enabled successfully!");
+        } else {
+          toast.info("Payment disabled successfully!");
+        }
+        // Update local state to reflect changes
+        setApplications(applications.map(app =>
+          app._id === applicationId ? { ...app, [field]: value } : app
+        ));
+      } else {
+        toast.error("Failed to enable payment");
+      }
+    } catch (error) {
+      console.error("Error enabling payement:", error);
+      toast.error("Failed to enable payment");
+    }
+  };
 
   if (loading) return <div className="flex justify-center items-center h-64"><p className="text-blue-500">Loading applications...</p></div>;
   if (error) return <div className="flex justify-center items-center h-64"><p className="text-red-500">{error}</p></div>;
@@ -855,8 +923,31 @@ const generateAgreementPDF = (application) => {
                     <div className="flex items-center gap-2">
                       <input
                         type="checkbox"
+                        checked={app.processingFeePaid || false}
+                        onChange={(e) => {
+                        const isChecked = e.target.checked;
+                        handleCheckboxChange(app._id, 'processingFeePaid', isChecked);
+
+                        // Sirf jab checkbox checked ho raha ho tab email bhejo
+                        if (isChecked) {
+                        sendFeePaymentEmail(app.email, "processing", app);
+                        }
+                        }}
+                        className="form-checkbox"
+                      />
+                      <span className="text-sm">Processing Fee Paid</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <input
+                        type="checkbox"
                         checked={app.agreementFeePaid || false}
-                        onChange={(e) => handleCheckboxChange(app._id, 'agreementFeePaid', e.target.checked)}
+                        onChange={(e) => {
+                        const isChecked = e.target.checked;
+                        handleCheckboxChange(app._id, 'agreementFeePaid', e.target.checked)
+                        if(isChecked) {
+                          sendFeePaymentEmail(app.email, "agreement", app);
+                        }
+                        }}
                         className="form-checkbox"
                       />
                       <span className="text-sm">Agreement Fee Paid</span>
@@ -864,11 +955,85 @@ const generateAgreementPDF = (application) => {
                     <div className="flex items-center gap-2">
                       <input
                         type="checkbox"
-                        checked={app.processingFeePaid || false}
-                        onChange={(e) => handleCheckboxChange(app._id, 'processingFeePaid', e.target.checked)}
+                        checked={app.transferChargePaid || false}
+                        onChange={(e) => {
+                        const isChecked = e.target.checked;
+                        handleCheckboxChange(app._id, 'transferChargePaid', e.target.checked)
+                        if(isChecked) {
+                          sendFeePaymentEmail(app.email, "transferCharge", app);
+                        }
+                        }}
                         className="form-checkbox"
                       />
-                      <span className="text-sm">Processing Fee Paid</span>
+                      <span className="text-sm">Transfer Charge Paid</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <input
+                        type="checkbox"
+                        checked={app.serviceChargePaid || false}
+                        onChange={(e) => {
+                        const isChecked = e.target.checked;
+                        handleCheckboxChange(app._id, 'serviceChargePaid', e.target.checked)
+                        if(isChecked) {
+                          sendFeePaymentEmail(app.email, "serviceCharge", app);
+                        }
+                        }}
+                        className="form-checkbox"
+                      />
+                      <span className="text-sm">TDS & Banking Service Charge Paid</span>
+                    </div>
+                    <hr />
+                    <div className="flex items-center gap-2">
+                      <input
+                        type="checkbox"
+                        checked={app.showProcessingPayment || false}
+                        onChange={(e) => {
+                          const isChecked = e.target.checked;
+                          
+                        handlePaymentModal(app._id, 'showProcessingPayment', e.target.checked)
+                        }}
+                        className="form-checkbox"
+                      />
+                      <span className="text-sm">Show Processing Fee Payment</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <input
+                        type="checkbox"
+                        checked={app.showAgreementPayment || false}
+                        onChange={(e) => {
+                          const isChecked = e.target.checked;
+                          
+                        handlePaymentModal(app._id, 'showAgreementPayment', e.target.checked)
+                        }}
+                        className="form-checkbox"
+                      />
+                      <span className="text-sm">Show Agreement Payment</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <input
+                        type="checkbox"
+                        checked={app.showTransferPayment || false}
+                        onChange={(e) => {
+                          const isChecked = e.target.checked;
+                          
+                        handlePaymentModal(app._id, 'showTransferPayment', e.target.checked)
+                        }}
+                        className="form-checkbox"
+                      />
+                      <span className="text-sm">Show Transfer Payment</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <input
+                        type="checkbox"
+                        checked={app.showServicePayment || false}
+                        onChange={(e) => {
+                          const isChecked = e.target.checked;
+                          
+                        handlePaymentModal(app._id, 'showServicePayment', e.target.checked)
+                        }}
+                        className="form-checkbox"
+                      />
+                      <span className="text-sm">Show Service Payment</span>
                     </div>
                   </div>
 

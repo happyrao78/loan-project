@@ -1,10 +1,11 @@
 
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import axios from "axios";
 import loan from "../assets/loan.jpg";
 import Navbar from "../components/Navbar";
 import InteractiveButton from "../components/Button";
 import { IoIosArrowForward } from "react-icons/io";
+import { toast } from "react-toastify";
 import Footer from "../components/Footer";
 
 const TrackLoan = () => {
@@ -12,6 +13,69 @@ const TrackLoan = () => {
     const [loading, setLoading] = useState(false);
     const [loanStatus, setLoanStatus] = useState(null);
     const [error, setError] = useState("");
+    const [selectedFee, setSelectedFee] = useState(null);
+    const [showModal, setShowModal] = useState(false);
+    const [banks, setBanks] = useState([]);
+
+    const openModal = (feeType) => {
+        if (!banks.length) {
+            console.error("Banks data not available");
+            return;
+        }
+    
+        let amount;
+        switch (feeType) {
+            case "Processing Fee":
+                amount = banks[0]?.processingFee;
+                break;
+            case "Agreement Fee":
+                amount = banks[0]?.agreementFee;
+                break;
+            case "Transfer Charge":
+                amount = banks[0]?.transferCharge;
+                break;
+            case "TDS & Bank Service Charge":
+                amount = banks[0]?.serviceCharge;
+                break;
+            default:
+                amount = 0;
+        }
+    
+        setSelectedFee({ feeType, amount, bankDetails: banks[0]?.bankDetails });
+        setShowModal(true);
+    };
+    
+    
+
+const closeModal = () => {
+    setShowModal(false);
+    setSelectedFee(null);
+};
+
+const fetchBanks = async () => {
+    try {
+      setLoading(true);
+      const response = await axios.get("https://loan-project-backend.onrender.com/api/bank/list", {
+        
+      });
+
+      if (response.data && response.data.success) {
+        setBanks(response.data.banks);
+      } else {
+        toast.error("Unexpected response format");
+      }
+    } catch (err) {
+      console.error("Error fetching banks:", err);
+      toast.error("Failed to load banks");
+      setError("Failed to fetch data. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchBanks();
+  }, []);
 
     const handlePhoneChange = (e) => {
         const value = e.target.value.replace(/\D/g, '');
@@ -33,6 +97,7 @@ const TrackLoan = () => {
 
         try {
             const response = await axios.post("https://loan-project-backend.onrender.com/api/loan/track-loan", {
+            // const response = await axios.post("http://localhost:5000/api/loan/track-loan", {
                 phoneNumber: phoneNumber,
             });
             setLoanStatus(response.data.applications);
@@ -61,7 +126,7 @@ const TrackLoan = () => {
     return (
         <div className="relative bg-white">
             <Navbar z={50} />
-            
+
             {/* Hero Section */}
             <div className="relative">
                 <img src={loan} alt="" className="w-full h-[60vh] object-cover object-center" />
@@ -116,8 +181,36 @@ const TrackLoan = () => {
                                         <span className="font-semibold">{loanStatus[0]._id}</span>
                                     </div> */}
                                     <div className="flex justify-between items-center">
+                                        <span className="text-gray-600">Applicant Name</span>
+                                        <span className="font-semibold">{loanStatus[0].fullName}</span>
+                                    </div>
+                                    <div className="flex justify-between items-center">
+                                        <span className="text-gray-600">Email</span>
+                                        <span className="font-semibold">{loanStatus[0].email}</span>
+                                    </div>
+                                    <div className="flex justify-between items-center">
+                                        <span className="text-gray-600">Mobile No.</span>
+                                        <span className="font-semibold">{loanStatus[0].phoneNumber}</span>
+                                    </div>
+                                    <div className="flex justify-between items-center">
+                                        <span className="text-gray-600">Aadhar Number</span>
+                                        <span className="font-semibold uppercase">{loanStatus[0].aadharNumber}</span>
+                                    </div>
+                                    <div className="flex justify-between items-center">
+                                        <span className="text-gray-600">PAN Number</span>
+                                        <span className="font-semibold uppercase">{loanStatus[0].panNumber}</span>
+                                    </div>
+                                    <div className="flex justify-between items-center">
+                                        <span className="text-gray-600">Applicant Name</span>
+                                        <span className="font-semibold">{loanStatus[0].fullName}</span>
+                                    </div>
+                                    <div className="flex justify-between items-center">
                                         <span className="text-gray-600">Loan Amount</span>
-                                        <span className="font-semibold">{loanStatus[0].loanAmount}</span>
+                                        <span className="font-semibold">Rs. {loanStatus[0].loanAmount}</span>
+                                    </div>
+                                    <div className="flex justify-between items-center">
+                                        <span className="text-gray-600">Loan Tenure</span>
+                                        <span className="font-semibold">{loanStatus[0].duration} years</span>
                                     </div>
                                     <div className="flex justify-between items-center">
                                         <span className="text-gray-600">Bank Name</span>
@@ -133,6 +226,77 @@ const TrackLoan = () => {
                                             {loanStatus[0].loanStatus}
                                         </span>
                                     </div>
+                                    <div className="flex justify-between items-center">
+                                        {/* Show Payment Status Table ONLY if loan is approved */}
+                                        {loanStatus[0]?.loanStatus?.toLowerCase() === "approved" && (
+                                            <div className=" bg-white">
+                                                <h4 className="text-lg font-semibold text-darkGray mb-4">Payment Status</h4>
+                                                <div className="space-y-2 ">
+                                                    <div className="flex justify-between ">
+                                                        <span className="text-gray-600">Processing Fee:</span>
+                                                        <span className={`font-semibold ${loanStatus[0]?.processingFeePaid ? "text-green-600" : "text-red-600"}`}>
+                                                            {loanStatus[0]?.processingFeePaid ? "Paid" : "Pending"}
+                                                        </span>
+                                                    </div>
+                                                    <div className="flex justify-between items-center">
+                                                        <span className="text-gray-600">Agreement Fee:</span>
+                                                        <span className={`font-semibold ${loanStatus[0]?.agreementFeePaid ? "text-green-600" : "text-red-600"}`}>
+                                                            {loanStatus[0]?.agreementFeePaid ? "Paid" : "Pending"}
+                                                        </span>
+                                                    </div>
+                                                    <div className="flex justify-between items-center">
+                                                        <span className="text-gray-600">Transfer Charge:</span>
+                                                        <span className={`font-semibold ${loanStatus[0]?.transferChargePaid ? "text-green-600" : "text-red-600"}`}>
+                                                            {loanStatus[0]?.transferChargePaid ? "Paid" : "Pending"}
+                                                        </span>
+                                                    </div>
+                                                    <div className="flex justify-between items-center">
+                                                        <span className="text-gray-600">TDS & Bank Service Charge:</span>
+                                                        <span className={`font-semibold ${loanStatus[0]?.serviceChargePaid ? "text-green-600" : "text-red-600"}`}>
+                                                            {loanStatus[0]?.serviceChargePaid ? "Paid" : "Pending"}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        )}
+
+                                    </div>
+                                    {/* Payment Buttons - Only show when enabled */}
+                                    <div className="mt-6 space-y-4">
+                                        {loanStatus[0]?.showProcessingPayment && !loanStatus[0]?.processingFeePaid && (
+                                            <button className="w-full px-4 py-2 bg-primary text-white rounded-lg hover:bg-darkGray"
+                                            onClick={() => openModal("Processing Fee", banks[0]?.processingFee)}
+                                            >
+                                                Pay Processing Fee
+                                            </button>
+                                        )}
+
+                                        {loanStatus[0]?.showAgreementPayment && !loanStatus[0]?.agreementFeePaid && (
+                                            <button className="w-full px-4 py-2 bg-primary text-white rounded-lg hover:bg-darkGray"
+                                            onClick={() => openModal("Agreement Fee", banks[0]?.agreementFee)}
+                                            >
+                                                Pay Agreement Fee
+                                            </button>
+                                        )}
+
+                                        {loanStatus[0]?.showTransferPayment && !loanStatus[0]?.transferChargePaid && (
+                                            <button className="w-full px-4 py-2 bg-primary text-white rounded-lg hover:bg-darkGray"
+                                            onClick={() => openModal("Transfer Charge", banks[0]?.transferCharge)}
+                                            >
+                                                Pay Transfer Charge
+                                            </button>
+                                        )}
+
+
+                                        {loanStatus[0]?.showServicePayment && !loanStatus[0]?.serviceChargePaid && (
+                                            <button className="w-full px-4 py-2 bg-primary text-white rounded-lg hover:bg-darkGray"
+                                            onClick={() => openModal("TDS & Bank Service Charge", banks[0]?.serviceCharge)}
+                                            >
+                                                Pay TDS & Bank Service Charge
+                                            </button>
+                                        )}
+                                    </div>
+
                                     {loanStatus[0].message && (
                                         <div className="text-sm text-gray-600 mt-4 p-4 bg-gray-50 rounded-lg">
                                             {loanStatus[0].message}
@@ -162,6 +326,37 @@ const TrackLoan = () => {
                     )}
                 </div>
             </div>
+            {showModal && selectedFee && (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+        <div className="bg-white p-6 rounded-lg shadow-lg w-96">
+            <h3 className="text-xl font-semibold mb-4">Payment Details</h3>
+            <p className="text-gray-700"><strong>Fee Type:</strong> {selectedFee.feeType}</p>
+            <p className="text-gray-700"><strong>Amount:</strong> ₹{selectedFee.amount}</p>
+            <p className="text-gray-700 "><strong >Bank Name: </strong> {banks[0].bankName || "N/A"}</p>
+            <p className="text-gray-700 "><strong >Account Holder Name: </strong> {banks[0].Holdername || "N/A"}</p>
+            <p className="text-gray-700 "><strong >Account Number: </strong> {banks[0].accountNumber || "N/A"}</p>
+            <p className="text-gray-700 "><strong >IFSC Code: </strong> {banks[0].ifscCode || "N/A"}</p>
+            <p className="text-gray-700 "><strong >Contact Number: </strong> {banks[0].mobileNumber || "N/A"}</p>
+            <p className="text-gray-700 "><strong >Email: </strong> {banks[0].email || "N/A"}</p>
+           
+            <p className="text-gray-700 "><strong >QR Code: </strong> </p>
+                <img
+                  src={banks[0].qr}
+                  alt="Bank QR Code"
+                  className="w-full h-auto max-w-[200px] mx-auto"
+                />
+            
+
+
+            <div className="mt-4 flex justify-end">
+                <button onClick={closeModal} className="px-4 py-2 bg-red-500 text-white rounded-md mr-2">Close</button>
+                {/* <button className="px-4 py-2 bg-primary text-white rounded-md">Proceed to Pay</button> */}
+            </div>
+        </div>
+    </div>
+)}
+
+
             <Footer />
         </div>
     );

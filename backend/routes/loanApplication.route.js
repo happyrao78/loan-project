@@ -1,4 +1,4 @@
-import { applyLoan,getApplicationsByPhone,listApplications,updateLoanApplication,updateStatus,updateFeeStatus,deleteLoanApplication } from "../controllers/loanApplication.controller.js";
+import { applyLoan,getApplicationsByPhone,listApplications,updateLoanApplication,updateStatus,updateFeeStatus,deleteLoanApplication, showPayments } from "../controllers/loanApplication.controller.js";
 import express from "express";
 import { sendEmail } from "../services/mailservice.js";
 
@@ -44,6 +44,7 @@ loanApplicationRouter.put("/update/:id", updateLoanApplication);
 loanApplicationRouter.put("/update-status/:id", updateStatus);
 loanApplicationRouter.post("/track-loan", getApplicationsByPhone);
 loanApplicationRouter.put("/update-fee-status/:id", updateFeeStatus);
+loanApplicationRouter.put("/show-payments/:id", showPayments);
 loanApplicationRouter.delete("/delete/:id", deleteLoanApplication);
 
 export default loanApplicationRouter;

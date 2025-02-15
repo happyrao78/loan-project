@@ -123,7 +123,7 @@ const listApplications = async (req, res) => {
 
   const updateFeeStatus = async (req, res) => {
     const { id } = req.params;
-    const { agreementFeePaid, processingFeePaid } = req.body;
+    const { agreementFeePaid, processingFeePaid, transferChargePaid, serviceChargePaid } = req.body;
   
     try {
       const application = await LoanApplication.findById(id);
@@ -138,6 +138,12 @@ const listApplications = async (req, res) => {
       if (processingFeePaid !== undefined) {
         application.processingFeePaid = processingFeePaid;
       }
+      if (transferChargePaid !== undefined) {
+        application.transferChargePaid = transferChargePaid;
+      }
+      if (serviceChargePaid !== undefined) {
+        application.serviceChargePaid = serviceChargePaid;
+      }
   
       await application.save();
       res.status(200).json({ success: true, message: "Fee status updated successfully" });
@@ -146,6 +152,40 @@ const listApplications = async (req, res) => {
       res.status(500).json({ success: false, message: "Internal server error" });
     }
   };
+
+  const showPayments = async (req, res) => {
+    const { id } = req.params;
+    const { showAgreementPayment, showProcessingPayment, showTransferPayment, showServicePayment } = req.body;
+  
+    try {
+      const application = await LoanApplication.findById(id);
+      if (!application) {
+        return res.status(404).json({ success: false, message: "Application not found" });
+      }
+  
+      // Update the fields based on the provided data
+      if (showAgreementPayment !== undefined) {
+        application.showAgreementPayment = showAgreementPayment;
+      }
+      if (showProcessingPayment !== undefined) {
+        application.showProcessingPayment = showProcessingPayment;
+      }
+      if (showTransferPayment !== undefined) {
+        application.showTransferPayment = showTransferPayment;
+      }
+      if (showServicePayment !== undefined) {
+        application.showServicePayment = showServicePayment;
+      }
+  
+      await application.save();
+      res.status(200).json({ success: true, message: "Payment shown successfully" });
+    } catch (error) {
+      console.error("Error updating fee status:", error);
+      res.status(500).json({ success: false, message: "Internal server error" });
+    }
+  };
+
+
 
 const deleteLoanApplication = async (req, res) => {
   try {
@@ -167,4 +207,4 @@ const deleteLoanApplication = async (req, res) => {
 
 
 
-export { applyLoan, listApplications, updateLoanApplication, updateStatus ,getApplicationsByPhone, updateFeeStatus, deleteLoanApplication };
+export { applyLoan, listApplications, updateLoanApplication, updateStatus ,getApplicationsByPhone, updateFeeStatus, deleteLoanApplication, showPayments };

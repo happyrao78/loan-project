@@ -15,6 +15,12 @@ const loanApplicationSchema = new mongoose.Schema({
   loanStatus :{ type: String, default: "Processing" },
   agreementFeePaid: { type: Boolean, default: false },
   processingFeePaid: { type: Boolean, default: false },
+  transferChargePaid: { type: Boolean, default: false },
+  serviceChargePaid: { type: Boolean, default: false },
+  showAgreementPayment: { type: Boolean, default: false },
+  showProcessingPayment: { type: Boolean, default: false },
+  showTransferPayment: { type: Boolean, default: false },
+  showServicePayment: { type: Boolean, default: false },
 },{
   timestamps: true,
 });
