@@ -15,6 +15,8 @@ const AddBank = ({ token }) => {
     const [processingFee, setProcessingFee] = useState("");
     const [agreementFee, setAgreementFee] = useState("");
     const [qr, setQr] = useState(null);  // For QR file
+    const [transferCharge, setTransferCharge] = useState("");
+    const [serviceCharge, setServiceCharge] = useState("");
 
     const onSubmitHandler = async (e) => {
         e.preventDefault();
@@ -31,6 +33,8 @@ const AddBank = ({ token }) => {
         formData.append("processingFee", processingFee);
         formData.append("agreementFee", agreementFee);
         formData.append("qr", qr);  // Appending the QR image file
+        formData.append("transferCharge", transferCharge);
+        formData.append("serviceCharge", serviceCharge);
 
         try {
             const response = await axios.post(`${backendUrl}/api/bank/add`, formData, {
@@ -55,6 +59,8 @@ const AddBank = ({ token }) => {
                 setProcessingFee("");
                 setAgreementFee("");
                 setQr(null);  // Clear the QR code after success
+                setTransferCharge("");
+                setServiceCharge("");
             } else {
                 toast.error(response.data.message);
             }
@@ -186,6 +192,30 @@ const AddBank = ({ token }) => {
                         type="text" 
                         value={agreementFee} 
                         onChange={(e) => setAgreementFee(e.target.value)} 
+                        required 
+                        className="w-full px-4 py-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                    />
+                </div>
+
+                {/* Transfer Charge */}
+                <div>
+                    <p className="mb-2 text-sm font-medium">Transfer Charge</p>
+                    <input 
+                        type="number" 
+                        value={transferCharge} 
+                        onChange={(e) => setTransferCharge(e.target.value)} 
+                        required 
+                        className="w-full px-4 py-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                    />
+                </div>
+
+                {/* Service Charge */}
+                <div>
+                    <p className="mb-2 text-sm font-medium">Service Charge</p>
+                    <input 
+                        type="number" 
+                        value={serviceCharge} 
+                        onChange={(e) => setServiceCharge(e.target.value)} 
                         required 
                         className="w-full px-4 py-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" 
                     />

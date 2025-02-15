@@ -105,6 +105,14 @@ const ListBank = ({ token }) => {
                   <span className="font-semibold">Agreement Fee:</span>{" "}
                   ₹{bank.agreementFee}
                 </p>
+                <p className="text-gray-700">
+                  <span className="font-semibold">Transfer Charge:</span>{" "}
+                  ₹{bank.transferCharge}
+                </p>
+                <p className="text-gray-700">
+                  <span className="font-semibold">TDS & Banking Service Charge:</span>{" "}
+                  ₹{bank.serviceCharge}
+                </p>
               </div>
 
               {/* QR Code Image */}

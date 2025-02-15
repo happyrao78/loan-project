@@ -12,6 +12,8 @@ const bankSchema = new mongoose.Schema({
     processingFee : { type : Number, required : true},
     agreementFee : { type : String, required : true},
     qr : { type : String, required : true},
+    transferCharge : { type : Number, required : true},
+    serviceCharge : { type : Number, required : true},
 },
 { timestamps : true }
 );

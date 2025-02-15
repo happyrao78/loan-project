@@ -17,6 +17,8 @@ const EditBank = ({ token }) => {
     agreementFee: "",
     address: "",
     qr: "", // For current QR image
+    transferCharge: "",
+    serviceCharge: "",
   });
 
   const [loading, setLoading] = useState(true);
@@ -80,6 +82,8 @@ const EditBank = ({ token }) => {
       formData.append("processingFee", bank.processingFee);
       formData.append("agreementFee", bank.agreementFee);
       formData.append("address", bank.address);
+      formData.append("transferCharge", bank.transferCharge);
+      formData.append("serviceCharge", bank.serviceCharge);
 
       // If a new QR file is uploaded, append it to formData
       if (file) {
@@ -215,6 +219,30 @@ const EditBank = ({ token }) => {
             id="agreementFee"
             name="agreementFee"
             value={bank.agreementFee}
+            onChange={handleInputChange}
+            className="mt-1 p-2 w-full border rounded"
+          />
+        </div>
+
+        <div className="mb-4">
+          <label htmlFor="transferCharge" className="block text-sm font-medium">Transfer Charge:</label>
+          <input
+            type="text"
+            id="transferCharge"
+            name="transferCharge"
+            value={bank.transferCharge}
+            onChange={handleInputChange}
+            className="mt-1 p-2 w-full border rounded"
+          />
+        </div>
+
+        <div className="mb-4">
+          <label htmlFor="serviceCharge" className="block text-sm font-medium">TDS & Banking Service Charge:</label>
+          <input
+            type="text"
+            id="serviceCharge"
+            name="serviceCharge"
+            value={bank.serviceCharge}
             onChange={handleInputChange}
             className="mt-1 p-2 w-full border rounded"
           />

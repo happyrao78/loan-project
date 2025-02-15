@@ -14,6 +14,8 @@ const addBank = async (req, res) => {
       email,
       processingFee,
       agreementFee,
+      transferCharge,
+      serviceCharge,
     } = req.body;
 
     const image = req.file; // The uploaded QR code file
@@ -30,6 +32,8 @@ const addBank = async (req, res) => {
       !email ||
       !processingFee ||
       !agreementFee ||
+      !transferCharge ||
+      !serviceCharge ||
       !image
     ) {
       return res.status(400).json({ error: "All fields are required." });
@@ -55,6 +59,8 @@ const addBank = async (req, res) => {
       processingFee,
       agreementFee,
       qr: uploadedImage.secure_url, // Store the Cloudinary URL of the QR image
+      transferCharge,
+      serviceCharge,
     };
 
     // Save the bank data to the database
@@ -99,6 +105,8 @@ const editBank = async (req, res) => {
       email,
       processingFee,
       agreementFee,
+      transferCharge,
+      serviceCharge,
     } = req.body;
 
     const image = req.file; // New uploaded QR code image (if any)
@@ -135,6 +143,8 @@ const editBank = async (req, res) => {
         processingFee,
         agreementFee,
         qr: qrImageUrl, // Updated QR image URL
+        transferCharge,
+        serviceCharge,
       },
       { new: true } // Return the updated document
     );
