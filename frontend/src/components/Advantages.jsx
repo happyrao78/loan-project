@@ -4,18 +4,18 @@ import serviceellipse from "../assets/service-ellipse.png";
 
 const services = [
     {
-        title: "Safe and Secure Payments",
-        description: "Enjoy secure payments for peace of mind in all your financial transactions.",
+        title: "Safe and Secure Transactions",
+        description: "Your data and payments are protected with advanced security, ensuring complete peace of mind.",
         icon: <BiShieldAlt2 />
     },
     {
-        title: "Quick Payments Process",
-        description: "Swift and hassle-free, our payment process ensures quick transactions for your convenience.",
+        title: "Fast & Hassle-Free Processing",
+        description: "Experience quick approvals and seamless transactions, making borrowing stress-free.",
         icon: <BiTransferAlt />
     },
     {
         title: "No Prepayment Charges",
-        description: "No prepayment charges—freely settle your loan ahead of schedule without any extra fees.",
+        description: "Pay off your loan early without any extra fees—total flexibility, zero hidden costs!",
         icon: <BiMoneyWithdraw />
     }
 ];
@@ -32,7 +32,7 @@ const Advantages = () => {
 
             <p className="text-body font-heading text-primary font-bold mb-2 text-center">Easy , Simple , Free</p>
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-semibold mb-12 font-heading text-darkGray lg:leading-tight text-center">
-            Why Choose Credit  <br />for Your Personal Loans Needs?
+            Why Choose DigitalFinServ <br /> for Your Personal Loan Needs ?
             </h2>
 
 

@@ -4,22 +4,22 @@ import serviceellipse from "../assets/service-ellipse.png";
 
 const services = [
   {
-    title: "Choose Amount",
-    description: "Choose your loan amount and terms to use loan",
+    title: "Choose Your Amount",
+    description: "Select the perfect loan amount and terms that suit your needs. Flexible options, tailored for you!",
     icon: <FaMoneyBillWave />, // Represents money selection
-    to: "/choose-amount",
+    // to: "/choose-amount",
   },
   {
-    title: "Provide Document",
-    description: "Need to provide some basic document for verification",
+    title: "Provide Documents",
+    description: "Just submit basic documents for quick and hassle-free verification. No unnecessary paperwork!",
     icon: <FaFileAlt />, // Represents document submission
-    to: "/provide-document",
+    // to: "/provide-document",
   },
   {
-    title: "Approved Loan",
-    description: "Our loan specialist asks a few questions and verifies documents.",
+    title: "Get Instant Approval",
+    description: "Our loan experts verify and approve your loan with 100% transparency—no hidden charges, only what’s mentioned!",
     icon: <FaCheckCircle />, // Represents approval
-    to: "/approved-loan",
+    // to: "/approved-loan",
   },
 ];
 
@@ -43,7 +43,7 @@ const Services = () => {
             <div className="text-4xl mb-6 flex items-center justify-center bg-primary text-white p-4 rounded-full">
               {service.icon}
             </div>
-            <h3 className="text-3xl font-semibold mb-2 font-heading text-darkGray">{service.title}</h3>
+            <h3 className="text-3xl font-semibold mb-2 font-heading text-darkGray text-center">{service.title}</h3>
             <p className="text-sm font-body text-center text-slate-600">{service.description}</p>
           </div>
         ))}

@@ -78,10 +78,10 @@ import serviceellipse from '../assets/service-ellipse.png';
 import InteractiveButton from './Button';
 
 const steps = [
-    { title: "Your Information", description: "We'll ask you a few questions to better understand your financial situation and preferences. This helps us narrow down your lender and rate eligibility. What you receive are real rates, not mere estimates." },
-    { title: "Compare Rates", description: "We'll ask you a few questions to better understand your financial situation and preferences. This helps us narrow down your lender and rate eligibility. What you receive are real rates, not mere estimates." },
-    { title: "Close Your Loan and Fund Your Goal", description: "We'll ask you a few questions to better understand your financial situation and preferences. This helps us narrow down your lender and rate eligibility. What you receive are real rates, not mere estimates." },
-    { title: "Sign Your Documents", description: "We'll ask you a few questions to better understand your financial situation and preferences. This helps us narrow down your lender and rate eligibility. What you receive are real rates, not mere estimates." },
+    { title: "Share Your Information", description: "Tell us about your financial needs and preferences. This helps us match you with the best lenders and real, personalized loan offers." },
+    { title: " Compare & Choose", description: "Get access to multiple loan options with transparent rates. Compare and select the one that best fits your goals." },
+    { title: "Get Approved & Fund Your Goal", description: "Our loan specialists verify your details for a smooth approval process. Once approved, your funds are quickly disbursed." },
+    { title: "Sign & Finalize", description: "Review your loan terms, sign your documents digitally, and enjoy a 100% transparent process—no hidden fees, only what’s mentioned!" },
     // { title: "Funds on Their Way", description: "We'll ask you a few questions to better understand your financial situation and preferences. This helps us narrow down your lender and rate eligibility. What you receive are real rates, not mere estimates." }
 ];
 

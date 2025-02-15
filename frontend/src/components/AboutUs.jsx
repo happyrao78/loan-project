@@ -28,17 +28,18 @@ const AboutUs = () => {
                         The core mission <br />behind all our work
                     </h2>
                     <p className="font-body text-sm sm:text-sm md:text-md lg:text-md mb-6 text-slate-600 text-body w-full lg:w-[80%]">
-                        At CodeSphereX, We believe in transforming ideas into impactful digital solutions. With innovation, precision, and creativity, we craft websites, apps, and designs that empower businesses to thrive in the digital age. Your success is our mission.
+                    At DigitalFinServ, we are dedicated to making loans fast, secure, and accessible for everyone. With a network of top lenders, we help individuals and businesses find the best loan solutions with transparent terms and hassle-free approvals. Your financial growth is our mission!
+
                     </p>
 
                     <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4 text-center lg:text-left">
                         <div className="flex flex-col justify-center lg:justify-start items-center lg:items-start gap-1">
-                            <h2 className="text-3xl text-primary font-heading">3k+</h2>
-                            <p className="font-body text-sm text-black">People Helped</p>
+                            <h2 className="text-3xl text-primary font-heading">5k+</h2>
+                            <p className="font-body text-sm text-black">Happy Customers <br />Helped</p>
                         </div>
                         <div className="flex flex-col justify-center lg:justify-start items-center lg:items-start gap-1">
-                            <h2 className="text-3xl text-primary font-heading">4k+</h2>
-                            <p className="font-body text-sm text-black">Loans Provided</p>
+                            <h2 className="text-3xl text-primary font-heading">6k+</h2>
+                            <p className="font-body text-sm text-black">Loans Successfully <br />Processed</p>
                         </div>
                     </div>
 

@@ -4,13 +4,12 @@ import { FaFacebook, FaInstagram, FaLinkedin } from "react-icons/fa";
 const Footer = () => {
     return (
         <footer className="bg-darkGray text-white py-10">
-            <div className="max-w-6xl mx-auto px-4 grid lg:grid-cols-[2fr_1fr_1fr_2fr] md:grid-cols-4 gap-28">
+            <div className="max-w-6xl mx-auto px-4 grid lg:grid-cols-[2fr_1fr_1fr_2fr] md:grid-cols-4 gap-10 sm:gap-10 lg:gap-28">
                 {/* Logo and Description */}
                 <div>
-                    <h2 className="text-xl font-bold mb-4 font-heading">CodeSphereX</h2>
-                    <p className="text-sm w-[80%] font-body">
-                        We're a team of strategic creators and digital innovators, united
-                        in our pursuit of mastery and joy.
+                    <h2 className="text-xl font-bold mb-4 font-heading">DigitalFinServ</h2>
+                    <p className="text-sm w-[100%] font-body">
+                    We're a team of financial experts and tech-driven innovators, dedicated to making loans faster, easier, and more accessible. With transparency and efficiency at our core, we connect you to top lenders, ensuring a secure and hassle-free borrowing experience.
                     </p>
                 </div>
 
@@ -18,35 +17,38 @@ const Footer = () => {
                 <div>
                     <h3 className="text-lg font-semibold mb-4 font-heading">Pages</h3>
                     <ul className="space-y-4 text-sm font-body">
-                        {/* <li>Home</li>
-                        <li>Home 2</li> */}
+                       
                         <li>
-                        <a href="#about">About</a></li>
+                        <a href="/">Home</a></li>
                         <li>
-                        <a href="#services">Services</a></li>
-                        {/* <li>
-                        <a href="#projects">Projects</a></li> */}
+                        <a href="/about">About</a></li>
+                        
                         <li>
-                        <a href="#contact">Contact Us</a></li>
-                        {/* <li>Services</li>
-                        <li>Projects</li>
-                        <li>Contact Us</li> */}
+                        <a href="/contact">Contact Us</a></li>
+                       
+                       
                     </ul>
                     
                 </div>
                           
                 {/* Utility Pages Links */}
-                {/* <div>
+                <div>
                     <h3 className="text-lg font-semibold mb-4 font-heading">Utility Pages</h3>
-                    <ul className="space-y-2 text-sm font-body">
-                        <li>Style Guide</li>
+                    <ul className="space-y-4 text-sm font-body">
+                        {/* <li>Style Guide</li>
                         <li>Instruction</li>
                         <li>License</li>
                         <li>Changelog</li>
                         <li>Error 404</li>
-                        <li>Password Protected</li>
+                        <li>Password Protected</li> */}
+                        <li>
+                        <a href="/apply-form">Apply Loan</a></li>
+                        <li>
+                        <a href="/track-loan">Track Loan</a></li>
+                        <li>
+                        <a href="/emi-calculator">EMI Calculator</a></li>
                     </ul>
-                </div> */}
+                </div>
 
                 {/* Subscribe */}
                 {/* <div>
@@ -73,7 +75,7 @@ const Footer = () => {
   <div className="max-w-6xl mx-auto px-4 flex flex-col md:flex-row sm:text-start md:justify-between items-start lg:mx-auto lg:px-4 gap-4">
     <div className="flex flex-col">
       <p className="text-lg font-semibold font-heading my-2">Copyright by</p>
-      <p className="font-body text-sm">Designed by CodeSphereX</p>
+      <p className="font-body text-sm">Designed by BiharInnovation</p>
     </div>
 
     <div>
@@ -86,26 +88,32 @@ const Footer = () => {
       <p className="font-body text-sm">+917015064173 | +919255591520</p>
     </div>
 
+    <div>
+      <p className="text-lg font-semibold font-heading my-2">Email</p>
+      <p className="font-body text-sm">support@digitalfinserv.in</p>
+    </div>
+
     {/* Social Icons */}
-    <div className="flex space-x-4">
-      {/* {/* <a
+    <div className="flex space-x-4 justify-center items-center mt-4">
+      
+      <a
         href="#"
-        className="hover:text-gray-400 p-2 bg-white text-black rounded-full hover:text-white hover:bg-black flex items-center justify-center"
-      >
-        <FaFacebook size={20} />
-      </a> */}
-      {/* <a
-        href="#"
-        className="hover:text-gray-400 p-2 bg-white text-black rounded-full hover:text-white hover:bg-black flex items-center justify-center"
+        className="hover:text-gray-400 p-2 bg-white text-primary rounded-full hover:text-white hover:bg-darkGray  flex items-center justify-center"
       >
         <FaInstagram size={20} />
-      </a> */}
-      {/* <a
+      </a>
+      <a
         href="#"
-        className="hover:text-gray-400 p-2 bg-white text-black rounded-full hover:text-white hover:bg-black flex items-center justify-center"
+        className="hover:text-gray-400 p-2 bg-white text-primary rounded-full hover:text-white hover:bg-darkGray  flex items-center justify-center"
+      >
+        <FaFacebook size={20} />
+      </a> 
+      <a
+        href="#"
+        className="hover:text-gray-400 p-2 bg-white text-primary rounded-full hover:text-white hover:bg-darkGray  flex items-center justify-center"
       >
         <FaLinkedin size={20} />
-      </a>  */}
+      </a> 
     </div>
   </div>
 </div>

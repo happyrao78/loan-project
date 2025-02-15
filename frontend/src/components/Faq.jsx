@@ -5,24 +5,44 @@ import heroellipse from "../assets/hero-ellipse.png";
 
 const faqData = [
     {
-        question: "What interest rate can I expect?",
+        question: "What types of loans does DigitalFinServ offer?",
         answer:
-            "Generally, the shorter the loan term, the lower the interest rate offered by most loan companies. Some lenders even offer an autopay discount if you authorize your monthly loan payments to be directly withdrawn from your checking account or savings account. Qualifying for lower rates depends on your credit score, loan term, and other factors.",
+            "We provide personal loans, business loans, home loans, and more from top lenders with flexible repayment options.",
     },
     {
-        question: "What can I use a personal loan for?",
+        question: "How quickly can I get my loan approved?",
         answer:
-            "You can use a personal loan for various purposes, including debt consolidation, home improvements, medical expenses, or other financial needs.",
+            "Approval times vary, but many loans get approved within 24 hours, with funds disbursed shortly after.",
     },
     {
-        question: "How can I get a personal loan?",
+        question: "Are there any hidden charges?",
         answer:
-            "To get a personal loan, you typically need to apply online or at a bank, provide necessary documentation, and meet the lender’s credit and income requirements.",
+            "No! We believe in 100% transparency—all charges are clearly mentioned upfront.",
     },
     {
-        question: "What is a personal loan?",
+        question: "What documents are required for loan approval?",
         answer:
-            "A personal loan is a fixed-amount loan that you repay over time with interest. It can be used for various personal expenses.",
+            "Basic KYC documents, income proof, and bank statements are typically needed, depending on the loan type.",
+    },
+    {
+        question: " Can I repay my loan early?",
+        answer:
+            "Yes! We offer zero prepayment charges on eligible loans, so you can repay early without extra fees.",
+    },
+    {
+        question: "How do I check my loan eligibility?",
+        answer:
+            "Simply fill out our online form, and we’ll match you with the best loan options based on your profile.",
+    },
+    {
+        question: "Is my information safe with DigitalFinServ?",
+        answer:
+            "Absolutely! We use advanced security protocols to keep your personal and financial data secure.",
+    },
+    {
+        question: "How do I apply for a loan?",
+        answer:
+            "Click Apply Now, fill in your details, upload documents, and get instant loan offers from top lenders! ",
     },
 ];
 

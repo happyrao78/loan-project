@@ -75,16 +75,16 @@ const ContactUs = () => {
             Let's Talk
           </h2>
           <p className="text-gray-600 font-body text-sm sm:text-base text-slate-600">
-            At CodeSphereX, we blend creativity with technology to deliver groundbreaking solutions. From web platforms to mobile apps, every project is crafted with precision and innovation to empower your business.
+          At DigitalFinServ, we combine technology and finance to provide seamless loan solutions. From personal loans to business financing, we ensure a fast, secure, and hassle-free experience tailored to your needs.
           </p>
           <div className="space-y-6">
             <p className="flex flex-col gap-1 font-body">
               <span className="font-semibold font-heading text-sm sm:text-base">Our email:</span>
-              <span className="text-slate-600">codespherex24@gmail.com</span>
+              <span className="text-slate-600">support@digitalfinserv.in</span>
             </p>
             <p className="flex flex-col gap-1 font-body">
               <span className="font-semibold font-heading text-sm sm:text-base">Call us:</span>
-              <span className="text-slate-600">+917015064173 | +919255591520</span>
+              <span className="text-slate-600"> +91 XXXXXXXXXX | +91 XXXXXXXXXX</span>
             </p>
             <p className="flex flex-col gap-1 font-body">
               <span className="font-semibold font-heading text-sm sm:text-base">Find us:</span>
