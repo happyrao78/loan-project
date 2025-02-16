@@ -245,11 +245,11 @@ const LoanApplications = ({ token }) => {
 
     // Company Details
     doc.setFontSize(12);
-    doc.text("Dhanlaxmi Bank Pvt.Ltd", 105, 35, { align: "center" });
+    doc.text("Digital Finserv Pvt.Ltd", 105, 35, { align: "center" });
     doc.text("CIN : L65191kL1927PLC000307", 105, 42, { align: "center" });
     doc.text("Ground floor, Ideal Plaza, Minto Park, Kolkata, West Bengal, 700020", 105, 49, { align: "center" });
-    doc.text("Toll Free: +91 9007437250 | Email: connect@laxmeefenerv.online", 105, 56, { align: "center" });
-    doc.text("Web: laxmeefenerva.online", 105, 63, { align: "center" });
+    doc.text("Toll Free: +91 9007437250 | Email: support@digitalfinserv.in", 105, 56, { align: "center" });
+    doc.text("Web: digitalfinserv.com", 105, 63, { align: "center" });
     doc.line(10, 70, 200, 70);
     const leftMargin = 10;
     // To Section
@@ -271,7 +271,7 @@ const LoanApplications = ({ token }) => {
     } else {
         // Approval Letter Content
         doc.text(`Dear ${application.fullName},`,leftMargin, 120);
-        doc.text("Dhanlaxmi Bank Pvt.Ltd welcomes you.",leftMargin, 130);
+        doc.text("Digital Finserv Pvt.Ltd welcomes you.",leftMargin, 130);
         doc.text(`We are pleased to inform you that your application for a Personal Loan of Rs ${application.loanAmount} has been approved.`,leftMargin, 137);
         doc.text("Your Application Details are as follows:",leftMargin, 144);
 
