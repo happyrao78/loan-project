@@ -18,8 +18,8 @@ import EditLoanApplication from './pages/EditApplication'
 import Partners from './pages/Partners'
 
 
-export const backendUrl = "https://loan-project-backend.onrender.com";
-// export const backendUrl = "http://localhost:5000";
+// export const backendUrl = "https://loan-project-backend.onrender.com";
+export const backendUrl = "http://localhost:5000";
 export const currency = "₹ ";
 
 const App = () => {
