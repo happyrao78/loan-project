@@ -160,7 +160,7 @@ const Partners = () => {
     useEffect(() => {
         const fetchPartners = async () => {
             try {
-                const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}`+"/api/ui"); // Replace with your backend URL
+                const response = await axios.get("http://localhost:5000/api/ui"); // Replace with your backend URL
                 setPartners(response.data); // Assuming response.data is an array of partners
             } catch (error) {
                 console.error('Error fetching partners:', error);
