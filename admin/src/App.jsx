@@ -38,7 +38,7 @@ const App = () => {
           <hr />
           <div className='flex w-full'>
             <Sidebar />
-            <div className='w-[70%] mx-auto ml-[max](vw,25px) my-8 text-gray-600 text-base'>
+            <div className='w-full sm:w-full mt-20 sm:mt-20 lg:mt-0 ml-0 sm:ml-0 lg:w-[70%] mx-auto lg:ml-[50vh] my-8 text-gray-600 text-base pt-2 lg:pt-24'>
               <Routes>
                 <Route path="/add" element={<Add token={token}/>} />
                 <Route path="/listbanks" element={<ListBank token={token}/>} />

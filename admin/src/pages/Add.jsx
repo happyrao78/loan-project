@@ -71,8 +71,8 @@ const AddBank = ({ token }) => {
     };
 
     return (
-        <form onSubmit={onSubmitHandler} className="space-y-6">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        <form onSubmit={onSubmitHandler} className="space-y-6 p-2">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 p-4">
                 {/* Holder Name */}
                 <div>
                     <p className="mb-2 text-sm font-medium">Holder Name</p>
