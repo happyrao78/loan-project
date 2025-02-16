@@ -160,7 +160,7 @@ const Partners = () => {
     useEffect(() => {
         const fetchPartners = async () => {
             try {
-                const response = await axios.get("http://localhost:5000/api/ui"); // Replace with your backend URL
+                const response = await axios.get("https://loan-project-backend.onrender.com/api/ui"); // Replace with your backend URL
                 setPartners(response.data); // Assuming response.data is an array of partners
             } catch (error) {
                 console.error('Error fetching partners:', error);
@@ -184,7 +184,7 @@ const Partners = () => {
                 </div>
                 <Marquee autoFill="true" pauseOnHover={false} className="overflow-hidden no-scrollbar">
                     {partners.map((partner) => (
-                        <div key={partner._id} className="block-container w-40 h-40">
+                        <div key={partner._id} className="block-container w-40 h-40 space-x-8">
                             <div className="btn-back rounded-xl" />
                             <div className="btn-front rounded-xl flex justify-center items-center">
                                 <img

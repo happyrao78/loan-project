@@ -90,7 +90,7 @@ const FeedbackSlider = () => {
   useEffect(() => {
     const fetchFeedbacks = async () => {
       try {
-        const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}`+"/api/ui/feedback"); // Replace with your actual API endpoint
+        const response = await axios.get("https://loan-project-backend.onrender.com/api/ui/feedback"); // Replace with your actual API endpoint
         setFeedbacks(response.data);
       } catch (error) {
         console.error("Error fetching feedbacks:", error);
