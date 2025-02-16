@@ -43,12 +43,7 @@ const AboutUs = () => {
                         </div>
                     </div>
 
-                    {/* <button className="mt-8 px-4 py-2 bg-white text-black rounded-full transition max-w-fit text-body flex items-center justify-center gap-2 mx-auto lg:mx-0">
-                            <span className="bg-black text-body rounded-full p-1">
-                                <IoIosArrowForward className="text-white" />
-                            </span>
-                            <p className="font-body flex justify-center items-center">Start your Free Trial</p>
-                        </button> */}
+                   
 
                     <InteractiveButton
                         buttonText="See More"

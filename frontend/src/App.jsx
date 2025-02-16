@@ -14,6 +14,7 @@ import ContactUs from './pages/Contact'
 import Form from './pages/Form'
 import EmiCalculator from './pages/EmiCalculator'
 import TrackLoan from './pages/TrackLoan'
+import LoanDetail from './pages/LoanDetail'
 
 const App = () => {
   return (
@@ -34,6 +35,7 @@ const App = () => {
         <Route path='/about' element={<About/>} />
         <Route path='/emi-calculator' element={<EmiCalculator/>} />
         <Route path='/track-loan' element={<TrackLoan/>} />
+        <Route path="/about/:loanType" element={<LoanDetail />} />
         
       </Routes>
       
