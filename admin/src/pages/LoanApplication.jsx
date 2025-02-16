@@ -594,7 +594,7 @@ const generateAgreementPDF = (application) => {
   if (applications.length === 0) return <div className="flex justify-center items-center h-64"><p className="text-gray-500">No applications available</p></div>;
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="p-6 space-y-6 w-full">
       {/* <h2 className="text-3xl font-bold text-center mb-8">Loan Applications</h2> */}
       <div className="flex justify-between items-center">
         <h2 className="text-3xl font-bold">Loan Applications</h2>
