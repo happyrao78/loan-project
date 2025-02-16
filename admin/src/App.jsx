@@ -15,6 +15,7 @@ import AddEvent from './pages/AddEvent'
 import EditBank from './pages/EditBank'
 import LoanApplication from './pages/LoanApplication'
 import EditLoanApplication from './pages/EditApplication'
+import Partners from './pages/Partners'
 
 
 // export const backendUrl = "https://loan-project-backend.onrender.com";
@@ -47,6 +48,7 @@ const App = () => {
                 <Route path="/listEvent" element={<DisplayEvents token={token}/>} />
                 <Route path="/loan-applications" element={<LoanApplication token={token}/>} />
                 <Route path="/edit-application/:id" element={<EditLoanApplication />} />
+                <Route path="/partners" element={<Partners />} />
               </Routes>
             </div>
           </div>

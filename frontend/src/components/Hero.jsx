@@ -40,15 +40,15 @@ const Hero = () => {
                         All in One Place
                     </h2>
 
-                    <ul className="font-body sm:text-xs lg:text-sm mb-6 text-gray-700 text-body w-[100%] sm:w-[100%] lg:w-[80%] space-y-2  sm:text-center sm:flex sm:flex-col sm:justify-center sm:items-start flex flex-col justify-center items-start lg:justify-start lg:items-start ml-20 lg:ml-0 sm:ml-20">
-                        <li className="flex items-center gap-2 text-slate-600">
-                            <span className="text-white bg-green-500 h-5 w-5 p-1 rounded-full flex justify-center items-center">✔</span> Compare & Choose the Best Loan Offers
+                    <ul className="font-body  mb-6 text-gray-700  w-[100%] sm:w-[100%] lg:w-[80%] space-y-2  sm:text-center sm:flex sm:flex-col sm:justify-center sm:items-start flex flex-col justify-center items-start lg:justify-start lg:items-start ">
+                        <li className="flex items-center gap-2 text-slate-600 ml-9 sm:ml-9 lg:ml-0 text-[13px] sm:text-[13px] lg:text-[16px] ">
+                            <span className=" text-white bg-green-500 h-5 w-5 p-1 rounded-full flex justify-center items-center">✔</span> <p className=''>Compare & Choose the Best Loan Offers</p>
                         </li>
-                        <li className="flex items-center gap-2 text-slate-600">
-                            <span className="text-white bg-green-500 h-5 w-5 p-1 rounded-full flex justify-center items-center">✔</span>  Lowest Rates Starting from 5.20% APR
+                        <li className="flex items-center gap-2 text-slate-600 ml-9 sm:ml-9 lg:ml-0 text-[13px] sm:text-[13px] lg:text-[16px]">
+                            <span className= "text-xxs sm:text-xxs lg:text-sm text-white bg-green-500 h-5 w-5 p-1 rounded-full flex justify-center items-center">✔</span>  Lowest Rates Starting from 5.20% APR
                         </li>
-                        <li className="flex items-center gap-2 text-slate-600">
-                            <span className="text-white bg-green-500 h-5 w-5 p-1 rounded-full flex justify-center items-center">✔</span> Fast, Secure & Hassle-Free Process
+                        <li className="flex items-center gap-2 text-slate-600 ml-9 sm:ml-9 lg:ml-0 text-[13px] sm:text-[13px] lg:text-[16px]">
+                            <span className="text-xxs sm:text-xxs lg:text-sm text-white bg-green-500 h-5 w-5 p-1 rounded-full flex justify-center items-center">✔</span> Fast, Secure & Hassle-Free Process
                         </li>
                     </ul>
                     {/* <button className="px-4 py-2 bg-white text-black hover:bg-black hover:text-white rounded-full transition-all w-max-w-fit sm:max-w-fit lg:max-w-fit text-body flex items-center justify-center gap-2 mx-auto lg:mx-0 ease-in-out group z-50">

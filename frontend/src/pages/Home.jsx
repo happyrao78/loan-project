@@ -13,6 +13,7 @@ import Steps from '../components/Steps'
 import Advantages from '../components/Advantages'
 import Partners from '../components/Partners'
 import FAQ from '../components/Faq'
+import Required from '../components/Required'
 
 const Home = () => {
   return (
@@ -23,6 +24,7 @@ const Home = () => {
         <AboutUs/>
         {/* <Projects/> */}
         <Steps/>
+        <Required/>
         <Advantages/>
         <Partners/>
         <ChatBot />
