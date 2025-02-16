@@ -9,6 +9,8 @@ import { useNavigate } from "react-router-dom";
 import reject from "../assets/admin_assets/rejected.png"
 import approve from "../assets/admin_assets/approved.png"
 import company from "../assets/admin_assets/company.png"
+import signaturePath from "../assets/admin_assets/signature.png"
+import stampPath from "../assets/admin_assets/stamp.png"
 
 // Custom Card Components
 const Card = ({ children, className = "" }) => (
@@ -249,30 +251,34 @@ const LoanApplications = ({ token }) => {
     doc.text("Toll Free: +91 9007437250 | Email: connect@laxmeefenerv.online", 105, 56, { align: "center" });
     doc.text("Web: laxmeefenerva.online", 105, 63, { align: "center" });
     doc.line(10, 70, 200, 70);
-
+    const leftMargin = 10;
     // To Section
-    doc.text("To,", 20, 80);
-    doc.text(application.fullName, 20, 87);
-    doc.text(application.email, 20, 94);
-    doc.text(`Phone: ${application.phoneNumber}`, 20, 101);
-    doc.text(`Dated: ${new Date().toLocaleDateString()}`, 20, 108);
+    doc.text("To,", leftMargin, 80);
+    doc.text(application.fullName, leftMargin, 87);
+    doc.text(application.email, leftMargin, 94);
+    doc.text(`Phone: ${application.phoneNumber}`, leftMargin, 101);
+    doc.text(`Dated: ${new Date().toLocaleDateString()}`, leftMargin, 108);
 
     if (application.loanStatus === "Rejected") {
         // Rejection Letter Content
         doc.setFontSize(14);
-        doc.text("We regret to inform you that your loan application has been rejected.", 20, 120);
+        doc.text("We regret to inform you that your loan application has been rejected.", leftMargin, 120);
         doc.setFontSize(12);
-        doc.text("Rejection Reason:", 20, 130);
+        doc.text("Rejection Reason:",leftMargin, 130);
         doc.text(application.rejectionReason || "Your CIBIL score is not good.", 30, 137);
-        doc.text("For further inquiries, please contact our support team.", 20, 150);
-        doc.text("Thank you for considering our services.", 20, 160);
+        doc.text("For further inquiries, please contact our support team.",leftMargin, 150);
+        doc.text("Thank you for considering our services.",leftMargin, 160);
     } else {
         // Approval Letter Content
-        doc.text(`Dear ${application.fullName},`, 20, 120);
-        doc.text("Dhanlaxmi Bank Pvt.Ltd welcomes you.", 20, 130);
-        doc.text(`We are pleased to inform you that your application for a Personal Loan of Rs ${application.loanAmount} has been approved.`, 20, 137);
-        doc.text("Your Application Details are as follows:", 20, 144);
+        doc.text(`Dear ${application.fullName},`,leftMargin, 120);
+        doc.text("Dhanlaxmi Bank Pvt.Ltd welcomes you.",leftMargin, 130);
+        doc.text(`We are pleased to inform you that your application for a Personal Loan of Rs ${application.loanAmount} has been approved.`,leftMargin, 137);
+        doc.text("Your Application Details are as follows:",leftMargin, 144);
 
+        // const emiAmount = calculateEMI(application.loanAmount, roi, application.duration);
+        // doc.setFontSize(14);
+        // doc.text(`Monthly EMI: Rs ${emiAmount}`, leftMargin, 155);
+        // doc.setFontSize(12);
         // Application Details Table
         autoTable(doc, {
             startY: 150,
@@ -295,10 +301,10 @@ const LoanApplications = ({ token }) => {
         let yPosition = doc.autoTable.previous.finalY + 10;
 
         // EMI Schedule Table
-        const emiSchedule = calculateEMISchedule(application.loanAmount, roi, application.duration);
+        const emiSchedule = calculateEMIScheduleFixed(application.loanAmount, roi, application.duration);
         autoTable(doc, {
             startY: yPosition,
-            head: [["Due Date", "Month", "Principal", "Interest", "Balance"]],
+            head: [["EMI Date(MM-DD-YYYY)",  "Principal Amount", "Interest Amount", "Remaining Balance"]],
             body: emiSchedule,
             theme: "striped",
         });
@@ -312,15 +318,43 @@ const LoanApplications = ({ token }) => {
         doc.text("Account No.: 50200097140840", 20, yPosition + 24);
         doc.text("IFSC: HDFC0006552 | Bank: HDFC BANK", 20, yPosition + 32);
         doc.text("Payment Mode: NEFT / RTGS / IMPS / UPI / Net Banking (Cash not allowed)", 20, yPosition + 40);
+        doc.addImage(signaturePath, "PNG", 30, yPosition + 60, 50, 30); // Signature
+        doc.addImage(stampPath, "PNG", 100, yPosition + 60, 50, 30); // Stamp
     }
-
+   
     // Footer
     doc.setFontSize(10);
     doc.text("Follow us: @companyInstagram | @companyTwitter", 105, 280, { align: "center" });
 
     return doc;
 };
+const calculateEMIScheduleFixed = (loanAmount, rate, tenure) => {
+  let balance = loanAmount;
+  const emi = parseFloat(calculateEMI(loanAmount, rate, tenure));
+  const months = tenure * 12;
+  const emiSchedule = [];
+  let dueDate = new Date();
+  dueDate.setMonth(dueDate.getMonth() + 1);
+  dueDate.setDate(7);
 
+  for (let i = 1; i <= months; i++) {
+      const interest = parseFloat(((balance * rate) / 1200).toFixed(2));
+      const principalComponent = parseFloat((emi - interest).toFixed(2));
+      balance = parseFloat((balance - principalComponent).toFixed(2));
+
+      if (balance < 0) balance = 0;
+
+      emiSchedule.push([
+          dueDate.toLocaleDateString(),
+          `Rs ${principalComponent.toFixed(2)}`,
+          `Rs ${interest.toFixed(2)}`,
+          `Rs ${balance.toFixed(2)}`
+      ]);
+
+      dueDate.setMonth(dueDate.getMonth() + 1);
+  }
+  return emiSchedule;
+}
 
   const calculateEMI = (loanAmount, rate, tenure) => {
     const monthlyRate = rate / (12 * 100);
@@ -330,138 +364,40 @@ const LoanApplications = ({ token }) => {
   };
 
   // **Calculate EMI Schedule**
-  const calculateEMISchedule = (loanAmount, rate, tenure) => {
-    let balance = loanAmount;
-    const emi = calculateEMI(loanAmount, rate, tenure);
-    const months = tenure * 12;
-    const emiSchedule = [];
-    let dueDate = new Date();
-    dueDate.setDate(7);  // Set fixed EMI due date (7th of each month)
+  // const calculateEMISchedule = (loanAmount, rate, tenure) => {
+  //   let balance = loanAmount;
+  //   const emi = calculateEMI(loanAmount, rate, tenure);
+  //   const months = tenure * 12;
+  //   const emiSchedule = [];
+  //   let dueDate = new Date();
 
-    for (let i = 1; i <= months; i++) {
-      const interest = ((balance * rate) / 1200).toFixed(2);
-      const principalComponent = (emi - interest).toFixed(2);
-      balance = (balance - principalComponent).toFixed(2);
+  //   dueDate.setMonth(dueDate.getMonth() + 1);
+  //   dueDate.setDate(7);  // Set fixed EMI due date (7th of each month)
 
-      // Format Due Date
-      const formattedDate = dueDate.toLocaleDateString();
-      const formattedMonth = dueDate.toLocaleString("default", { month: "short", year: "numeric" });
+  //   for (let i = 1; i <= months; i++) {
+  //     const interest = ((balance * rate) / 1200).toFixed(2);
+  //     const principalComponent = (emi - interest).toFixed(2);
+  //     balance = (balance - principalComponent).toFixed(2);
 
-      emiSchedule.push([
-        formattedDate,
-        formattedMonth,
-        `Rs ${principalComponent}`,
-        `Rs ${interest}`,
-        `Rs ${balance}`
-      ]);
+  //     // Format Due Date
+  //     const formattedDate = dueDate.toLocaleDateString();
+  //     // const formattedMonth = dueDate.toLocaleString("default", { month: "short", year: "numeric" });
+  //     const totalEMI = Number(principalComponent) + Number(interest);
 
-      // Move to next month
-      dueDate.setMonth(dueDate.getMonth() + 1);
-    }
+  //     emiSchedule.push([
+  //       formattedDate,
+  //       // formattedMonth,
+  //       `Rs ${totalEMI.toFixed(2)}`, // Combined EMI amount
+  //       `Rs ${principalComponent}`,
+  //       `Rs ${interest}`,
+  //       `Rs ${balance}`
+  //     ]);
 
-    return emiSchedule;
-  };
-
-  // **Generate PDF**
-  // const downloadPDF = (application, type) => {
-  //   const roi = roiInputs[application._id];
-  //   if (!roi && application.loanStatus !== "Rejected") {
-  //     toast.error("Please enter Rate of Interest!");
-  //     return;
+  //     // Move to next month
+  //     dueDate.setMonth(dueDate.getMonth() + 1);
   //   }
 
-  //   const doc = new jsPDF();
-  //   doc.setFontSize(18);
-
-  //   // **Company & Status Logos**
-  //   doc.addImage(company, "PNG", 160, 10, 30, 30);
-  //   const statusLogo = application.loanStatus === "Approved" ? approve : reject;
-  //   doc.addImage(statusLogo, "PNG", 10, 10, 30, 30);
-
-  //   // **Header**
-  //   let headerText = application.loanStatus === "Approved" ? "LOAN APPROVAL LETTER" : "LOAN REJECTION LETTER";
-  //   doc.text(headerText, 105, 20, { align: "center" });
-
-  //   // **Company Details**
-  //   doc.setFontSize(12);
-  //   doc.text("Dhanlaxmi Bank Pvt.Ltd", 105, 35, { align: "center" });
-  //   doc.text("CIN : L65191kL1927PLC000307", 105, 42, { align: "center" });
-  //   doc.text("Ground floor, Ideal Plaza, Minto Park, Kolkata, West Bengal, 700020", 105, 49, { align: "center" });
-  //   doc.text("Toll Free: +91 9007437250 | Email: connect@laxmeefenerv.online", 105, 56, { align: "center" });
-  //   doc.text("Web: laxmeefenerva.online", 105, 63, { align: "center" });
-  //   doc.line(10, 70, 200, 70);
-
-  //   // **To Section**
-  //   doc.text(`To,`, 20, 80);
-  //   doc.text(`${application.fullName}`, 20, 87);
-  //   doc.text(`${application.email}`, 20, 94);
-  //   doc.text(`Phone: ${application.phoneNumber}`, 20, 101);
-  //   doc.text(`Dated: ${new Date().toLocaleDateString()}`, 20, 108);
-
-  //   if (application.loanStatus === "Rejected") {
-  //     // **Rejection Letter Content**
-  //     doc.setFontSize(14);
-  //     doc.text("We regret to inform you that your loan application has been rejected.", 20, 120);
-  //     doc.setFontSize(12);
-  //     doc.text("Rejection Reason:", 20, 130);
-  //     doc.text(application.rejectionReason || "Your CIBIL score is not good.", 30, 137);
-  //     doc.text("For further inquiries, please contact our support team.", 20, 150);
-  //     doc.text("Thank you for considering our services.", 20, 160);
-  //   } else {
-  //     // **Approval Letter Content**
-  //     doc.text(`Dear, ${application.fullName}`, 20, 120);
-  //     doc.text(`Dhanlaxmi Bank Pvt.Ltd welcomes you.`, 20, 130);
-  //     doc.text(`We are pleased to inform you that your application for a Personal Loan of Rs ${application.loanAmount} has been approved.`, 20, 137);
-  //     doc.text(`Your Application Details are as follows:`, 20, 144);
-
-  //     // **Application Details Table**
-  //     autoTable(doc, {
-  //       startY: 150,
-  //       head: [["Field", "Details"]],
-  //       body: [
-  //         ["Applicant Name", application.fullName],
-  //         ["PAN Number", application.panNumber],
-  //         ["Aadhaar Number", application.aadharNumber],
-  //         ["Account Holder", application.fullName],
-  //         ["Account Number", application.accountNumber],
-  //         ["IFSC Code", application.ifscCode],
-  //         ["Bank Name", application.bankName],
-  //         ["EMI", `Rs ${calculateEMI(application.loanAmount, roi, application.duration)}`],
-  //         ["Loan Amount", `Rs ${application.loanAmount}`],
-  //         ["Interest Rate", `${roi}%`]
-  //       ],
-  //       theme: "grid",
-  //     });
-
-  //     let yPosition = doc.autoTable.previous.finalY + 10;
-
-  //     // **EMI Schedule Table**
-  //     const emiSchedule = calculateEMISchedule(application.loanAmount, roi, application.duration);
-  //     autoTable(doc, {
-  //       startY: yPosition,
-  //       head: [["Due Date", "Month", "Principal", "Interest", "Balance"]],
-  //       body: emiSchedule,
-  //       theme: "striped",
-  //     });
-
-  //     yPosition = doc.autoTable.previous.finalY + 10;
-
-  //     // **Payment Mode & Account Details**
-  //     doc.text("Kindly submit the required documents and pay the processing fee:", 20, yPosition);
-  //     doc.text(`Processing Fees: Rs 1199 (Refundable within 15 days)`, 20, yPosition + 8);
-  //     doc.text(`Account Name: Dhanlaxmi Bank Pvt Ltd`, 20, yPosition + 16);
-  //     doc.text(`Account No.: 50200097140840`, 20, yPosition + 24);
-  //     doc.text(`IFSC: HDFC0006552 | Bank: HDFC BANK`, 20, yPosition + 32);
-  //     doc.text(`Payment Mode: NEFT / RTGS / IMPS / UPI / Net Banking (Cash not allowed)`, 20, yPosition + 40);
-  //   }
-
-  //   // **Footer**
-  //   doc.setFontSize(10);
-  //   doc.text("Follow us: @companyInstagram | @companyTwitter", 105, 280, { align: "center" });
-
-  //   // **Save PDF**
-  //   const fileName = `loan-${application.loanStatus.toLowerCase()}-${application.fullName}.pdf`;
-  //   doc.save(fileName);
+  //   return emiSchedule;
   // };
 
   useEffect(() => {
@@ -577,6 +513,8 @@ const generateAgreementPDF = (application) => {
   doc.text("(Dhanlaxmi Bank Pvt.Ltd)", margin + 50, signatureY + 20);
   doc.text(`(${application.fullName})`, pageWidth - margin - 150, signatureY + 20);
 
+  doc.addImage(signaturePath, "PNG", margin + 50, signatureY - 40, 80, 40); // Signature
+  doc.addImage(stampPath, "PNG", margin + 150, signatureY - 40, 80, 40);
   // Generate compressed output
   const pdfBase64 = doc.output('datauristring', { compress: true });
   
