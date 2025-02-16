@@ -34,8 +34,6 @@ const LoanApplications = ({ token }) => {
   const [filteredApplications, setFilteredApplications] = useState([]);
   const [roiInputs, setRoiInputs] = useState({});
 
-
-
   useEffect(() => {
     if (filterStatus === "All") {
       setFilteredApplications(applications);
@@ -106,75 +104,6 @@ const LoanApplications = ({ token }) => {
       toast.error("Failed to delete application");
     }
   };
-
-  
-  
-  // const sendEmail = async (email, type, application) => {
-  //   try {
-  //     let pdfDoc;
-  //     let fileName;
-  //     let pdfBase64;
-  
-  //     if (type === "agreement") {
-  //       const pdfData = generateAgreementPDF(application);
-  //       pdfDoc = pdfData.doc;
-  //       fileName = pdfData.fileName;
-  //     } else {
-  //       // For approval letter, use existing PDF generation
-  //       pdfDoc = new jsPDF({
-  //         compress: true // Enable compression for smaller file size
-  //       });
-  //       downloadPDF(application, type);
-  //       fileName = `loan-${application.loanStatus.toLowerCase()}-${application.fullName}.pdf`;
-  //     }
-  
-  //     // Convert PDF to base64 with compression
-  //     pdfBase64 = pdfDoc.output('datauristring', { compress: true });
-      
-  //     // Extract just the base64 content without the data URI prefix
-  //     const base64Content = pdfBase64.split(',')[1];
-  
-  //     // Send email with PDF attachment
-  //     await axios.post(
-  //       `${backendUrl}/api/loan/send-email`,
-  //       {
-  //         email,
-  //         subject: type === "agreement" ? "Loan Agreement Document" : "Loan Approval Letter",
-  //         message: type === "agreement"
-  //           ? "Please find attached your loan agreement document. Review and sign it at your earliest convenience."
-  //           : "Please find attached your loan approval letter.",
-  //         attachment: {
-  //           content: base64Content,
-  //           filename: fileName,
-  //           type: 'application/pdf'
-  //         }
-  //       },
-  //       {
-  //         headers: { 
-  //           token,
-  //           'Content-Type': 'application/json'
-  //         },
-  //         maxBodyLength: Infinity, // Allow larger payload
-  //         timeout: 30000 // Increase timeout to 30 seconds
-  //       }
-  //     );
-  
-  //     toast.success("Email sent successfully!");
-  //   } catch (error) {
-  //     console.error("Error sending email:", error);
-      
-  //     // More specific error messages based on the error type
-  //     if (error.response?.status === 413) {
-  //       toast.error("File size too large. Please try again with a smaller file size.");
-  //     } else if (error.code === 'ECONNABORTED') {
-  //       toast.error("Request timed out. Please try again.");
-  //     } else if (error.response?.status === 500) {
-  //       toast.error("Server error. Please try again later.");
-  //     } else {
-  //       toast.error("Failed to send email. Please try again.");
-  //     }
-  //   }
-  // };
   const sendEmail = async (email, type, application) => {
     try {
       let pdfDoc;
@@ -297,86 +226,6 @@ const LoanApplications = ({ token }) => {
       toast.error("Failed to send email. Please try again.");
     }
   };
-  
-  
-  // Separate function to generate approval/rejection PDF
-  // const generateApprovalPDF = (doc, application, roi) => {
-  //   const pageWidth = doc.internal.pageSize.width;
-  //   const pageHeight = doc.internal.pageSize.height;
-  //   const margin = 40;
-  
-  //   // Company Logo
-  //   const companyLogoProps = {
-  //     width: 80,
-  //     height: 80,
-  //     imageType: 'PNG',
-  //     compression: 'FAST'
-  //   };
-  //   doc.addImage(company, "PNG", pageWidth - margin - companyLogoProps.width, margin, 
-  //                companyLogoProps.width, companyLogoProps.height);
-  
-  //   // Status Logo
-  //   const statusLogo = application.loanStatus === "Approved" ? approve : reject;
-  //   doc.addImage(statusLogo, "PNG", margin, margin, companyLogoProps.width, companyLogoProps.height);
-  
-  //   // Header
-  //   doc.setFontSize(18);
-  //   const headerText = application.loanStatus === "Approved" ? "LOAN APPROVAL LETTER" : "LOAN REJECTION LETTER";
-  //   doc.text(headerText, pageWidth / 2, margin + 40, { align: "center" });
-  
-  //   // Company Details
-  //   doc.setFontSize(12);
-  //   doc.text("Dhanlaxmi Bank Pvt.Ltd", pageWidth / 2, margin + 80, { align: "center" });
-  //   doc.text("CIN : L65191kL1927PLC000307", pageWidth / 2, margin + 100, { align: "center" });
-  //   doc.text("Ground floor, Ideal Plaza, Minto Park, Kolkata, West Bengal, 700020", 
-  //            pageWidth / 2, margin + 120, { align: "center" });
-  //   doc.text("Toll Free: +91 9007437250 | Email: connect@laxmeefenerv.online", 
-  //            pageWidth / 2, margin + 140, { align: "center" });
-  //   doc.text("Web: laxmeefenerva.online", pageWidth / 2, margin + 160, { align: "center" });
-    
-  //   doc.line(margin, margin + 180, pageWidth - margin, margin + 180);
-  
-  //   // To Section
-  //   doc.text("To,", margin, margin + 220);
-  //   doc.text(application.fullName, margin, margin + 240);
-  //   doc.text(application.email, margin, margin + 260);
-  //   doc.text(`Phone: ${application.phoneNumber}`, margin, margin + 280);
-  //   doc.text(`Dated: ${new Date().toLocaleDateString()}`, margin, margin + 300);
-  
-  //   if (application.loanStatus === "Rejected") {
-  //     // Rejection Letter Content
-  //     doc.setFontSize(14);
-  //     doc.text("We regret to inform you that your loan application has been rejected.", 
-  //              margin, margin + 340);
-  //     doc.setFontSize(12);
-  //     doc.text("Rejection Reason:", margin, margin + 370);
-  //     doc.text(application.rejectionReason || "Your CIBIL score is not good.", 
-  //              margin + 20, margin + 390);
-  //   } else {
-  //     // Approval Letter Content
-  //     doc.text(`Dear ${application.fullName},`, margin, margin + 340);
-  //     doc.text("We are pleased to inform you that your loan application has been approved with the following details:", 
-  //              margin, margin + 370);
-  
-  //     // Loan Details Table
-  //     autoTable(doc, {
-  //       startY: margin + 400,
-  //       margin: { left: margin, right: margin },
-  //       head: [["Field", "Details"]],
-  //       body: [
-  //         ["Loan Amount", `Rs ${application.loanAmount.toLocaleString()}`],
-  //         ["Interest Rate", `${roi}%`],
-  //         ["Loan Term", `${application.duration} Years`],
-  //         ["Monthly EMI", `Rs ${calculateEMI(application.loanAmount, roi, application.duration).toLocaleString()}`],
-  //         ["Purpose", application.loanType]
-  //       ],
-  //       theme: "grid",
-  //       styles: { fontSize: 12, cellPadding: 5 }
-  //     });
-  //   }
-  
-  //   return doc;
-  // };
 
 
   const generateApprovalPDF = (doc, application, roi) => {
@@ -514,106 +363,107 @@ const LoanApplications = ({ token }) => {
   };
 
   // **Generate PDF**
-  const downloadPDF = (application, type) => {
-    const roi = roiInputs[application._id];
-    if (!roi && application.loanStatus !== "Rejected") {
-      toast.error("Please enter Rate of Interest!");
-      return;
-    }
+  // const downloadPDF = (application, type) => {
+  //   const roi = roiInputs[application._id];
+  //   if (!roi && application.loanStatus !== "Rejected") {
+  //     toast.error("Please enter Rate of Interest!");
+  //     return;
+  //   }
 
-    const doc = new jsPDF();
-    doc.setFontSize(18);
+  //   const doc = new jsPDF();
+  //   doc.setFontSize(18);
 
-    // **Company & Status Logos**
-    doc.addImage(company, "PNG", 160, 10, 30, 30);
-    const statusLogo = application.loanStatus === "Approved" ? approve : reject;
-    doc.addImage(statusLogo, "PNG", 10, 10, 30, 30);
+  //   // **Company & Status Logos**
+  //   doc.addImage(company, "PNG", 160, 10, 30, 30);
+  //   const statusLogo = application.loanStatus === "Approved" ? approve : reject;
+  //   doc.addImage(statusLogo, "PNG", 10, 10, 30, 30);
 
-    // **Header**
-    let headerText = application.loanStatus === "Approved" ? "LOAN APPROVAL LETTER" : "LOAN REJECTION LETTER";
-    doc.text(headerText, 105, 20, { align: "center" });
+  //   // **Header**
+  //   let headerText = application.loanStatus === "Approved" ? "LOAN APPROVAL LETTER" : "LOAN REJECTION LETTER";
+  //   doc.text(headerText, 105, 20, { align: "center" });
 
-    // **Company Details**
-    doc.setFontSize(12);
-    doc.text("Dhanlaxmi Bank Pvt.Ltd", 105, 35, { align: "center" });
-    doc.text("CIN : L65191kL1927PLC000307", 105, 42, { align: "center" });
-    doc.text("Ground floor, Ideal Plaza, Minto Park, Kolkata, West Bengal, 700020", 105, 49, { align: "center" });
-    doc.text("Toll Free: +91 9007437250 | Email: connect@laxmeefenerv.online", 105, 56, { align: "center" });
-    doc.text("Web: laxmeefenerva.online", 105, 63, { align: "center" });
-    doc.line(10, 70, 200, 70);
+  //   // **Company Details**
+  //   doc.setFontSize(12);
+  //   doc.text("Dhanlaxmi Bank Pvt.Ltd", 105, 35, { align: "center" });
+  //   doc.text("CIN : L65191kL1927PLC000307", 105, 42, { align: "center" });
+  //   doc.text("Ground floor, Ideal Plaza, Minto Park, Kolkata, West Bengal, 700020", 105, 49, { align: "center" });
+  //   doc.text("Toll Free: +91 9007437250 | Email: connect@laxmeefenerv.online", 105, 56, { align: "center" });
+  //   doc.text("Web: laxmeefenerva.online", 105, 63, { align: "center" });
+  //   doc.line(10, 70, 200, 70);
 
-    // **To Section**
-    doc.text(`To,`, 20, 80);
-    doc.text(`${application.fullName}`, 20, 87);
-    doc.text(`${application.email}`, 20, 94);
-    doc.text(`Phone: ${application.phoneNumber}`, 20, 101);
-    doc.text(`Dated: ${new Date().toLocaleDateString()}`, 20, 108);
+  //   // **To Section**
+  //   doc.text(`To,`, 20, 80);
+  //   doc.text(`${application.fullName}`, 20, 87);
+  //   doc.text(`${application.email}`, 20, 94);
+  //   doc.text(`Phone: ${application.phoneNumber}`, 20, 101);
+  //   doc.text(`Dated: ${new Date().toLocaleDateString()}`, 20, 108);
 
-    if (application.loanStatus === "Rejected") {
-      // **Rejection Letter Content**
-      doc.setFontSize(14);
-      doc.text("We regret to inform you that your loan application has been rejected.", 20, 120);
-      doc.setFontSize(12);
-      doc.text("Rejection Reason:", 20, 130);
-      doc.text(application.rejectionReason || "Your CIBIL score is not good.", 30, 137);
-      doc.text("For further inquiries, please contact our support team.", 20, 150);
-      doc.text("Thank you for considering our services.", 20, 160);
-    } else {
-      // **Approval Letter Content**
-      doc.text(`Dear, ${application.fullName}`, 20, 120);
-      doc.text(`Dhanlaxmi Bank Pvt.Ltd welcomes you.`, 20, 130);
-      doc.text(`We are pleased to inform you that your application for a Personal Loan of Rs ${application.loanAmount} has been approved.`, 20, 137);
-      doc.text(`Your Application Details are as follows:`, 20, 144);
+  //   if (application.loanStatus === "Rejected") {
+  //     // **Rejection Letter Content**
+  //     doc.setFontSize(14);
+  //     doc.text("We regret to inform you that your loan application has been rejected.", 20, 120);
+  //     doc.setFontSize(12);
+  //     doc.text("Rejection Reason:", 20, 130);
+  //     doc.text(application.rejectionReason || "Your CIBIL score is not good.", 30, 137);
+  //     doc.text("For further inquiries, please contact our support team.", 20, 150);
+  //     doc.text("Thank you for considering our services.", 20, 160);
+  //   } else {
+  //     // **Approval Letter Content**
+  //     doc.text(`Dear, ${application.fullName}`, 20, 120);
+  //     doc.text(`Dhanlaxmi Bank Pvt.Ltd welcomes you.`, 20, 130);
+  //     doc.text(`We are pleased to inform you that your application for a Personal Loan of Rs ${application.loanAmount} has been approved.`, 20, 137);
+  //     doc.text(`Your Application Details are as follows:`, 20, 144);
 
-      // **Application Details Table**
-      autoTable(doc, {
-        startY: 150,
-        head: [["Field", "Details"]],
-        body: [
-          ["Applicant Name", application.fullName],
-          ["PAN Number", application.panNumber],
-          ["Aadhaar Number", application.aadharNumber],
-          ["Account Holder", application.fullName],
-          ["Account Number", application.accountNumber],
-          ["IFSC Code", application.ifscCode],
-          ["Bank Name", application.bankName],
-          ["EMI", `Rs ${calculateEMI(application.loanAmount, roi, application.duration)}`],
-          ["Loan Amount", `Rs ${application.loanAmount}`],
-          ["Interest Rate", `${roi}%`]
-        ],
-        theme: "grid",
-      });
+  //     // **Application Details Table**
+  //     autoTable(doc, {
+  //       startY: 150,
+  //       head: [["Field", "Details"]],
+  //       body: [
+  //         ["Applicant Name", application.fullName],
+  //         ["PAN Number", application.panNumber],
+  //         ["Aadhaar Number", application.aadharNumber],
+  //         ["Account Holder", application.fullName],
+  //         ["Account Number", application.accountNumber],
+  //         ["IFSC Code", application.ifscCode],
+  //         ["Bank Name", application.bankName],
+  //         ["EMI", `Rs ${calculateEMI(application.loanAmount, roi, application.duration)}`],
+  //         ["Loan Amount", `Rs ${application.loanAmount}`],
+  //         ["Interest Rate", `${roi}%`]
+  //       ],
+  //       theme: "grid",
+  //     });
 
-      let yPosition = doc.autoTable.previous.finalY + 10;
+  //     let yPosition = doc.autoTable.previous.finalY + 10;
 
-      // **EMI Schedule Table**
-      const emiSchedule = calculateEMISchedule(application.loanAmount, roi, application.duration);
-      autoTable(doc, {
-        startY: yPosition,
-        head: [["Due Date", "Month", "Principal", "Interest", "Balance"]],
-        body: emiSchedule,
-        theme: "striped",
-      });
+  //     // **EMI Schedule Table**
+  //     const emiSchedule = calculateEMISchedule(application.loanAmount, roi, application.duration);
+  //     autoTable(doc, {
+  //       startY: yPosition,
+  //       head: [["Due Date", "Month", "Principal", "Interest", "Balance"]],
+  //       body: emiSchedule,
+  //       theme: "striped",
+  //     });
 
-      yPosition = doc.autoTable.previous.finalY + 10;
+  //     yPosition = doc.autoTable.previous.finalY + 10;
 
-      // **Payment Mode & Account Details**
-      doc.text("Kindly submit the required documents and pay the processing fee:", 20, yPosition);
-      doc.text(`Processing Fees: Rs 1199 (Refundable within 15 days)`, 20, yPosition + 8);
-      doc.text(`Account Name: Dhanlaxmi Bank Pvt Ltd`, 20, yPosition + 16);
-      doc.text(`Account No.: 50200097140840`, 20, yPosition + 24);
-      doc.text(`IFSC: HDFC0006552 | Bank: HDFC BANK`, 20, yPosition + 32);
-      doc.text(`Payment Mode: NEFT / RTGS / IMPS / UPI / Net Banking (Cash not allowed)`, 20, yPosition + 40);
-    }
+  //     // **Payment Mode & Account Details**
+  //     doc.text("Kindly submit the required documents and pay the processing fee:", 20, yPosition);
+  //     doc.text(`Processing Fees: Rs 1199 (Refundable within 15 days)`, 20, yPosition + 8);
+  //     doc.text(`Account Name: Dhanlaxmi Bank Pvt Ltd`, 20, yPosition + 16);
+  //     doc.text(`Account No.: 50200097140840`, 20, yPosition + 24);
+  //     doc.text(`IFSC: HDFC0006552 | Bank: HDFC BANK`, 20, yPosition + 32);
+  //     doc.text(`Payment Mode: NEFT / RTGS / IMPS / UPI / Net Banking (Cash not allowed)`, 20, yPosition + 40);
+  //   }
 
-    // **Footer**
-    doc.setFontSize(10);
-    doc.text("Follow us: @companyInstagram | @companyTwitter", 105, 280, { align: "center" });
+  //   // **Footer**
+  //   doc.setFontSize(10);
+  //   doc.text("Follow us: @companyInstagram | @companyTwitter", 105, 280, { align: "center" });
 
-    // **Save PDF**
-    const fileName = `loan-${application.loanStatus.toLowerCase()}-${application.fullName}.pdf`;
-    doc.save(fileName);
-  };
+  //   // **Save PDF**
+  //   const fileName = `loan-${application.loanStatus.toLowerCase()}-${application.fullName}.pdf`;
+  //   doc.save(fileName);
+  // };
+
   useEffect(() => {
     fetchApplications();
   }, []);
