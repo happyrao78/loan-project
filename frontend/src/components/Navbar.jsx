@@ -38,19 +38,25 @@ const Navbar = ({z}) => {
 
     return (
         <nav className="flex items-center justify-between text-white pt-2 px-4 sm:px-[5vw] md:px-[7vw] lg:px-[8vw] lg:py-6 z-50 top-0 left-0 w-full ">
-            {/* Logo */}
-            <Link to="/" className="">
-                <img
-                    src={logo}
-                    alt="Logo"
-                    className="w-0.8 h-auto sm:w-0.8 sm:h-auto lg:w-full lg:h-full"
-                />
-            </Link>
+            {/* /* Logo * */}
+                        <Link to="/" className="">
+                            <img
+                                src={logo}
+                                alt="Logo"
+                                className="w-16 sm:w-16 lg:w-24"
+                            />
+                        </Link>
 
 
-            {/* Desktop Menu */}
+                        {/* Desktop Menu */}
             <ul className="hidden md:flex gap-8 text-[16px] text-darkGray font-semibold ">
                 {/* <a href='#home' className="hover:text-gray-400 transition font-body">Home</a> */}
+                <a
+                    href="/"
+                    className="relative font-body hover:text-gray-400 transition after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-[1px] after:rounded-full after:bg-white after:transition-all after:duration-300 hover:after:w-full"
+                >
+                    Home
+                </a>
                 <a
                     href="/about"
                     className="relative font-body hover:text-gray-400 transition after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-[1px] after:rounded-full after:bg-white after:transition-all after:duration-300 hover:after:w-full"
@@ -131,13 +137,13 @@ const Navbar = ({z}) => {
                                     <IoIosArrowBack className="text-primary" />
                                     <p>Back</p>
                                 </div>
-                                {/* <a
-                                    href="#home"
+                                <a
+                                    href="/"
                                     className="text-lg hover:text-gray-400 py-2 pl-6 border w-full text-left"
                                     onClick={toggleMenu}
                                 >
                                     Home
-                                </a> */}
+                                </a>
                     <a
                         href="/about"
                         className="text-lg hover:text-gray-400 py-2 pl-6 border-b border-primary w-full text-left"
