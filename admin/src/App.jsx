@@ -16,6 +16,8 @@ import EditBank from './pages/EditBank'
 import LoanApplication from './pages/LoanApplication'
 import EditLoanApplication from './pages/EditApplication'
 import Partners from './pages/Partners'
+// import Feedback from '../../backend/models/feedbackModel'
+import Feedbacks from './pages/Feedbacks'
 
 
 // export const backendUrl = "https://loan-project-backend.onrender.com";
@@ -49,6 +51,7 @@ const App = () => {
                 <Route path="/loan-applications" element={<LoanApplication token={token}/>} />
                 <Route path="/edit-application/:id" element={<EditLoanApplication />} />
                 <Route path="/partners" element={<Partners />} />
+                <Route path="/feedbacks" element={<Feedbacks />} />
               </Routes>
             </div>
           </div>
