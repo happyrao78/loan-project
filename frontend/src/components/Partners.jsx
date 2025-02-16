@@ -184,7 +184,7 @@ const Partners = () => {
                 </div>
                 <Marquee autoFill="true" pauseOnHover={false} className="overflow-hidden no-scrollbar">
                     {partners.map((partner) => (
-                        <div key={partner._id} className="block-container w-40 h-40">
+                        <div key={partner._id} className="block-container w-40 h-40 m-4 ">
                             <div className="btn-back rounded-xl" />
                             <div className="btn-front rounded-xl flex justify-center items-center">
                                 <img
