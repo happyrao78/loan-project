@@ -143,6 +143,7 @@ import loan from "../assets/loan.jpg";
 import Navbar from "../components/Navbar";
 import InteractiveButton from "../components/Button";
 import { IoIosArrowForward } from "react-icons/io";
+import ChatBot from "../components/Chatbot";
 
 const Form = () => {
     const [formData, setFormData] = useState({
@@ -187,20 +188,27 @@ const Form = () => {
         e.preventDefault();
         setLoading(true);
         toast.loading("Submitting your application...", { id: "loading" });
-    
+
         try {
-            const response = await axios.post("https://loan-project-backend.onrender.com/api/loan/apply", formData);
+            const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/loan/apply`, formData);
             
             toast.dismiss("loading");
             toast.success(response.data.message || "Application submitted successfully!");
-    
+
+            // Fetch Admin Phone Number from Backend
+            const adminResponse = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/ui/admin-phone`);
+            const adminPhoneNumber = "91"+`${adminResponse.data.phoneNumber}`;
+
+            // console.log(adminPhoneNumber)
+
             // WhatsApp Admin Message
-            const adminPhoneNumber = "918595864036"; // Admin WhatsApp Number (with country code)
             const message = `New Loan Application 🚀\n\nFull Name: ${formData.fullName}\nPhone: ${formData.phoneNumber}\nEmail: ${formData.email}\nAadhar: ${formData.aadharNumber}\nPAN: ${formData.panNumber}\nLoan Amount: Rs ${formData.loanAmount}\nLoan Type: ${formData.loanType}\nDuration: ${formData.duration} years\nBank: ${formData.bankName}`;
             
             const whatsappURL = `https://wa.me/${adminPhoneNumber}?text=${encodeURIComponent(message)}`;
-    
-            window.open(whatsappURL, "_blank"); // Opens WhatsApp Web/Mobile
+
+            setTimeout(() => {
+                window.open(whatsappURL, "_blank"); // Opens WhatsApp Web/Mobile
+            }, 1000); // Delay to ensure toast is displayed
         } catch (error) {
             toast.dismiss("loading");
             toast.error(error.response?.data?.error || "Error submitting application. Please try again.");
@@ -208,10 +216,11 @@ const Form = () => {
             setLoading(false);
         }
     };
-    
     return (
         <div className="relative bg-white">
             <Navbar z={50} />
+            <ChatBot />
+
             <Toaster position="top-right" reverseOrder={false} />
 
             <div className="relative">

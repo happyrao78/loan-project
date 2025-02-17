@@ -1,6 +1,7 @@
 import Partner from '../models/partnersModel.js'; // Adjust the path as necessary
 import Feedback from "../models/feedbackModel.js";
 import cloudinary from "../config/cloudinary.js";
+import AdminPhone from '../models/adminPhoneModel.js';
 
 
 // Get all partners
@@ -105,5 +106,47 @@ export const deleteFeedbacks = async (req, res) => {
   }
 };
 
+// Get admin phone number
+const getAdminPhone = async (req, res) => {
+    try {
+        const adminPhone = await AdminPhone.findOne();
+        if (!adminPhone) {
+            return res.status(404).json({ message: 'Admin phone number not found' });
+        }
+        res.status(200).json(adminPhone);
+    } catch (error) {
+        res.status(500).json({ message: 'Error retrieving admin phone number', error });
+    }
+};
 
-export { getPartners, addPartner, deletePartner };
+// Update admin phone number
+const updateAdminPhone = async (req, res) => {
+    try {
+        const { phoneNumber } = req.body;
+
+        if (!phoneNumber) {
+            return res.status(400).json({ message: 'Phone number is required' });
+        }
+
+        // Check if phone number is 10 digits
+        if (!/^\d{10}$/.test(phoneNumber)) {
+            return res.status(400).json({ message: 'Phone number must be 10 digits' });
+        }
+
+        // Delete previous phone number
+        await AdminPhone.deleteMany({});
+
+        // Add new phone number
+        const newAdminPhone = new AdminPhone({ phoneNumber });
+        await newAdminPhone.save();
+
+        res.status(200).json({ message: 'Admin phone number updated successfully', adminPhone: newAdminPhone });
+    } catch (error) {
+        res.status(500).json({ message: 'Error updating admin phone number', error });
+    }
+};
+
+
+
+
+export { getPartners, addPartner, deletePartner,getAdminPhone, updateAdminPhone };

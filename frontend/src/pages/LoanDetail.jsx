@@ -152,6 +152,7 @@ import InteractiveButton from "../components/Button";
 import { IoIosArrowForward } from "react-icons/io";
 import homeabout from "../assets/home-about.png";
 import Steps from "../components/Steps";
+import ChatBot from "../components/Chatbot";
 
 const loanDetails = {
     "personal-loan": {
@@ -301,6 +302,8 @@ const LoanDetail = () => {
     return (
         <div className="relative bg-white z-0">
             <Navbar z={10} />
+            <ChatBot />
+
             <div className="relative">
                 <img src={loanimg} alt="" className="w-[100vw] h-[60vh] object-cover object-center" />
                 <div className="absolute inset-0 bg-darkGray opacity-70"></div>

@@ -10,6 +10,7 @@ import FeedbackSlider from "../components/Feedback";
 import Partners from "../components/Partners";
 import Footer from "../components/Footer";
 import { Link } from "react-router-dom";
+import ChatBot from "../components/Chatbot";
 
 const About = () => {
     return (
@@ -97,7 +98,8 @@ const About = () => {
                     </div>
                 </div>
             </div>
-            
+            <ChatBot />
+
             <Footer/>
         </div>
     );

@@ -67,7 +67,8 @@ const Sidebar = () => {
     { path: "/listbanks", icon: assets.order_icon, label: "All Banks" },
     { path: "/loan-applications", icon: assets.order_icon, label: "Loan Applications" },
     { path: "/partners", icon: assets.order_icon, label: "Manage Partners" },
-    { path: "/feedbacks", icon: assets.order_icon, label: "Manage Feedbacks" }
+    { path: "/feedbacks", icon: assets.order_icon, label: "Manage Feedbacks" },
+    { path: "/admin-phone", icon: assets.order_icon, label: "Manage Admin Phone" }
   ];
 
   return (

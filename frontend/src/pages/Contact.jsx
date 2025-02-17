@@ -250,6 +250,7 @@ import toast, { Toaster } from "react-hot-toast";
 import Navbar from "../components/Navbar";
 import loan from "../assets/loan.jpg";
 import Footer from "../components/Footer";
+import ChatBot from "../components/Chatbot";
 
 const ContactUs = () => {
   const [status, setStatus] = useState(null);
@@ -285,6 +286,8 @@ const ContactUs = () => {
   return (
     <div className="w-full" id="contact">
       <Toaster />
+      <ChatBot />
+
 
       <Navbar z={50} />
       <div className="relative">

@@ -9,6 +9,7 @@ import Footer from "../components/Footer";
 import Emi from "../components/Emi";
 import { Link } from "react-router-dom";
 import Steps from "../components/Steps";
+import ChatBot from "../components/Chatbot";
 
 const EmiCalculator = () => {
 
@@ -16,6 +17,8 @@ const EmiCalculator = () => {
     return (
         <div className=" w-full" id="contact">
             <Toaster />
+            <ChatBot />
+
 
             <Navbar z={50}/>
             <div className="relative">

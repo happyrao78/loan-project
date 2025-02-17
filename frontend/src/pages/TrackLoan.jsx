@@ -7,6 +7,7 @@ import InteractiveButton from "../components/Button";
 import { IoIosArrowForward } from "react-icons/io";
 import { toast } from "react-toastify";
 import Footer from "../components/Footer";
+import ChatBot from "../components/Chatbot";
 
 const TrackLoan = () => {
     const [phoneNumber, setPhoneNumber] = useState("");
@@ -453,6 +454,7 @@ const TrackLoan = () => {
 
 
 
+<ChatBot />
 
             <Footer />
         </div>

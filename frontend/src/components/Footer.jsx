@@ -50,6 +50,9 @@ const Footer = () => {
                     </ul>
                 </div>
 
+
+                
+
                 {/* Subscribe */}
                 {/* <div>
                     <h3 className="text-lg font-semibold mb-4 font-heading">Subscribe</h3>
@@ -75,7 +78,7 @@ const Footer = () => {
   <div className="max-w-6xl mx-auto px-4 flex flex-col md:flex-row sm:text-start md:justify-between items-start lg:mx-auto lg:px-4 gap-4">
     <div className="flex flex-col">
       <p className="text-lg font-semibold font-heading my-2">Copyright by</p>
-      <p className="font-body text-sm">Designed by BiharInnovation</p>
+      <p className="font-body text-sm">Designed by DigitalFinserv</p>
     </div>
 
     <div>
@@ -85,7 +88,7 @@ const Footer = () => {
 
     <div>
       <p className="text-lg font-semibold font-heading my-2">Contact</p>
-      <p className="font-body text-sm">+917015064173 | +919255591520</p>
+      <p className="font-body text-sm">+91xxxxx | +91xxxxxx</p>
     </div>
 
     <div>
@@ -94,7 +97,7 @@ const Footer = () => {
     </div>
 
     {/* Social Icons */}
-    <div className="flex space-x-4 justify-center items-center mt-4">
+    {/* <div className="flex space-x-4 justify-center items-center mt-4">
       
       <a
         href="#"
@@ -114,7 +117,7 @@ const Footer = () => {
       >
         <FaLinkedin size={20} />
       </a> 
-    </div>
+    </div> */}
   </div>
 </div>
 
