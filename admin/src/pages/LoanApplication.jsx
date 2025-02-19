@@ -418,7 +418,7 @@ const LoanApplications = ({ token }) => {
         
         doc.text("Payment Mode: NEFT / RTGS / IMPS / UPI / Net Banking (Cash not allowed)", 20, yPosition + 40);
         doc.addImage(signaturePath, "PNG", 30, yPosition + 60, 50, 30); // Signature
-        doc.addImage(stampPath, "PNG", 100, yPosition + 60, 50, 30); // Stamp
+        // doc.addImage(stampPath, "PNG", 100, yPosition + 60, 50, 30); // Stamp
     }
    
     // Footer
@@ -504,6 +504,128 @@ const calculateEMIScheduleFixed = (loanAmount, rate, tenure) => {
   }, []);
 
 
+// const generateAgreementPDF = (application) => {
+//   const roi = roiInputs[application._id];
+//   if (!roi) {
+//     toast.error("Please enter Rate of Interest!");
+//     return;
+//   }
+
+//   // Create PDF with compression
+//   const doc = new jsPDF({
+//     compress: true,
+//     unit: 'pt', // Use points for more precise sizing
+//     format: 'a4'  // Specify A4 format
+//   });
+
+//   // Set initial font size and get page dimensions
+//   const pageWidth = doc.internal.pageSize.width;
+//   const pageHeight = doc.internal.pageSize.height;
+//   const margin = 40; // Standard margin in points
+
+//   // Optimize image
+//   const companyLogoProps = {
+//     width: 80,
+//     height: 80,
+//     imageType: 'PNG',
+//     compression: 'FAST'
+//   };
+//   doc.addImage(company, "PNG", pageWidth - margin - companyLogoProps.width, margin, 
+//                companyLogoProps.width, companyLogoProps.height);
+
+//   // Header
+//   doc.setFontSize(20);
+//   doc.text("LOAN AGREEMENT", pageWidth / 2, margin + 40, { align: "center" });
+
+//   // Company Details
+//   doc.setFontSize(12);
+//   doc.text("Digital Finserv Pvt.Ltd", pageWidth / 2, margin + 80, { align: "center" });
+//   doc.text("CIN : U72900KA2022PTC160654", pageWidth / 2, margin + 100, { align: "center" });
+//   doc.text("NBP Green Heights, C-68, Bandra Kurla Complex Rd, opposite to MCA Club, F Block BKC", 
+//            pageWidth / 2, margin + 120, { align: "center" });
+//   doc.text("Bandra East, Mumbai, Maharashtra 400051", 
+//           pageWidth / 2, margin + 140, { align: "center" });
+  
+//   // Horizontal line
+//   doc.setLineWidth(0.5);
+//   doc.line(margin, margin + 148, pageWidth - margin, margin + 148);
+
+//   // Agreement Content
+//   doc.setFontSize(14);
+//   doc.text("LOAN AGREEMENT TERMS AND CONDITIONS", 
+//            pageWidth / 2, margin + 180, { align: "center" });
+
+//   // Borrower Details
+//   doc.setFontSize(12);
+//   doc.text("THIS AGREEMENT is made on " + new Date().toLocaleDateString(), 
+//            margin, margin + 220);
+//   doc.text("BETWEEN", margin, margin + 250);
+//   doc.text("1. Digital Finserv Pvt.Ltd (hereinafter referred to as the 'Lender')", 
+//            margin, margin + 280);
+//   doc.text("AND", margin, margin + 310);
+//   doc.text(`2. ${application.fullName} (hereinafter referred to as the 'Borrower')`, 
+//            margin, margin + 340);
+
+//   // Loan Details Table
+//   autoTable(doc, {
+//     startY: margin + 380,
+//     margin: { left: margin, right: margin },
+//     head: [["Loan Details", "Value"]],
+//     body: [
+//       ["Loan Amount", `Rs ${application.loanAmount.toLocaleString()}`],
+//       ["Interest Rate", `${roi}%`],
+//       ["Loan Term", `${application.duration} Years`],
+//       ["Monthly EMI", `Rs ${calculateEMI(application.loanAmount, roi, application.duration).toLocaleString()}`],
+//       ["Purpose of Loan", application.loanType]
+//     ],
+//     theme: "grid",
+//     styles: { fontSize: 12, cellPadding: 5 },
+//     columnStyles: {
+//       0: { cellWidth: 200 },
+//       1: { cellWidth: 'auto' }
+//     }
+//   });
+
+//   // Terms and Conditions
+//   const yPosition = doc.autoTable.previous.finalY + 30;
+//   doc.setFontSize(12);
+//   doc.text("Key Terms and Conditions:", margin, yPosition);
+
+//   const terms = [
+//     "1. The Borrower shall repay the loan amount with interest in monthly installments (EMI).",
+//     "2. The EMI payment is due on the 7th of each month.",
+//     "3. Late payment penalties will be applicable as per bank guidelines.",
+//     "4. The Borrower may prepay the loan with additional charges as applicable.",
+//     "5. The Lender reserves the right to recall the loan in case of default."
+//   ];
+
+//   let currentY = yPosition + 20;
+//   terms.forEach((term) => {
+//     // Word wrap for terms
+//     const lines = doc.splitTextToSize(term, pageWidth - (2 * margin));
+//     doc.text(lines, margin, currentY);
+//     currentY += (lines.length * 20); // Adjust spacing based on number of lines
+//   });
+
+//   // Signature Spaces
+//   const signatureY = currentY + 50;
+//   doc.text("Authorized Signatory", margin + 50, signatureY);
+//   doc.text("Borrower Signature", pageWidth - margin - 150, signatureY);
+//   doc.text("(Digital Finserv Pvt.Ltd)", margin + 50, signatureY + 20);
+//   doc.text(`(${application.fullName})`, pageWidth - margin - 150, signatureY + 20);
+
+//   doc.addImage(signaturePath, "PNG", margin + 50, signatureY - 40, 80, 40); // Signature
+//   doc.addImage(stampPath, "PNG", margin + 150, signatureY - 40, 80, 40);
+//   // Generate compressed output
+//   const pdfBase64 = doc.output('datauristring', { compress: true });
+  
+//   return {
+//     doc,
+//     fileName: `loan-agreement-${application.fullName.replace(/\s+/g, '-')}.pdf`,
+//     base64: pdfBase64
+//   };
+// };
+
 const generateAgreementPDF = (application) => {
   const roi = roiInputs[application._id];
   if (!roi) {
@@ -514,61 +636,66 @@ const generateAgreementPDF = (application) => {
   // Create PDF with compression
   const doc = new jsPDF({
     compress: true,
-    unit: 'pt', // Use points for more precise sizing
-    format: 'a4'  // Specify A4 format
+    unit: 'pt',
+    format: 'a4'
   });
 
-  // Set initial font size and get page dimensions
   const pageWidth = doc.internal.pageSize.width;
   const pageHeight = doc.internal.pageSize.height;
-  const margin = 40; // Standard margin in points
+  const margin = 40;
+  
+  // Add stamp at the start with reduced height
+  doc.addImage(stampPath, "PNG", 20, 20, pageWidth-50, 200);
 
-  // Optimize image
+  // Start text content below the stamp with reduced spacing
+  const contentStartY = 250; // Reduced from 300
+
+  // Company logo
   const companyLogoProps = {
     width: 80,
     height: 80,
     imageType: 'PNG',
     compression: 'FAST'
   };
-  doc.addImage(company, "PNG", pageWidth - margin - companyLogoProps.width, margin, 
+  doc.addImage(company, "PNG", pageWidth - margin - companyLogoProps.width, contentStartY, 
                companyLogoProps.width, companyLogoProps.height);
 
   // Header
   doc.setFontSize(20);
-  doc.text("LOAN AGREEMENT", pageWidth / 2, margin + 40, { align: "center" });
+  doc.text("LOAN AGREEMENT", pageWidth / 2, contentStartY + 30, { align: "center" });
 
-  // Company Details
+  // Company Details with reduced spacing
   doc.setFontSize(12);
-  doc.text("Digital Finserv Pvt.Ltd", pageWidth / 2, margin + 80, { align: "center" });
-  doc.text("CIN : U72900KA2022PTC160654", pageWidth / 2, margin + 100, { align: "center" });
+  doc.text("Digital Finserv Pvt.Ltd", pageWidth / 2, contentStartY + 60, { align: "center" });
+  doc.text("CIN : U72900KA2022PTC160654", pageWidth / 2, contentStartY + 80, { align: "center" });
   doc.text("NBP Green Heights, C-68, Bandra Kurla Complex Rd, opposite to MCA Club, F Block BKC", 
-           pageWidth / 2, margin + 120, { align: "center" });
+           pageWidth / 2, contentStartY + 100, { align: "center" });
   doc.text("Bandra East, Mumbai, Maharashtra 400051", 
-          pageWidth / 2, margin + 140, { align: "center" });
+          pageWidth / 2, contentStartY + 120, { align: "center" });
   
   // Horizontal line
   doc.setLineWidth(0.5);
-  doc.line(margin, margin + 148, pageWidth - margin, margin + 148);
+  doc.line(margin, contentStartY + 130, pageWidth - margin, contentStartY + 130);
 
   // Agreement Content
   doc.setFontSize(14);
-  doc.text("LOAN AGREEMENT TERMS AND CONDITIONS", 
-           pageWidth / 2, margin + 180, { align: "center" });
+  doc.text("LOAN AGREEMENT", 
+           pageWidth / 2, contentStartY + 160, { align: "center" });
 
-  // Borrower Details
+  // Borrower Details with reduced spacing
   doc.setFontSize(12);
   doc.text("THIS AGREEMENT is made on " + new Date().toLocaleDateString(), 
-           margin, margin + 220);
-  doc.text("BETWEEN", margin, margin + 250);
+           margin, contentStartY + 190);
+  doc.text("BETWEEN", margin, contentStartY + 210);
   doc.text("1. Digital Finserv Pvt.Ltd (hereinafter referred to as the 'Lender')", 
-           margin, margin + 280);
-  doc.text("AND", margin, margin + 310);
+           margin, contentStartY + 230);
+  doc.text("AND", margin, contentStartY + 250);
   doc.text(`2. ${application.fullName} (hereinafter referred to as the 'Borrower')`, 
-           margin, margin + 340);
+           margin, contentStartY + 270);
 
-  // Loan Details Table
+  // Loan Details Table with adjusted starting position
   autoTable(doc, {
-    startY: margin + 380,
+    startY: contentStartY + 290,
     margin: { left: margin, right: margin },
     head: [["Loan Details", "Value"]],
     body: [
@@ -586,37 +713,79 @@ const generateAgreementPDF = (application) => {
     }
   });
 
-  // Terms and Conditions
-  const yPosition = doc.autoTable.previous.finalY + 30;
+  // Terms and Conditions with proper page break handling
+  const yPosition = doc.autoTable.previous.finalY + 20;
+  
+  // Add new page for terms and conditions
+  doc.addPage();
+  
   doc.setFontSize(12);
-  doc.text("Key Terms and Conditions:", margin, yPosition);
+  doc.text("Terms and Conditions:", margin, margin + 20);
 
   const terms = [
-    "1. The Borrower shall repay the loan amount with interest in monthly installments (EMI).",
-    "2. The EMI payment is due on the 7th of each month.",
-    "3. Late payment penalties will be applicable as per bank guidelines.",
-    "4. The Borrower may prepay the loan with additional charges as applicable.",
-    "5. The Lender reserves the right to recall the loan in case of default."
+    "Loan Amount & Interest",
+    "1. The Lender promises to loan the specified amount to the Borrower and the Borrower promises to repay this principal amount to the Lender, with interest payable on the unpaid principal at the rate specified per annum, calculated yearly not in advance.",
+    
+    "Payment",
+    "2. This Loan will be repaid in consecutive monthly instalments of principal and interest on the first day of each month commencing the month following the beginning of the loan.",
+    
+    "Default",
+    "3. If the Borrower defaults in the performance of any obligation under this Agreement, the Lender may declare the principal amount owing and interest due to be immediately due and payable.",
+    "4. Upon declaration of immediate payment and failure to provide full payment, interest at the rate of 1.00 per cent per annum, calculated yearly not in advance, will be charged on the outstanding amount.",
+    
+    "Governing Law",
+    "5. This Agreement will be construed in accordance with and governed by the laws of the State of Kolkata.",
+    "6. The Borrower shall be liable for all costs, expenses and expenditures including legal costs incurred by enforcing this Agreement.",
+    
+    "Binding Effect",
+    "7. This Agreement will pass to the benefit of and be binding upon the respective heirs, executors, administrators, successors and permitted assigns of the Borrower and Lender.",
+    
+    "Amendments",
+    "8. This Agreement may only be amended or modified by a written instrument executed by both parties.",
+    
+    "Severability",
+    "9. If any provision is held invalid or unenforceable, it shall be reduced in scope to the extent necessary to make it reasonable and enforceable.",
+    
+    "General Provisions",
+    "10. Headings are inserted for convenience only. Words in singular/masculine include plural/feminine respectively.",
+    
+    "Entire Agreement",
+    "11. This Agreement constitutes the entire agreement between the parties with no further items or provisions."
   ];
 
-  let currentY = yPosition + 20;
+  let currentY = margin + 40;
   terms.forEach((term) => {
-    // Word wrap for terms
     const lines = doc.splitTextToSize(term, pageWidth - (2 * margin));
+    
+    // Check if we need a new page
+    if (currentY + (lines.length * 20) > pageHeight - margin) {
+      doc.addPage();
+      currentY = margin + 20;
+    }
+    
     doc.text(lines, margin, currentY);
-    currentY += (lines.length * 20); // Adjust spacing based on number of lines
+    currentY += (lines.length * 20);
   });
 
+  // Ensure signatures are on a new page if needed
+  if (currentY > pageHeight - 150) {
+    doc.addPage();
+    currentY = margin + 20;
+  }
+
+  // Note about Agreement Fee
+  doc.text("Note: Agreement Fee is refundable as per terms.", margin, currentY + 20);
+
   // Signature Spaces
-  const signatureY = currentY + 50;
+  const signatureY = currentY + 100;
   doc.text("Authorized Signatory", margin + 50, signatureY);
   doc.text("Borrower Signature", pageWidth - margin - 150, signatureY);
   doc.text("(Digital Finserv Pvt.Ltd)", margin + 50, signatureY + 20);
   doc.text(`(${application.fullName})`, pageWidth - margin - 150, signatureY + 20);
 
-  doc.addImage(signaturePath, "PNG", margin + 50, signatureY - 40, 80, 40); // Signature
-  doc.addImage(stampPath, "PNG", margin + 150, signatureY - 40, 80, 40);
-  // Generate compressed output
+  doc.addImage(signaturePath, "PNG", margin + 50, signatureY - 40, 80, 40);
+  // doc.addImage(stampPath, "PNG", margin + 150, signatureY - 40, 80, 40);
+
   const pdfBase64 = doc.output('datauristring', { compress: true });
   
   return {
@@ -625,7 +794,6 @@ const generateAgreementPDF = (application) => {
     base64: pdfBase64
   };
 };
-
 
   const getStatusStyles = (status) => {
     switch (status) {
@@ -761,6 +929,8 @@ const generateAgreementPDF = (application) => {
   //     base64: pdfBase64
   //   };
   // };
+
+  
  
   const generatePaymentReceiptPDF = (application, type, fees) => {
     const doc = new jsPDF();
@@ -793,10 +963,10 @@ const generateAgreementPDF = (application) => {
     doc.text(`Email: ${application.email}`, 10, 80);
     doc.text(`Phone: ${application.phoneNumber}`, 10, 90);
     doc.text(`Loan Type: ${application.loanType}`, 10, 100);
-    doc.text(`Loan Amount: ₹${application.loanAmount}`, 10, 110);
+    doc.text(`Loan Amount: Rs.${application.loanAmount}`, 10, 110);
     doc.text(`Duration: ${application.duration} Years`, 10, 120);
     doc.text(`Payment Type: ${displayType}`, 10, 130);
-    doc.text(`Amount Paid: ₹${amount}`, 10, 140);
+    doc.text(`Amount Paid: Rs.${amount}`, 10, 140);
   
     // Add table for payment details
     autoTable(doc, {
@@ -808,10 +978,10 @@ const generateAgreementPDF = (application) => {
         ["Email", application.email],
         ["Phone", application.phoneNumber],
         ["Loan Type", application.loanType],
-        ["Loan Amount", `₹${application.loanAmount}`],
+        ["Loan Amount", `Rs.${application.loanAmount}`],
         ["Duration", `${application.duration} Years`],
         ["Payment Type", displayType],
-        ["Amount Paid", `₹${amount}`]
+        ["Amount Paid", `Rs.${amount}`]
       ],
       theme: "grid",
       styles: { fontSize: 8, cellPadding: 2 },
