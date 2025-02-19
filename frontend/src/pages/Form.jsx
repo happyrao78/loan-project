@@ -190,13 +190,13 @@ const Form = () => {
         toast.loading("Submitting your application...", { id: "loading" });
 
         try {
-            const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/loan/apply`, formData);
+            const response = await axios.post(`https://loan-project-backend.onrender.com/api/loan/apply`, formData);
             
             toast.dismiss("loading");
             toast.success(response.data.message || "Application submitted successfully!");
 
             // Fetch Admin Phone Number from Backend
-            const adminResponse = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/ui/admin-phone`);
+            const adminResponse = await axios.get(`https://loan-project-backend.onrender.com/api/ui/admin-phone`);
             const adminPhoneNumber = "91"+`${adminResponse.data.phoneNumber}`;
 
             // console.log(adminPhoneNumber)
@@ -266,7 +266,15 @@ const Form = () => {
                         className="p-3 border rounded-lg bg-lightSeaGreen/30 focus:ring-2 focus:ring-primary outline-none"
                     >
                         <option>Personal Loan</option>
+                        <option>Business Loan</option>
+                        <option>Property Loan</option>
+                        <option>NRI Home Loan</option>
                         <option>Home Loan</option>
+                        <option>Plot Purchase Loan</option>
+                        <option>Indsutry Loan</option>
+                        {/* <option>Property Loan</option> */}
+                        <option>Overdraft Loan</option>
+                        <option>Education Loan</option>
                         <option>Car Loan</option>
                     </select>
                 </div>
@@ -281,7 +289,14 @@ const Form = () => {
                     >
                         <option>1</option>
                         <option>2</option>
+                        <option>3</option>
+                        <option>4</option>
                         <option>5</option>
+                        <option>6</option>
+                        <option>7</option>
+                        <option>8</option>
+                        <option>9</option>
+                        <option>10</option>
                     </select>
                 </div>
 

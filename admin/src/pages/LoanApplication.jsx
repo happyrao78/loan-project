@@ -35,6 +35,7 @@ const LoanApplications = ({ token }) => {
   const [filterStatus, setFilterStatus] = useState("All");
   const [filteredApplications, setFilteredApplications] = useState([]);
   const [roiInputs, setRoiInputs] = useState({});
+  const [banks, setBanks] = useState([]);
 
   useEffect(() => {
     if (filterStatus === "All") {
@@ -43,6 +44,49 @@ const LoanApplications = ({ token }) => {
       setFilteredApplications(applications.filter(app => app.loanStatus === filterStatus));
     }
   }, [filterStatus, applications]);
+
+  const fetchBanks = async () => {
+    try {
+      setLoading(true);
+      const response = await axios.get(`${backendUrl}/api/bank/list`, {
+        headers: { token },
+      });
+
+      if (response.data && response.data.success) {
+        setBanks(response.data.banks);
+      } else {
+        toast.error("Unexpected response format");
+      }
+    } catch (err) {
+      console.error("Error fetching banks:", err);
+      toast.error("Failed to load banks");
+      setError("Failed to fetch data. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(()=>{
+    fetchBanks();
+  },[]);
+
+  const getFeeAmounts = (banks) => {
+    const fees = {
+      processing: 0,
+      agreement: 0,
+      transferChargePaid: 0,
+      serviceChargePaid: 0
+    };
+  
+    if (banks.length > 0) {
+      fees.processing = banks[0].processingFee || 0;
+      fees.agreement = banks[0].agreementFee || 0;
+      fees.transferChargePaid = banks[0].transferCharge || 0;
+      fees.serviceChargePaid = banks[0].serviceCharge || 0;
+    }
+  
+    return fees;
+  };
 
   const fetchApplications = async () => {
     try {
@@ -184,10 +228,56 @@ const LoanApplications = ({ token }) => {
     }
   };
 
-  const sendFeePaymentEmail = async (email, type, application) => {
+  // const sendFeePaymentEmail = async (email, type, application) => {
+  //   try {
+  //     let subject = "Payment Confirmation from DigitalFinserve";
+  //     let message = "";
+  //     // Payment type ke basis pe message decide karna
+  //     switch (type) {
+  //       case "processing":
+  //         message = "Your loan processing fee payment has been successfully received. Your loan application is now under review.";
+  //         break;
+  //       case "agreement":
+  //         message = "Your agreement fee payment has been successfully received. Your loan agreement is now processed.";
+  //         break;
+  //       case "transferCharge":
+  //         message = "Your transfer charge payment has been successfully received. Your loan transfer request is now being processed.";
+  //         break;
+  //       case "serviceCharge":
+  //         message = "Your TDS payment has been successfully received. The tax deduction has been applied to your transaction.";
+  //         break;
+  //       default:
+  //         message = "Your payment has been successfully received.";
+  //     }
+  
+  //     await axios.post(
+  //       `${backendUrl}/api/loan/send-email`,
+  //       {
+  //         email,
+  //         subject,
+  //         message,
+  //       },
+  //       {
+  //         headers: {
+  //           token,
+  //           'Content-Type': 'application/json'
+  //         }
+  //       }
+  //     );
+
+  //     toast.success("Payment Email sent successfully!");
+  
+  //   } catch (error) {
+  //     console.error("Error sending email:", error);
+  //     toast.error("Failed to send email. Please try again.");
+  //   }
+  // };
+  const sendFeePaymentEmail = async (email, type, application,fees) => {
     try {
       let subject = "Payment Confirmation from DigitalFinserve";
       let message = "";
+      let pdfData;
+  
       // Payment type ke basis pe message decide karna
       switch (type) {
         case "processing":
@@ -196,15 +286,23 @@ const LoanApplications = ({ token }) => {
         case "agreement":
           message = "Your agreement fee payment has been successfully received. Your loan agreement is now processed.";
           break;
-        case "transferCharge":
+        case "transferChargePaid":
           message = "Your transfer charge payment has been successfully received. Your loan transfer request is now being processed.";
           break;
-        case "serviceCharge":
+        case "serviceChargePaid":
           message = "Your TDS payment has been successfully received. The tax deduction has been applied to your transaction.";
           break;
         default:
           message = "Your payment has been successfully received.";
       }
+  
+      // Generate the payment receipt PDF
+      pdfData = generatePaymentReceiptPDF(application, type, fees);
+      const pdfBase64 = pdfData.base64;
+      const fileName = pdfData.fileName;
+  
+      // Extract just the base64 content without the data URI prefix
+      const base64Content = pdfBase64.split(',')[1];
   
       await axios.post(
         `${backendUrl}/api/loan/send-email`,
@@ -212,6 +310,11 @@ const LoanApplications = ({ token }) => {
           email,
           subject,
           message,
+          attachment: {
+            content: base64Content,
+            filename: fileName,
+            type: 'application/pdf'
+          }
         },
         {
           headers: {
@@ -220,7 +323,7 @@ const LoanApplications = ({ token }) => {
           }
         }
       );
-
+  
       toast.success("Payment Email sent successfully!");
   
     } catch (error) {
@@ -228,7 +331,6 @@ const LoanApplications = ({ token }) => {
       toast.error("Failed to send email. Please try again.");
     }
   };
-
 
   const generateApprovalPDF = (doc, application, roi) => {
     // Set initial font size for header
@@ -246,10 +348,11 @@ const LoanApplications = ({ token }) => {
     // Company Details
     doc.setFontSize(12);
     doc.text("Digital Finserv Pvt.Ltd", 105, 35, { align: "center" });
-    doc.text("CIN : L65191kL1927PLC000307", 105, 42, { align: "center" });
-    doc.text("Ground floor, Ideal Plaza, Minto Park, Kolkata, West Bengal, 700020", 105, 49, { align: "center" });
-    doc.text("Toll Free: +91 9007437250 | Email: support@digitalfinserv.in", 105, 56, { align: "center" });
-    doc.text("Web: digitalfinserv.com", 105, 63, { align: "center" });
+    doc.text("CIN : U72900KA2022PTC160654", 105, 42, { align: "center" });
+    doc.text("NBP Green Heights, C-68, Bandra Kurla Complex Rd, opposite to MCA Club, F Block BKC", 105, 49, { align: "center" });
+    doc.text("Bandra East, Mumbai, Maharashtra 400051", 105, 56, { align: "center" });
+    doc.text("Toll Free: +91 8981323486 | Email: support@digitalfinserv.in", 105, 63, { align: "center" });
+    doc.text("Web: digitalfinserv.com", 105, 68, { align: "center" });
     doc.line(10, 70, 200, 70);
     const leftMargin = 10;
     // To Section
@@ -312,11 +415,7 @@ const LoanApplications = ({ token }) => {
         yPosition = doc.autoTable.previous.finalY + 10;
 
         // Payment Mode & Account Details
-        doc.text("Kindly submit the required documents and pay the processing fee:", 20, yPosition);
-        doc.text("Processing Fees: Rs 1199 (Refundable within 15 days)", 20, yPosition + 8);
-        doc.text("Account Name: Dhanlaxmi Bank Pvt Ltd", 20, yPosition + 16);
-        doc.text("Account No.: 50200097140840", 20, yPosition + 24);
-        doc.text("IFSC: HDFC0006552 | Bank: HDFC BANK", 20, yPosition + 32);
+        
         doc.text("Payment Mode: NEFT / RTGS / IMPS / UPI / Net Banking (Cash not allowed)", 20, yPosition + 40);
         doc.addImage(signaturePath, "PNG", 30, yPosition + 60, 50, 30); // Signature
         doc.addImage(stampPath, "PNG", 100, yPosition + 60, 50, 30); // Stamp
@@ -324,7 +423,7 @@ const LoanApplications = ({ token }) => {
    
     // Footer
     doc.setFontSize(10);
-    doc.text("Follow us: @companyInstagram | @companyTwitter", 105, 280, { align: "center" });
+    doc.text("Thanks for choosing Digital Finserv Pvt. Ltd.", 105, 280, { align: "center" });
 
     return doc;
 };
@@ -440,14 +539,16 @@ const generateAgreementPDF = (application) => {
 
   // Company Details
   doc.setFontSize(12);
-  doc.text("Dhanlaxmi Bank Pvt.Ltd", pageWidth / 2, margin + 80, { align: "center" });
-  doc.text("CIN : L65191kL1927PLC000307", pageWidth / 2, margin + 100, { align: "center" });
-  doc.text("Ground floor, Ideal Plaza, Minto Park, Kolkata, West Bengal, 700020", 
+  doc.text("Digital Finserv Pvt.Ltd", pageWidth / 2, margin + 80, { align: "center" });
+  doc.text("CIN : U72900KA2022PTC160654", pageWidth / 2, margin + 100, { align: "center" });
+  doc.text("NBP Green Heights, C-68, Bandra Kurla Complex Rd, opposite to MCA Club, F Block BKC", 
            pageWidth / 2, margin + 120, { align: "center" });
+  doc.text("Bandra East, Mumbai, Maharashtra 400051", 
+          pageWidth / 2, margin + 140, { align: "center" });
   
   // Horizontal line
   doc.setLineWidth(0.5);
-  doc.line(margin, margin + 140, pageWidth - margin, margin + 140);
+  doc.line(margin, margin + 148, pageWidth - margin, margin + 148);
 
   // Agreement Content
   doc.setFontSize(14);
@@ -459,7 +560,7 @@ const generateAgreementPDF = (application) => {
   doc.text("THIS AGREEMENT is made on " + new Date().toLocaleDateString(), 
            margin, margin + 220);
   doc.text("BETWEEN", margin, margin + 250);
-  doc.text("1. Dhanlaxmi Bank Pvt.Ltd (hereinafter referred to as the 'Lender')", 
+  doc.text("1. Digital Finserv Pvt.Ltd (hereinafter referred to as the 'Lender')", 
            margin, margin + 280);
   doc.text("AND", margin, margin + 310);
   doc.text(`2. ${application.fullName} (hereinafter referred to as the 'Borrower')`, 
@@ -510,7 +611,7 @@ const generateAgreementPDF = (application) => {
   const signatureY = currentY + 50;
   doc.text("Authorized Signatory", margin + 50, signatureY);
   doc.text("Borrower Signature", pageWidth - margin - 150, signatureY);
-  doc.text("(Dhanlaxmi Bank Pvt.Ltd)", margin + 50, signatureY + 20);
+  doc.text("(Digital Finserv Pvt.Ltd)", margin + 50, signatureY + 20);
   doc.text(`(${application.fullName})`, pageWidth - margin - 150, signatureY + 20);
 
   doc.addImage(signaturePath, "PNG", margin + 50, signatureY - 40, 80, 40); // Signature
@@ -552,6 +653,13 @@ const generateAgreementPDF = (application) => {
         setApplications(applications.map(app =>
           app._id === applicationId ? { ...app, [field]: value } : app
         ));
+
+        // Send payment email with receipt if the checkbox is checked
+      if (value) {
+        const application = applications.find(app => app._id === applicationId);
+        const type = field.replace('FeePaid', '');
+        sendFeePaymentEmail(application.email, type, application, fees);
+      }
       } else {
         toast.error("Failed to update fee status");
       }
@@ -560,7 +668,169 @@ const generateAgreementPDF = (application) => {
       toast.error("Failed to update fee status");
     }
   };
+
+  // const generatePaymentReceiptPDF = (application, type) => {
+  //   const doc = new jsPDF();
+  //   const date = new Date().toLocaleDateString();
+  //   const amount = type === "processing" ? 1199 : type === "agreement" ? 1199 : type === "transferCharge" ? 1199 : 1199; // Adjust amounts as needed
   
+  //   doc.setFontSize(18);
+  //   doc.text("Payment Receipt", 105, 20, { align: "center" });
+  
+  //   doc.setFontSize(12);
+  //   doc.text(`Date: ${date}`, 10, 40);
+  //   doc.text(`Name: ${application.fullName}`, 10, 50);
+  //   doc.text(`Email: ${application.email}`, 10, 60);
+  //   doc.text(`Phone: ${application.phoneNumber}`, 10, 70);
+  //   doc.text(`Loan Type: ${application.loanType}`, 10, 80);
+  //   doc.text(`Loan Amount: ₹${application.loanAmount}`, 10, 90);
+  //   doc.text(`Duration: ${application.duration} Years`, 10, 100);
+  //   doc.text(`Payment Type: ${type}`, 10, 110);
+  //   doc.text(`Amount Paid: ₹${amount}`, 10, 120);
+  
+  //   doc.setFontSize(10);
+  //   doc.text("Thank you for your payment.", 10, 140);
+  
+  //   const pdfBase64 = doc.output('datauristring', { compress: true });
+  //   return {
+  //     doc,
+  //     fileName: `payment-receipt-${type}-${application.fullName.replace(/\s+/g, '-')}.pdf`,
+  //     base64: pdfBase64
+  //   };
+  // };
+  const fees = getFeeAmounts(banks);
+  console.log(fees);
+
+  // const generatePaymentReceiptPDF = (application, type, fees) => {
+  //   const doc = new jsPDF();
+  //   const date = new Date().toLocaleDateString();
+  //   const amount = fees[type]; // Adjust amounts as needed
+  
+  //   // Add company logo
+  //   const companyLogo = company; // Replace with your company logo path
+  //   doc.addImage(companyLogo, "PNG", 10, 10, 50, 20);
+  
+  //   // Add approved stamp
+  //   const approvedStamp = approve; // Replace with your approved stamp path
+  //   doc.addImage(approvedStamp, "PNG", 150, 10, 50, 20);
+  
+  //   doc.setFontSize(18);
+  //   doc.text("Payment Receipt", 105, 40, { align: "center" });
+  
+  //   doc.setFontSize(12);
+  //   doc.text(`Date: ${date}`, 10, 60);
+  //   doc.text(`Name: ${application.fullName}`, 10, 70);
+  //   doc.text(`Email: ${application.email}`, 10, 80);
+  //   doc.text(`Phone: ${application.phoneNumber}`, 10, 90);
+  //   doc.text(`Loan Type: ${application.loanType}`, 10, 100);
+  //   doc.text(`Loan Amount: ₹${application.loanAmount}`, 10, 110);
+  //   doc.text(`Duration: ${application.duration} Years`, 10, 120);
+  //   doc.text(`Payment Type: ${type}`, 10, 130);
+  //   doc.text(`Amount Paid: ₹${amount}`, 10, 140);
+  
+  //   // Add table for payment details
+  //   autoTable(doc, {
+  //     startY: 150,
+  //     head: [["Field", "Details"]],
+  //     body: [
+  //       ["Date", date],
+  //       ["Name", application.fullName],
+  //       ["Email", application.email],
+  //       ["Phone", application.phoneNumber],
+  //       ["Loan Type", application.loanType],
+  //       ["Loan Amount", `₹${application.loanAmount}`],
+  //       ["Duration", `${application.duration} Years`],
+  //       ["Payment Type", type],
+  //       ["Amount Paid", `₹${amount}`]
+  //     ],
+  //     theme: "grid",
+  //     styles: { fontSize: 8, cellPadding: 2 },
+  //     columnStyles: {
+  //       0: { cellWidth: 30 },
+  //       1: { cellWidth: 'auto' }
+  //     }
+  //   });
+  
+  //   doc.setFontSize(10);
+  //   doc.text("Thank you for your payment.", 10, doc.autoTable.previous.finalY + 10);
+  
+  //   const pdfBase64 = doc.output('datauristring', { compress: true });
+  //   return {
+  //     doc,
+  //     fileName: `payment-receipt-${type}-${application.fullName.replace(/\s+/g, '-')}.pdf`,
+  //     base64: pdfBase64
+  //   };
+  // };
+ 
+  const generatePaymentReceiptPDF = (application, type, fees) => {
+    const doc = new jsPDF();
+    const date = new Date().toLocaleDateString();
+    
+    // Map payment types to their display names
+    const paymentTypeDisplay = {
+      processing: "Processing Fee",
+      agreement: "Agreement Fee",
+      transferChargePaid: "Transfer Charge",
+      serviceChargePaid: "TDS & Service Charge"
+    };
+  
+    // Get the correct amount based on the type
+    const amount = fees[type] || 0;
+    const displayType = paymentTypeDisplay[type] || type;
+  
+    // Add company logo
+    doc.addImage(company, "PNG", 10, 10, 50, 20);
+  
+    // Add approved stamp
+    doc.addImage(approve, "PNG", 150, 10, 50, 20);
+  
+    doc.setFontSize(18);
+    doc.text("Payment Receipt", 105, 40, { align: "center" });
+  
+    doc.setFontSize(12);
+    doc.text(`Date: ${date}`, 10, 60);
+    doc.text(`Name: ${application.fullName}`, 10, 70);
+    doc.text(`Email: ${application.email}`, 10, 80);
+    doc.text(`Phone: ${application.phoneNumber}`, 10, 90);
+    doc.text(`Loan Type: ${application.loanType}`, 10, 100);
+    doc.text(`Loan Amount: ₹${application.loanAmount}`, 10, 110);
+    doc.text(`Duration: ${application.duration} Years`, 10, 120);
+    doc.text(`Payment Type: ${displayType}`, 10, 130);
+    doc.text(`Amount Paid: ₹${amount}`, 10, 140);
+  
+    // Add table for payment details
+    autoTable(doc, {
+      startY: 150,
+      head: [["Field", "Details"]],
+      body: [
+        ["Date", date],
+        ["Name", application.fullName],
+        ["Email", application.email],
+        ["Phone", application.phoneNumber],
+        ["Loan Type", application.loanType],
+        ["Loan Amount", `₹${application.loanAmount}`],
+        ["Duration", `${application.duration} Years`],
+        ["Payment Type", displayType],
+        ["Amount Paid", `₹${amount}`]
+      ],
+      theme: "grid",
+      styles: { fontSize: 8, cellPadding: 2 },
+      columnStyles: {
+        0: { cellWidth: 30 },
+        1: { cellWidth: 'auto' }
+      }
+    });
+  
+    doc.setFontSize(10);
+    doc.text("Thank you for your payment.", 10, doc.autoTable.previous.finalY + 10);
+  
+    const pdfBase64 = doc.output('datauristring', { compress: true });
+    return {
+      doc,
+      fileName: `payment-receipt-${type}-${application.fullName.replace(/\s+/g, '-')}.pdf`,
+      base64: pdfBase64
+    };
+  };
   const handlePaymentModal = async (applicationId, field, value) => {
     try {
       // Send a PUT request to update the payment status with the new checkbox value
@@ -717,9 +987,9 @@ const generateAgreementPDF = (application) => {
                         handleCheckboxChange(app._id, 'processingFeePaid', isChecked);
 
                         // Sirf jab checkbox checked ho raha ho tab email bhejo
-                        if (isChecked) {
-                        sendFeePaymentEmail(app.email, "processing", app);
-                        }
+                        // if (isChecked) {
+                        // sendFeePaymentEmail(app.email, "processing", app);
+                        // }
                         }}
                         className="form-checkbox"
                       />
@@ -731,10 +1001,10 @@ const generateAgreementPDF = (application) => {
                         checked={app.agreementFeePaid || false}
                         onChange={(e) => {
                         const isChecked = e.target.checked;
-                        handleCheckboxChange(app._id, 'agreementFeePaid', e.target.checked)
-                        if(isChecked) {
-                          sendFeePaymentEmail(app.email, "agreement", app);
-                        }
+                        handleCheckboxChange(app._id, 'agreementFeePaid', isChecked)
+                        // if(isChecked) {
+                        //   sendFeePaymentEmail(app.email, "agreement", app);
+                        // }
                         }}
                         className="form-checkbox"
                       />
@@ -746,10 +1016,10 @@ const generateAgreementPDF = (application) => {
                         checked={app.transferChargePaid || false}
                         onChange={(e) => {
                         const isChecked = e.target.checked;
-                        handleCheckboxChange(app._id, 'transferChargePaid', e.target.checked)
-                        if(isChecked) {
-                          sendFeePaymentEmail(app.email, "transferCharge", app);
-                        }
+                        handleCheckboxChange(app._id, 'transferChargePaid', isChecked)
+                        // if(isChecked) {
+                        //   sendFeePaymentEmail(app.email, "transferCharge", app);
+                        // }
                         }}
                         className="form-checkbox"
                       />
@@ -761,10 +1031,10 @@ const generateAgreementPDF = (application) => {
                         checked={app.serviceChargePaid || false}
                         onChange={(e) => {
                         const isChecked = e.target.checked;
-                        handleCheckboxChange(app._id, 'serviceChargePaid', e.target.checked)
-                        if(isChecked) {
-                          sendFeePaymentEmail(app.email, "serviceCharge", app);
-                        }
+                        handleCheckboxChange(app._id, 'serviceChargePaid', isChecked)
+                        // if(isChecked) {
+                        //   sendFeePaymentEmail(app.email, "serviceCharge", app);
+                        // }
                         }}
                         className="form-checkbox"
                       />

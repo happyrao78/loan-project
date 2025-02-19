@@ -83,12 +83,14 @@ const Footer = () => {
 
     <div>
       <p className="text-lg font-semibold font-heading my-2">Address</p>
-      <p className="font-body text-sm">Haryana, India</p>
+      <p className="font-body text-sm">NBP Green Heights, C-68, Bandra Kurla Complex Rd,</p>
+      <p className="font-body text-sm">opposite to MCA Club, F Block BKC,</p>
+      <p className="font-body text-sm">Bandra East, Mumbai, Maharashtra 400051</p>
     </div>
 
     <div>
       <p className="text-lg font-semibold font-heading my-2">Contact</p>
-      <p className="font-body text-sm">+91xxxxx | +91xxxxxx</p>
+      <p className="font-body text-sm">+91 8981323486</p>
     </div>
 
     <div>
