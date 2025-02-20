@@ -7,6 +7,7 @@ import Form from './pages/Form'
 import EmiCalculator from './pages/EmiCalculator'
 import TrackLoan from './pages/TrackLoan'
 import LoanDetail from './pages/LoanDetail'
+import Dashboard from './components/Dashboard'
 
 const App = () => {
   return (
@@ -24,6 +25,7 @@ const App = () => {
         <Route path='/emi-calculator' element={<EmiCalculator/>} />
         <Route path='/track-loan' element={<TrackLoan/>} />
         <Route path="/about/:loanType" element={<LoanDetail />} />
+        <Route path='/dashboard' element={<Dashboard />} />
         
       </Routes>
       

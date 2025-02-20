@@ -15,7 +15,7 @@ import dynamicUiRouter from "./routes/dynamicUiRoute.js";
 const app = express();
 connectDB();
 
-const allowedOrigins = ["http://localhost:5174","http://localhost:5173","https://loan-project-admin.vercel.app","https://loan-project-flame.vercel.app",""];
+const allowedOrigins = ["http://localhost:5174","http://localhost:5173","https://loan-project-admin.vercel.app","https://loan-project-flame.vercel.app","https://digitalfinserv.in"];
 
 app.use(cors({
   origin: function (origin, callback) {
