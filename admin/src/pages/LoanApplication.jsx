@@ -290,6 +290,8 @@ const LoanApplications = ({ token }) => {
   };
 
   const generateApprovalPDF = (doc, application, roi) => {
+    const fees = getFeeAmounts(banks);
+    // console.log(fees.processing);
     // Set initial font size for header
     doc.setFontSize(18);
 
@@ -379,13 +381,16 @@ const LoanApplications = ({ token }) => {
 
         // Payment Mode & Account Details
         
+        
         // doc.text("Payment Mode: NEFT / RTGS / IMPS / UPI / Net Banking (Cash not allowed)", 20, yPosition + 10);
         // doc.addImage(signaturePath, "PNG", 30, yPosition, 50, 30);
         const pageWidth = doc.internal.pageSize.width;
         const pageHeight = doc.internal.pageSize.height;
         const margin = 40;
+        
         doc.setFont("helvetica", "bold");
         let currentY = margin + 40;
+        doc.text(`Kindly pay the Processing Fee of Rs ${fees.processing} today. This amount is refundable.`, pageWidth - margin - 150, currentY + 20);
         const signatureY = currentY+80;
         doc.text("Signed, Sealed & Delivered", margin + 50, signatureY);
         doc.text("Borrower Signature", pageWidth - margin - 150, signatureY);
@@ -451,6 +456,8 @@ const generateAgreementPDF = (application) => {
     toast.error("Please enter Rate of Interest!");
     return;
   }
+  const fees = getFeeAmounts(banks);
+  // console.log(fees.agreement);
 
   // Create PDF with compression
   const doc = new jsPDF({
@@ -509,21 +516,21 @@ const generateAgreementPDF = (application) => {
   doc.text("THIS LOAN AGREEMENT is made on " + new Date().toLocaleDateString("en-GB"), 
            margin, contentStartY + 120);
   doc.text("BETWEEN", margin, contentStartY + 140);
-  doc.text("1. DIGITAL FINSERV PRIVATE LIMITED, a company incorporated under the Companies Act, 2013,", 
+  doc.text("1. DIGITAL FINSERV PRIVATE LIMITED, a company incorporated under the Companies ", 
            margin, contentStartY + 160);
-  doc.text("having CIN U72900KA2022PTC160654, with its registered office at NBP Green Heights, C-68,",margin, contentStartY+ 180); 
+  doc.text("Act, 2013, having CIN U72900KA2022PTC160654, with its registered office ",margin, contentStartY+ 180); 
 
-  doc.text(" Bandra Kurla Complex Rd, Opposite to MCA Club, F Block BKC, Bandra East, ",margin, contentStartY+ 200);
+  doc.text("at NBP Green Heights, C-68, Bandra Kurla Complex Rd, Opposite to MCA Club, ",margin, contentStartY+ 200);
 
-  doc.text("Mumbai, Maharashtra 400051 (hereinafter referred to as the 'Lender'", margin, contentStartY + 220);
-  doc.text("AND", margin, contentStartY + 250);
+  doc.text(" F Block BKC, Bandra East, Mumbai, Maharashtra 400051 ", margin, contentStartY + 220);
+  doc.text("(hereinafter referred to as the 'Lender' AND", margin, contentStartY + 250);
   doc.text(`2. ${application.fullName},Email : ${application.email}, Contact No. : ${application.phoneNumber}`, 
            margin, contentStartY + 270);
   doc.text("(hereinafter referred to as the 'Borrower')", margin, contentStartY + 290);
   doc.setFont("helvetica", "normal");
-  doc.text("WHEREAS, the lender agrees to provide a loan to the Borrower, and the Borrower agrees to repay the ",
+  doc.text("WHEREAS, the lender agrees to provide a loan to the Borrower, and the Borrower ",
            margin, contentStartY + 310);
-  doc.text("Loan under the terms set forth in this Agreement.", margin, contentStartY + 330);
+  doc.text(" agrees to repay the Loan under the terms set forth in this Agreement.", margin, contentStartY + 330);
 
   // Loan Details Table with adjusted starting position
   autoTable(doc, {
@@ -582,6 +589,8 @@ const generateAgreementPDF = (application) => {
     "This Agreement constitutes the entire agreement between the parties.  No oral or written commitments outside this Agreement shall be binding.",
   ];
 
+  
+
   let currentY = margin + 40;
   terms.forEach((term) => {
     const lines = doc.splitTextToSize(term, pageWidth - (2 * margin));
@@ -603,7 +612,7 @@ const generateAgreementPDF = (application) => {
   }
 
   // Note about Agreement Fee
-  doc.text("Note: Agreement Fee is refundable as per terms.", margin, currentY + 20);
+  doc.text(`Kindly pay the Agreement Fee of Rs ${fees.agreement} today. This amount is refundable.`, margin, currentY + 20);
 
   // Signature Spaces
   const signatureY = currentY + 100;
@@ -696,8 +705,7 @@ const generateAgreementPDF = (application) => {
   //     base64: pdfBase64
   //   };
   // };
-  const fees = getFeeAmounts(banks);
-  console.log(fees);
+  
 
   // const generatePaymentReceiptPDF = (application, type, fees) => {
   //   const doc = new jsPDF();
