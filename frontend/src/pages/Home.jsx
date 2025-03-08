@@ -27,7 +27,7 @@ const Home = () => {
         <Required/>
         <Advantages/>
         <Partners/>
-        <ChatBot />
+        {/* <ChatBot /> */}
         {/* <Team/> */}
         <FeedbackSlider/>
         <FAQ/>
