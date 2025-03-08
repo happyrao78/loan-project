@@ -14,11 +14,12 @@ import Advantages from '../components/Advantages'
 import Partners from '../components/Partners'
 import FAQ from '../components/Faq'
 import Required from '../components/Required'
+import PopupForm from '../components/Popup'
 
 const Home = () => {
   return (
     <div>
-      
+        {/* <PopupForm /> */}
         <Hero/>
         <Services/>
         <AboutUs/>
