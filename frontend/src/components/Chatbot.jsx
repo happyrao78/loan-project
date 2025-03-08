@@ -38,7 +38,7 @@ const ChatBot = () => {
 
         // Call backend API for response
         try {
-            const response = await axios.post('http://127.0.0.1:8000/ask-question', {
+            const response = await axios.post('https://web-production-433dd.up.railway.app/ask-question', {
                 question: message,
             }, {
                 headers: {
