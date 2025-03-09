@@ -19,7 +19,7 @@ import PopupForm from '../components/Popup'
 const Home = () => {
   return (
     <div>
-        {/* <PopupForm /> */}
+        <PopupForm />
         <Hero/>
         <Services/>
         <AboutUs/>
@@ -28,7 +28,7 @@ const Home = () => {
         <Required/>
         <Advantages/>
         <Partners/>
-        {/* <ChatBot /> */}
+        <ChatBot />
         {/* <Team/> */}
         <FeedbackSlider/>
         <FAQ/>

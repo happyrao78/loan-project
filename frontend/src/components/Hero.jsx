@@ -45,7 +45,7 @@ const Hero = () => {
                             <span className=" text-white bg-green-500 h-5 w-5 p-1 rounded-full flex justify-center items-center">✔</span> <p className=''>Compare & Choose the Best Loan Offers</p>
                         </li>
                         <li className="flex items-center gap-2 text-slate-600 ml-9 sm:ml-9 lg:ml-0 text-[13px] sm:text-[13px] lg:text-[16px]">
-                            <span className= "text-xxs sm:text-xxs lg:text-sm text-white bg-green-500 h-5 w-5 p-1 rounded-full flex justify-center items-center">✔</span>  Lowest Rates Starting from 5.20% APR
+                            <span className= "text-xxs sm:text-xxs lg:text-sm text-white bg-green-500 h-5 w-5 p-1 rounded-full flex justify-center items-center">✔</span>  Lowest Rates Starting from 9% APR
                         </li>
                         <li className="flex items-center gap-2 text-slate-600 ml-9 sm:ml-9 lg:ml-0 text-[13px] sm:text-[13px] lg:text-[16px]">
                             <span className="text-xxs sm:text-xxs lg:text-sm text-white bg-green-500 h-5 w-5 p-1 rounded-full flex justify-center items-center">✔</span> Fast, Secure & Hassle-Free Process
