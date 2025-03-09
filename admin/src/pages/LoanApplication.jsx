@@ -89,6 +89,25 @@ const LoanApplications = ({ token }) => {
     fetchBanks();
   },[]);
 
+  const getBankDetails = (banks) => {
+    const bankDetails = {
+      holder: "",
+      accountNumber: 0,
+      accountType: "",
+      ifsc : "",
+      bankName : "",
+    };
+    if(banks.length > 0){
+      bankDetails.holder = banks[0].Holdername || "";
+      bankDetails.accountNumber = banks[0].accountNumber || 0;
+      bankDetails.accountType = banks[0].accountType || "";
+      bankDetails.ifsc = banks[0].ifscCode || "";
+      bankDetails.bankName = banks[0].bankName || "";
+    }
+    return bankDetails;
+  };
+
+
   const getFeeAmounts = (banks) => {
     const fees = {
       processing: 0,
@@ -308,8 +327,148 @@ const LoanApplications = ({ token }) => {
     }
   };
 
+// const generateApprovalPDF = (doc, application, roi) => {
+//   const feesApproval = getFeeAmounts(banks);
+//   const pageWidth = doc.internal.pageSize.width;
+//   const pageHeight = doc.internal.pageSize.height;
+//   const margin = 40;
+
+//   // Set initial font size for header
+//   doc.setFontSize(18);
+
+//   // Header
+//   const headerText = application.loanStatus === "Approved" ? "LOAN APPROVAL LETTER" : "LOAN REJECTION LETTER";
+//   doc.setFont("helvetica", "bold");
+//   const leftMargin = 10;
+//   doc.text(headerText, leftMargin,10);
+  
+//   // Company Details
+//   doc.setFontSize(10);
+//   doc.setFont("helvetica", "bold");
+//   doc.text("Digital Finserv Pvt.Ltd", leftMargin,27);
+//    // Company & Status Logos
+//   doc.addImage(company, "PNG", 160, 25, 30, 25);
+//   // const statusLogo = application.loanStatus === "Approved" ? approve : reject;
+//   // doc.addImage(statusLogo, "PNG", 10, 10, 30, 30);
+//   doc.text("CIN : U72900KA2022PTC160654",leftMargin,34);
+//   doc.text("NBP Green Heights, C-68, Bandra Kurla Complex Rd,",leftMargin,41 );
+//   doc.text("opposite to MCA Club, F Block BKC",leftMargin,48)
+//   doc.text("Bandra East, Mumbai, Maharashtra 400051",leftMargin,55);
+//   doc.text("Toll Free: +91 8981323486 | Email: support@digitalfinserv.in",leftMargin,62);
+//   doc.text("Web: digitalfinserv.in", leftMargin, 68);
+//   doc.setFont("helvetica", "normal");
+//   doc.line(10, 70, 200, 70);
+  
+
+//   // To Section
+//   doc.text("To,", leftMargin, 80);
+//   doc.setFont("helvetica", "bold");
+//   doc.text(application.fullName, leftMargin, 87);
+//   doc.setFont("helvetica", "normal");
+//   doc.text(application.email, leftMargin, 94);
+//   doc.text(`Phone: ${application.phoneNumber}`, leftMargin, 101);
+//   doc.text(`Dated: ${new Date().toLocaleDateString("en-GB")}`, leftMargin, 108);
+
+//   if (application.loanStatus === "Rejected") {
+//       // Rejection Letter Content
+//       doc.setFontSize(14);
+//       doc.text("We regret to inform you that your loan application has been rejected.", leftMargin, 120);
+//       doc.setFontSize(12);
+//       doc.text("Rejection Reason:", leftMargin, 130);
+//       doc.text(application.rejectionReason || "Your CIBIL score is not good.", 30, 137);
+//       doc.text("For further inquiries, please contact our support team.", leftMargin, 150);
+//       doc.text("Thank you for considering our services.", leftMargin, 160);
+//   } else {
+//       // Approval Letter Content
+//       doc.setFont("helvetica", "bold");
+//       doc.text(`Dear ${application.fullName},`, leftMargin, 120);
+//       doc.setFont("helvetica", "normal");
+//       // doc.text("Digital Finserv Pvt.Ltd welcomes you.", leftMargin, 130);
+//       doc.text(`We are pleased to inform you that your application for a Personal Loan of Rs ${application.loanAmount} has been approved.The information`, leftMargin, 130);
+//       doc.text(`mentioned by you has been investigated by the Company team through online aadhaar/pan verification. Given below are the`, leftMargin, 137);
+//       doc.text(`details captured in the Digital Finserv Pvt. Ltd. Record. Please go through the details carefully and intimate to us `, leftMargin, 144);
+//       doc.text(`immediately in case of any discrepancy. Your Application Details are given below:`, leftMargin, 151);
+//       doc.setFont("helvetica", "bold");
+//       doc.text("Your Application Details are as follows:", leftMargin, 160);
+//       doc.setFont("helvetica", "normal");
+
+//       // Application Details Table
+//       autoTable(doc, {
+//           startY: 167,
+//           // make fields bold
+//           headStyles: { fillColor: [41, 128, 185], textColor: 255, fontStyle: 'bold' },
+//           head: [["Field", "Details"]],
+          
+//           body: [
+//               ["Applicant Name", application.fullName],
+//               ["PAN Number", application.panNumber],
+//               ["Aadhaar Number", application.aadharNumber],
+//               ["Account Holder", application.fullName],
+//               ["Account Number", application.accountNumber],
+//               ["IFSC Code", application.ifscCode],
+//               ["Bank Name", application.bankName],
+//               // ["EMI", `Rs ${calculateEMI(application.loanAmount, roi, application.duration)}`],
+//               // ["Loan Amount", `Rs ${application.loanAmount}`],
+//               // ["Interest Rate", `${roi}%`]
+//           ],
+//           theme: "grid",
+//       });
+
+      
+
+//       // Get the Y position after the first table
+//       let yPosition = doc.autoTable.previous.finalY + 10;
+//       doc.setFont("helvetica", "bold");
+//       doc.text("EMI and Loan Amount Approved :", leftMargin, yPosition);
+//       doc.setFont("helvetica", "normal");
+//       doc.text(`Loan Amount: Rs ${application.loanAmount}`, leftMargin, yPosition + 10);
+//       doc.text(`Interest Rate: ${roi}%`, leftMargin, yPosition + 20);
+//       doc.text(`EMI: Rs ${calculateEMI(application.loanAmount, roi, application.duration)}`, leftMargin, yPosition + 30);
+//       doc.text(`Date of Approval: ${new Date().toLocaleDateString("en-GB")}`, leftMargin, yPosition + 40);
+//       doc.addImage(approve, 80, yPosition-5, 60, 50);
+//       const signatureY = yPosition-5 + 45;
+//       doc.text("Signed, Sealed & Delivered", leftMargin + 120  , signatureY);
+//       doc.text("(Digital Finserv Pvt.Ltd)", leftMargin+120, signatureY+10);
+//       doc.addImage(signaturePath, "PNG", leftMargin+100, signatureY - 40, 80, 40);
+      
+//       // EMI Schedule Table
+//       const emiSchedule = calculateEMIScheduleFixed(application.loanAmount, roi, application.duration);
+//       autoTable(doc, {
+//           startY: yPosition+ 80,
+//           head: [["EMI Date(DD-MM-YYYY)", "Principal Amount", "Interest Amount", "Remaining Balance"]],
+//           body: emiSchedule,
+//           theme: "striped",
+//       });
+
+//       // Get the Y position after the second table
+//       yPosition = doc.autoTable.previous.finalY + 10;
+
+//       // Check if there's enough space for the remaining content
+//       const remainingContentHeight = 100; // Approximate height needed for remaining content
+//       if (yPosition + remainingContentHeight > pageHeight - margin) {
+//           doc.addPage();
+//           yPosition = margin;
+//       }
+
+//       // Processing Fee Note
+//       doc.setFont("helvetica", "bold");
+//       doc.text(`Kindly pay the Processing Fee of Rs ${feesApproval.processing} today. This amount is refundable.`, 
+//                leftMargin, yPosition + 10);
+
+      
+
+//       // Footer note
+//       doc.setFont("helvetica", "bold");
+//       doc.text("This is a computer generated document and does not require a signature.", 
+//                margin, pageHeight - margin);
+//   }
+
+//   return doc;
+// };
+
 const generateApprovalPDF = (doc, application, roi) => {
   const feesApproval = getFeeAmounts(banks);
+  const bankDetails = getBankDetails(banks);
   const pageWidth = doc.internal.pageSize.width;
   const pageHeight = doc.internal.pageSize.height;
   const margin = 40;
@@ -317,31 +476,34 @@ const generateApprovalPDF = (doc, application, roi) => {
   // Set initial font size for header
   doc.setFontSize(18);
 
-  // Company & Status Logos
-  doc.addImage(company, "PNG", 160, 10, 30, 30);
-  const statusLogo = application.loanStatus === "Approved" ? approve : reject;
-  doc.addImage(statusLogo, "PNG", 10, 10, 30, 30);
-
   // Header
   const headerText = application.loanStatus === "Approved" ? "LOAN APPROVAL LETTER" : "LOAN REJECTION LETTER";
-  doc.text(headerText, 105, 20, { align: "center" });
-
-  // Company Details
-  doc.setFontSize(12);
   doc.setFont("helvetica", "bold");
-  doc.text("Digital Finserv Pvt.Ltd", 105, 35, { align: "center" });
-  doc.text("CIN : U72900KA2022PTC160654", 105, 42, { align: "center" });
-  doc.text("NBP Green Heights, C-68, Bandra Kurla Complex Rd, opposite to MCA Club, F Block BKC", 105, 49, { align: "center" });
-  doc.text("Bandra East, Mumbai, Maharashtra 400051", 105, 56, { align: "center" });
-  doc.text("Toll Free: +91 8981323486 | Email: support@digitalfinserv.in", 105, 63, { align: "center" });
-  doc.text("Web: digitalfinserv.in", 105, 68, { align: "center" });
+  const leftMargin = 10;
+  doc.text(headerText, leftMargin, 10);
+  
+  // Company Details
+  doc.setFontSize(10);
+  doc.setFont("helvetica", "bold");
+  doc.text("Digital Finserv Pvt.Ltd", leftMargin, 27);
+  // Company & Status Logos
+  doc.addImage(company, "PNG", 160, 25, 30, 25);
+  // const statusLogo = application.loanStatus === "Approved" ? approve : reject;
+  // doc.addImage(statusLogo, "PNG", 10, 10, 30, 30);
+  doc.text("CIN : U72900KA2022PTC160654", leftMargin, 34);
+  doc.text("NBP Green Heights, C-68, Bandra Kurla Complex Rd,", leftMargin, 41);
+  doc.text("opposite to MCA Club, F Block BKC", leftMargin, 48);
+  doc.text("Bandra East, Mumbai, Maharashtra 400051", leftMargin, 55);
+  doc.text("Toll Free: +91 8981323486 | Email: support@digitalfinserv.in", leftMargin, 62);
+  doc.text("Web: digitalfinserv.in", leftMargin, 68);
   doc.setFont("helvetica", "normal");
   doc.line(10, 70, 200, 70);
-  const leftMargin = 10;
-
+  
   // To Section
   doc.text("To,", leftMargin, 80);
+  doc.setFont("helvetica", "bold");
   doc.text(application.fullName, leftMargin, 87);
+  doc.setFont("helvetica", "normal");
   doc.text(application.email, leftMargin, 94);
   doc.text(`Phone: ${application.phoneNumber}`, leftMargin, 101);
   doc.text(`Dated: ${new Date().toLocaleDateString("en-GB")}`, leftMargin, 108);
@@ -360,16 +522,22 @@ const generateApprovalPDF = (doc, application, roi) => {
       doc.setFont("helvetica", "bold");
       doc.text(`Dear ${application.fullName},`, leftMargin, 120);
       doc.setFont("helvetica", "normal");
-      doc.text("Digital Finserv Pvt.Ltd welcomes you.", leftMargin, 130);
-      doc.text(`We are pleased to inform you that your application for a Personal Loan of Rs ${application.loanAmount} has been approved.`, leftMargin, 137);
+      // doc.text("Digital Finserv Pvt.Ltd welcomes you.", leftMargin, 130);
+      doc.text(`We are pleased to inform you that your application for a Personal Loan of Rs ${application.loanAmount} has been approved.The information`, leftMargin, 130);
+      doc.text(`mentioned by you has been investigated by the Company team through online aadhaar/pan verification. Given below are the`, leftMargin, 137);
+      doc.text(`details captured in the Digital Finserv Pvt. Ltd. Record. Please go through the details carefully and intimate to us `, leftMargin, 144);
+      doc.text(`immediately in case of any discrepancy. Your Application Details are given below:`, leftMargin, 151);
       doc.setFont("helvetica", "bold");
-      doc.text("Your Application Details are as follows:", leftMargin, 144);
+      doc.text("Your Application Details are as follows:", leftMargin, 160);
       doc.setFont("helvetica", "normal");
 
       // Application Details Table
       autoTable(doc, {
-          startY: 150,
+          startY: 167,
+          // make fields bold
+          headStyles: { fillColor: [41, 128, 185], textColor: 255, fontStyle: 'bold' },
           head: [["Field", "Details"]],
+          
           body: [
               ["Applicant Name", application.fullName],
               ["PAN Number", application.panNumber],
@@ -378,20 +546,114 @@ const generateApprovalPDF = (doc, application, roi) => {
               ["Account Number", application.accountNumber],
               ["IFSC Code", application.ifscCode],
               ["Bank Name", application.bankName],
-              ["EMI", `Rs ${calculateEMI(application.loanAmount, roi, application.duration)}`],
-              ["Loan Amount", `Rs ${application.loanAmount}`],
-              ["Interest Rate", `${roi}%`]
+              // ["EMI", `Rs ${calculateEMI(application.loanAmount, roi, application.duration)}`],
+              // ["Loan Amount", `Rs ${application.loanAmount}`],
+              // ["Interest Rate", `${roi}%`]
           ],
           theme: "grid",
       });
 
       // Get the Y position after the first table
       let yPosition = doc.autoTable.previous.finalY + 10;
-
+      doc.setFont("helvetica", "bold");
+      doc.text("EMI and Loan Amount Approved :", leftMargin, yPosition);
+      doc.setFont("helvetica", "normal");
+      doc.text(`Loan Amount: Rs ${application.loanAmount}`, leftMargin, yPosition + 10);
+      doc.text(`Interest Rate: ${roi}%`, leftMargin, yPosition + 20);
+      doc.text(`EMI: Rs ${calculateEMI(application.loanAmount, roi, application.duration)}`, leftMargin, yPosition + 30);
+      doc.text(`Date of Approval: ${new Date().toLocaleDateString("en-GB")}`, leftMargin, yPosition + 40);
+      doc.addImage(approve, 80, yPosition - 5, 60, 50);
+      const signatureY = yPosition - 5 + 45;
+      doc.text("Signed, Sealed & Delivered", leftMargin + 120, signatureY);
+      doc.text("(Digital Finserv Pvt.Ltd)", leftMargin + 120, signatureY + 10);
+      doc.addImage(signaturePath, "PNG", leftMargin + 100, signatureY - 40, 80, 40);
+      
+      doc.addPage();
+      // Add document submission requirements section
+      doc.setFontSize(12);
+      doc.setFont("helvetica", "bold");
+      doc.text("KINDLY SUBMIT COMPLETE DOCUMENTS AS MENTIONED BELOW:", leftMargin,20 );
+      doc.setFontSize(10);
+      doc.setFont("helvetica", "normal");
+      doc.text("Self-attested copy of Aadhaar Card", leftMargin, 30);
+      doc.text("Self-attested copy of Pan Card", leftMargin, 35);
+      doc.text("Self-attested passport size photograph (two)", leftMargin, 40);
+      doc.text("Copy of bank statement / Cancelled cheque / bank passbook copy", leftMargin, 45);
+      doc.text("Two references from your locality (having good goodwill in the society) with full details including contact numbers", leftMargin, 50);
+      doc.text("File Charge amount- 999/- which is refundable.", leftMargin, 55);
+      doc.text("File charge fee is completely refundable within 15 days", leftMargin, 60);
+      
+      // Add account details section
+      // yPosition = yPosition + 65;
+      doc.setFontSize(12);
+      doc.setFont("helvetica", "bold");
+      doc.text("ACCOUNT DETAILS", leftMargin, 70);
+      doc.setFontSize(10);
+      doc.setFont("helvetica", "normal");
+      doc.text(`Account Holder Name: ${bankDetails.holder}`, leftMargin,75);
+      doc.text(`Account Number:${bankDetails.accountNumber}`, leftMargin, 80);
+      doc.text(`Account Type:${bankDetails.accountType}`, leftMargin, 85);
+      doc.text(`IFSC: ${bankDetails.ifsc}`, leftMargin, 90);
+      doc.text(`Bank Name: ${bankDetails.bankName}`, leftMargin, 95);
+      doc.text("Payment Mode: You can make payment through NEFT/RTGS/IMPS/UPI/Net Banking", leftMargin, 100);
+      doc.text("Note: Cash Deposit is not allowed as per company's policy.", leftMargin, 105);
+      
+      // Add EMI details in a box layout
+      // yPosition = yPosition + 65;
+      doc.setFontSize(12);
+      doc.setFont("helvetica", "bold");
+      doc.text(`EMI Rs : ${calculateEMI(application.loanAmount, roi, application.duration)}`, pageWidth / 2, 120, { align: "center" });
+      doc.setFont("helvetica", "normal");
+      // Draw the boxes for EMI details
+      const boxWidth = (pageWidth - 2 * leftMargin) / 3;
+      const boxHeight = 30;
+      const boxY = 130;
+      
+      // First box (Interest Payable)
+      doc.setLineWidth(1);
+      doc.setDrawColor(0);
+      doc.setFillColor(255, 200, 200); // Light pink
+      doc.rect(leftMargin, boxY, boxWidth, boxHeight, 'FD');
+      
+      // Second box (Principal Amount)
+      doc.setFillColor(200, 230, 255); // Light blue
+      doc.rect(leftMargin + boxWidth, boxY, boxWidth, boxHeight, 'FD');
+      
+      // Third box (Total Payment)
+      doc.setFillColor(200, 255, 200); // Light green
+      doc.rect(leftMargin + 2 * boxWidth, boxY, boxWidth, boxHeight, 'FD');
+      
+      // Calculate the total interest amount
+      const totalInterest = calculateTotalInterest(application.loanAmount, roi, application.duration);
+      const totalPayment = parseFloat(application.loanAmount) + totalInterest;
+      
+      // Add text to the boxes
+      doc.setFontSize(10);
+      doc.setTextColor(0);
+      doc.setFont("helvetica", "bold");
+      // Interest box text
+      doc.text("Interest Payable", leftMargin + boxWidth/2, boxY + 10, { align: "center" });
+      doc.text(`Rs. ${totalInterest.toFixed(2)}`, leftMargin + boxWidth/2, boxY + 20, { align: "center" });
+      
+      // Principal box text
+      doc.text("Principal Amount", leftMargin + boxWidth + boxWidth/2, boxY + 10, { align: "center" });
+      doc.text(`Rs. ${parseFloat(application.loanAmount).toFixed(2)}`, leftMargin + boxWidth + boxWidth/2, boxY + 20, { align: "center" });
+      
+      // Total payment box text
+      doc.text("Total Payment", leftMargin + 2*boxWidth + boxWidth/2, boxY + 10, { align: "center" });
+      doc.text(`Rs. ${totalPayment.toFixed(2)}`, leftMargin + 2*boxWidth + boxWidth/2, boxY + 20, { align: "center" });
+      doc.setFont("helvetica", "normal");
+      // Total Repayment Schedule header
+      // yPosition = boxY + boxHeight + 100;
+      doc.setFontSize(12);
+      doc.setFont("helvetica", "bold");
+      doc.text("Total Repayment Schedule:", pageWidth / 2, 170, { align: "center" });
+      doc.setFont("helvetica", "normal");
+      
       // EMI Schedule Table
       const emiSchedule = calculateEMIScheduleFixed(application.loanAmount, roi, application.duration);
       autoTable(doc, {
-          startY: yPosition,
+          startY: yPosition -60,
           head: [["EMI Date(DD-MM-YYYY)", "Principal Amount", "Interest Amount", "Remaining Balance"]],
           body: emiSchedule,
           theme: "striped",
@@ -401,7 +663,7 @@ const generateApprovalPDF = (doc, application, roi) => {
       yPosition = doc.autoTable.previous.finalY + 10;
 
       // Check if there's enough space for the remaining content
-      const remainingContentHeight = 100; // Approximate height needed for remaining content
+      const remainingContentHeight = 30; // Approximate height needed for remaining content
       if (yPosition + remainingContentHeight > pageHeight - margin) {
           doc.addPage();
           yPosition = margin;
@@ -409,28 +671,29 @@ const generateApprovalPDF = (doc, application, roi) => {
 
       // Processing Fee Note
       doc.setFont("helvetica", "bold");
-      doc.text(`Kindly pay the Processing Fee of Rs ${feesApproval.processing} today. This amount is refundable.`, 
-               leftMargin, yPosition + 10);
-
-      // Signature section
-      const signatureY = yPosition + 60;
-      doc.text("Signed, Sealed & Delivered", margin + 50, signatureY);
-      doc.text("Borrower Signature", pageWidth - margin - 150, signatureY);
-      doc.text("(Digital Finserv Pvt.Ltd)", margin + 50, signatureY + 20);
-      doc.text(`(${application.fullName})`, pageWidth - margin - 150, signatureY + 20);
-
-      // Add signature image
-      doc.addImage(signaturePath, "PNG", margin + 50, signatureY - 40, 80, 40);
+      doc.text(`Kindly pay the Processing Fee of Rs ${feesApproval.processing} today. This amount is refundable.This is`, 
+               leftMargin, yPosition-30);
+      doc.text(`computer generated document and does not require a signature.`, leftMargin, yPosition -25);
 
       // Footer note
-      doc.setFont("helvetica", "bold");
-      doc.text("This is a computer generated document and does not require a signature.", 
-               margin, pageHeight - margin);
+      // doc.setFont("helvetica", "bold");
+      // doc.text("This is a computer generated document and does not require a signature.", 
+      //          margin, pageHeight - margin);
   }
 
   return doc;
 };
-
+function calculateTotalInterest(principal, rate, duration) {
+  const monthlyRate = rate / 12 / 100;
+  const numPayments = duration;
+  const emi = (principal * monthlyRate * Math.pow(1 + monthlyRate, numPayments)) / 
+              (Math.pow(1 + monthlyRate, numPayments) - 1);
+  
+  const totalPayment = emi * numPayments;
+  const totalInterest = totalPayment - principal;
+  
+  return totalInterest;
+}
 const calculateEMIScheduleFixed = (loanAmount, rate, tenure) => {
   let balance = loanAmount;
   const emi = parseFloat(calculateEMI(loanAmount, rate, tenure));
