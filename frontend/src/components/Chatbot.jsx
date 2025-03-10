@@ -11,12 +11,13 @@ const ChatBot = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const messagesEndRef = useRef(null);
+    const chatContainerRef = useRef(null);
 
     // Display initial message when chat is opened
     useEffect(() => {
         if (isOpen && messages.length === 0) {
             setMessages([{ 
-                text: "Hello, how can I help you?", 
+                text: "Hello, Welcome to the Digital Assistant! How can I help you today?", 
                 isUser: false 
             }]);
         }
@@ -28,6 +29,21 @@ const ChatBot = () => {
             messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
         }
     }, [messages]);
+
+    // Adjust chat container height on mobile
+    useEffect(() => {
+        const handleResize = () => {
+            if (chatContainerRef.current && isOpen) {
+                const viewportHeight = window.innerHeight;
+                const maxHeight = Math.min(viewportHeight * 0.7, 500); // Maximum 70% of viewport or 500px
+                chatContainerRef.current.style.maxHeight = `${maxHeight}px`;
+            }
+        };
+
+        handleResize();
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, [isOpen]);
 
     const handleSendMessage = async (message) => {
         if (!message.trim()) return;
@@ -76,17 +92,39 @@ const ChatBot = () => {
     };
 
     const handleVoiceInput = () => {
+        if (!('SpeechRecognition' in window || 'webkitSpeechRecognition' in window)) {
+            setMessages((prev) => [...prev, { 
+                text: "Sorry, voice recognition is not supported in your browser.", 
+                isUser: false 
+            }]);
+            return;
+        }
+        
         const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
         recognition.lang = "en-US";
         recognition.start();
 
+        // Show user feedback that voice recording is active
+        setMessages((prev) => [...prev, { 
+            text: "Listening...", 
+            isUser: false,
+            isTemporary: true 
+        }]);
+
         recognition.onresult = (event) => {
             const speech = event.results[0][0].transcript;
+            // Remove the "Listening..." message
+            setMessages(prev => prev.filter(msg => !msg.isTemporary));
             handleSendMessage(speech);
         };
 
         recognition.onerror = (event) => {
             console.error("Speech recognition error:", event.error);
+            // Remove the "Listening..." message and show error
+            setMessages(prev => [
+                ...prev.filter(msg => !msg.isTemporary), 
+                { text: "I couldn't hear you. Please try again.", isUser: false }
+            ]);
         };
     };
 
@@ -94,30 +132,47 @@ const ChatBot = () => {
         <div>
             {/* Chatbot Icon */}
             <motion.div
-                className={`chatbot-icon fixed bottom-5 right-5 p-3 bg-black rounded-full shadow-lg cursor-pointer z-50 ${isOpen ? "hidden" : "block"}`}
+                className={`chatbot-icon fixed bottom-4 right-4 p-3 bg-black rounded-full shadow-lg cursor-pointer z-50 ${isOpen ? "hidden" : "block"}`}
                 onClick={() => setIsOpen(true)}
-                whileTap={{ scale: 0.2 }}
+                whileTap={{ scale: 0.9 }}
             >
-                <Bot size={34} color="white" />
+                <Bot size={24} className="sm:w-8 sm:h-8" color="white" />
             </motion.div>
 
             {/* Chatbot Popup */}
             {isOpen && (
-                <div className="chatbot-container p-4 bg-white border rounded-lg shadow-lg fixed bottom-5 right-5 w-48 sm:w-96 md:w-96 max-w-full max-h-[50vh] flex flex-col z-50">
-                    <div className="flex justify-between items-center mb-2 font-body">
-                        <h2 className="text-md lg:text-xl font-heading font-semibold">Chatbot</h2>
-                        <button onClick={() => setIsOpen(false)} className="">
-                            <X size={20} />
+                <div 
+                    ref={chatContainerRef}
+                    className="chatbot-container p-3 sm:p-4 bg-white border rounded-lg shadow-lg fixed bottom-2 right-2 sm:bottom-5 sm:right-5 w-[calc(100vw-16px)] sm:w-80 md:w-96 flex flex-col z-50"
+                >
+                    <div className="flex justify-between items-center mb-2 py-1 border-b">
+                        <h2 className="text-lg font-semibold">Chatbot</h2>
+                        <button 
+                            onClick={() => setIsOpen(false)} 
+                            className="hover:bg-gray-100 rounded-full p-1"
+                            aria-label="Close chat"
+                        >
+                            <X size={18} />
                         </button>
                     </div>
-                    <div className="messages flex-grow mb-4 overflow-y-auto font-body text-sm p-2" style={{ height: "300px" }}>
+                    
+                    <div 
+                        className="messages flex-grow mb-3 overflow-y-auto font-body text-sm p-2"
+                        style={{ height: "min(60vh, 300px)" }}
+                    >
                         {messages.map((msg, index) => (
                             <div 
                                 key={index} 
-                                className={`message w-full flex ${msg.isUser ? "justify-end" : "justify-start"} mb-3`}
+                                className={`message w-full flex ${msg.isUser ? "justify-end" : "justify-start"} mb-2`}
                             >
                                 <div 
-                                    className={`${msg.isUser ? "bg-black text-white" : "bg-lightGray text-black"} p-2 rounded-lg max-w-[85%] break-words`}
+                                    className={`${
+                                        msg.isUser 
+                                            ? "bg-black text-white" 
+                                            : msg.isTemporary 
+                                                ? "bg-blue-100 text-blue-800" 
+                                                : "bg-lightGray text-black"
+                                    } p-2 rounded-lg max-w-[85%] break-words text-sm`}
                                 >
                                     {msg.text}
                                 </div>
@@ -146,26 +201,29 @@ const ChatBot = () => {
                         )}
                         <div ref={messagesEndRef} />
                     </div>
+                    
                     <div className="input-group flex font-body text-sm">
                         <input
                             type="text"
-                            className="flex-grow border rounded-l-lg p-2 font-body"
+                            className="flex-grow border rounded-l-lg p-2 text-sm"
                             value={inputValue}
                             onChange={(e) => setInputValue(e.target.value)}
                             onKeyPress={handleKeyPress}
                             placeholder="Type a message..."
                         />
                         <button
-                            className="bg-gradient text-black rounded-r-lg px-4 border"
+                            className="bg-gradient text-black rounded-r-lg px-3 border"
                             onClick={() => handleSendMessage(inputValue)}
+                            aria-label="Send message"
                         >
-                            <Forward size={18} color="black" />
+                            <Forward size={16} className="sm:w-5 sm:h-5" color="black" />
                         </button>
                         <button
-                            className="ml-2 bg-gradient text-black rounded-lg p-2 border"
+                            className="ml-1 sm:ml-2 bg-gradient text-black rounded-lg p-2 border"
                             onClick={handleVoiceInput}
+                            aria-label="Voice input"
                         >
-                            <Mic size={18} color="black" />
+                            <Mic size={16} className="sm:w-5 sm:h-5" color="black" />
                         </button>
                     </div>
                 </div>

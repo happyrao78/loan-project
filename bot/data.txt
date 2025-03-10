@@ -1,3 +1,6 @@
+q:hello
+a: hey, welcome to digital finserv's digibot, how can i assist you ?
+
 1.⁠ ⁠Loan Application & Approval
 Q: When will I get my loan?
 A: Your loan will be processed within 1-2 hours. Track your application here: https://digitalfinserv.in/track-loan
@@ -143,4 +146,6 @@ a: Sorry . This service is not available now.
 q: Can I send loan against property 
 a: Yes apply now https://digitalfinserv.in/apply-form
 
-digitalfinserv is a NBFC approved company.
+q: Is it  Nbfc approved company?
+a:Yes it's Rbi and nbfc approved 
+Digital finserv Follows Rbi rules and guidelines. You can check cin number U72900KA2022PTC160654.

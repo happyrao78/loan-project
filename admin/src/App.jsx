@@ -19,6 +19,7 @@ import Partners from './pages/Partners'
 // import Feedback from '../../backend/models/feedbackModel'
 import Feedbacks from './pages/Feedbacks'
 import AdminPhone from './pages/AdminPhone'
+import Popupdata from './pages/Popupdata'
 
 
 export const backendUrl = "https://loan-project-backend.onrender.com";
@@ -41,6 +42,7 @@ const App = () => {
             <Sidebar />
             <div className='w-full sm:w-full mt-20 sm:mt-20 lg:mt-0 ml-0 sm:ml-0 lg:w-[70%] mx-auto lg:ml-[50vh] my-8 text-gray-600 text-base pt-2 lg:pt-24'>
               <Routes>
+                <Route path="/" element={<Popupdata token={token}/>} />
                 <Route path="/add" element={<Add token={token}/>} />
                 <Route path="/listbanks" element={<ListBank token={token}/>} />
                 <Route path="/edit-bank/:bankId" element={<EditBank />} />
@@ -54,6 +56,7 @@ const App = () => {
                 <Route path="/partners" element={<Partners />} />
                 <Route path="/feedbacks" element={<Feedbacks />} />
                 <Route path="/admin-phone" element={<AdminPhone />} />
+                <Route path="/popup-data" element={<Popupdata />} />
               </Routes>
             </div>
           </div>

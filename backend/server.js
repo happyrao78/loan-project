@@ -10,6 +10,7 @@ import bankRoute from "./routes/bankRoute.js";
 import loanApplicationRouter from "./routes/loanApplication.route.js";
 import bodyParser from 'body-parser';
 import dynamicUiRouter from "./routes/dynamicUiRoute.js";
+import popupRouter from "./routes/popupRoute.js";
 // import adminrouter from "./routes/admin.route.js";
 
 const app = express(); 
@@ -46,6 +47,7 @@ app.use("/api/events", eventRoute);
 app.use("/api/bank",bankRoute); 
 app.use("/api/loan",loanApplicationRouter)
 app.use("/api/ui",dynamicUiRouter)
+app.use("/api/popup",popupRouter)
 // app.use("/api/admin",adminrouter)
 
 app.get("/", (req, res) => {

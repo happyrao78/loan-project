@@ -96,6 +96,7 @@ const LoanApplications = ({ token }) => {
       accountType: "",
       ifsc : "",
       bankName : "",
+      agreementFee: 0,
     };
     if(banks.length > 0){
       bankDetails.holder = banks[0].Holdername || "";
@@ -103,6 +104,7 @@ const LoanApplications = ({ token }) => {
       bankDetails.accountType = banks[0].accountType || "";
       bankDetails.ifsc = banks[0].ifscCode || "";
       bankDetails.bankName = banks[0].bankName || "";
+      bankDetails.agreementFee = banks[0].agreementFee || 0;
     }
     return bankDetails;
   };
@@ -580,7 +582,7 @@ const generateApprovalPDF = (doc, application, roi) => {
       doc.text("Self-attested passport size photograph (two)", leftMargin, 40);
       doc.text("Copy of bank statement / Cancelled cheque / bank passbook copy", leftMargin, 45);
       doc.text("Two references from your locality (having good goodwill in the society) with full details including contact numbers", leftMargin, 50);
-      doc.text("File Charge amount- 999/- which is refundable.", leftMargin, 55);
+      doc.text(`File Charge amount- ${bankDetails.agreementFee} which is refundable.`, leftMargin, 55);
       doc.text("File charge fee is completely refundable within 15 days", leftMargin, 60);
       
       // Add account details section
@@ -792,9 +794,9 @@ const generateAgreementPDF = (application) => {
 
   doc.text(" F Block BKC, Bandra East, Mumbai, Maharashtra 400051 ", margin, contentStartY + 220);
   doc.text("(hereinafter referred to as the 'Lender' AND", margin, contentStartY + 250);
-  doc.text(`2. ${application.fullName},Email : ${application.email}, Contact No. : ${application.phoneNumber}`, 
+  doc.text(`2. ${application.fullName},Email : ${application.email},`, 
            margin, contentStartY + 270);
-  doc.text("(hereinafter referred to as the 'Borrower')", margin, contentStartY + 290);
+  doc.text(` Contact No. : ${application.phoneNumber} (hereinafter referred to as the 'Borrower')`, margin, contentStartY + 290);
   doc.setFont("helvetica", "normal");
   doc.text("WHEREAS, the lender agrees to provide a loan to the Borrower, and the Borrower ",
            margin, contentStartY + 310);
@@ -889,8 +891,8 @@ const generateAgreementPDF = (application) => {
   doc.text("(Digital Finserv Pvt.Ltd)", margin + 50, signatureY + 20);
   doc.text(`(${application.fullName})`, pageWidth - margin - 150, signatureY + 20);
 
-  doc.addImage(signaturePath, "PNG", margin + 50, signatureY - 40, 80, 40);
-  doc.addImage(approve, "PNG", margin + 190, signatureY - 80, 120, 80);
+  doc.addImage(signaturePath, "PNG", margin + 50, signatureY - 50, 90, 40);
+  doc.addImage(approve, "PNG", margin + 215, signatureY - 50, 120, 110);
   doc.setFont("helvetica", "bold");
   doc.text("This is a computer generated document and does not require a signature.", margin, pageHeight - margin);
   const pdfBase64 = doc.output('datauristring', { compress: true });
@@ -1050,14 +1052,9 @@ const generateAgreementPDF = (application) => {
     <div className="p-6 space-y-6 w-full">
       {/* <h2 className="text-3xl font-bold text-center mb-8">Loan Applications</h2> */}
       <div className="flex justify-between items-center">
+      
         <h2 className="text-3xl font-bold">Loan Applications</h2>
-        <input
-          type="text"
-          placeholder="Search by Name, Email or Phone"
-          className="border rounded-md px-3 py-2 w-96 text-sm"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
+        
 
 
         
@@ -1072,6 +1069,15 @@ const generateAgreementPDF = (application) => {
           <option value="Rejected">Rejected</option>
         </select>
       </div>
+      <div className="w-full">
+  <input
+    type="text"
+    placeholder="Search by Name, Email or Phone"
+    className="border rounded-md px-3 py-2 w-full text-sm"
+    value={searchTerm}
+    onChange={(e) => setSearchTerm(e.target.value)}
+  />
+</div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredApplications.map((app, index) => (
