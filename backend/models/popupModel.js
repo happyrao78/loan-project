@@ -6,7 +6,9 @@ const popupSchema = new mongoose.Schema({
     phone:{type : Number, required:false},
     message:{type: String, required:false},
     loanAmount:{type: Number, required:false},
-}, { minimize: false })
+}, { minimize: false,
+    timestamps: true
+ })
 
 const popupModel = mongoose.model.popup || mongoose.model("popup",popupSchema)
 

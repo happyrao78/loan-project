@@ -22,8 +22,8 @@ import AdminPhone from './pages/AdminPhone'
 import Popupdata from './pages/Popupdata'
 
 
-export const backendUrl = "https://loan-project-backend.onrender.com";
-// export const backendUrl = "http://localhost:5000";
+// export const backendUrl = "https://loan-project-backend.onrender.com";
+export const backendUrl = "http://localhost:5000";
 export const currency = "₹ ";
 
 const App = () => {
