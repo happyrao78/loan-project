@@ -97,6 +97,7 @@ const LoanApplications = ({ token }) => {
       ifsc : "",
       bankName : "",
       agreementFee: 0,
+      processingFee: 0
     };
     if(banks.length > 0){
       bankDetails.holder = banks[0].Holdername || "";
@@ -105,6 +106,7 @@ const LoanApplications = ({ token }) => {
       bankDetails.ifsc = banks[0].ifscCode || "";
       bankDetails.bankName = banks[0].bankName || "";
       bankDetails.agreementFee = banks[0].agreementFee || 0;
+      bankDetails.processingFee = banks[0].processingFee || 0;
     }
     return bankDetails;
   };
@@ -582,7 +584,7 @@ const generateApprovalPDF = (doc, application, roi) => {
       doc.text("Self-attested passport size photograph (two)", leftMargin, 40);
       doc.text("Copy of bank statement / Cancelled cheque / bank passbook copy", leftMargin, 45);
       doc.text("Two references from your locality (having good goodwill in the society) with full details including contact numbers", leftMargin, 50);
-      doc.text(`File Charge amount- ${bankDetails.agreementFee} which is refundable.`, leftMargin, 55);
+      doc.text(`File Charge amount- ${bankDetails.processingFee} which is refundable.`, leftMargin, 55);
       doc.text("File charge fee is completely refundable within 15 days", leftMargin, 60);
       
       // Add account details section
