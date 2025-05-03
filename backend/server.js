@@ -12,7 +12,7 @@ import bodyParser from 'body-parser';
 import dynamicUiRouter from "./routes/dynamicUiRoute.js";
 import popupRouter from "./routes/popupRoute.js";
 // import adminrouter from "./routes/admin.route.js";
-
+ 
 const app = express(); 
 connectDB();
  

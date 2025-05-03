@@ -41,21 +41,21 @@ const LoanApplications = ({ token }) => {
 
   useEffect(() => {
     if (filterStatus === "All") {
-      setFilteredApplications(applications);
+      setFilteredApplications([...applications].reverse());
     } else {
-      setFilteredApplications(applications.filter(app => app.loanStatus === filterStatus));
+      setFilteredApplications([...applications].filter(app => app.loanStatus === filterStatus).reverse());
     }
   }, [filterStatus, applications]);
 
   const handleSearch = () => {
     if (searchTerm === "") {
-      setFilteredApplications(applications);
+      setFilteredApplications([...applications].reverse());
     } else {
-      setFilteredApplications(applications.filter(app =>
+      setFilteredApplications([...applications].filter(app =>
         app.fullName.toLowerCase().includes(searchTerm.toLowerCase()) ||
         app.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
         app.phoneNumber.toString().includes(searchTerm)
-      ));
+      ).reverse());
     }
   };
 
@@ -628,8 +628,10 @@ const generateApprovalPDF = (doc, application, roi) => {
       doc.rect(leftMargin + 2 * boxWidth, boxY, boxWidth, boxHeight, 'FD');
       
       // Calculate the total interest amount
-      const totalInterest = calculateTotalInterest(application.loanAmount, roi, application.duration);
-      const totalPayment = parseFloat(application.loanAmount) + totalInterest;
+      // const totalInterest = calculateTotalInterest(application.loanAmount, roi, application.duration);
+      const emi = calculateEMI(application.loanAmount, roi, application.duration);
+      const totalPayment = parseFloat(emi * application.duration * 12) + application.loanAmount ;
+      const totalInterest = totalPayment - application.loanAmount;
       
       // Add text to the boxes
       doc.setFontSize(10);
@@ -644,7 +646,7 @@ const generateApprovalPDF = (doc, application, roi) => {
       doc.text(`Rs. ${parseFloat(application.loanAmount).toFixed(2)}`, leftMargin + boxWidth + boxWidth/2, boxY + 20, { align: "center" });
       
       // Total payment box text
-      doc.text("Total Payment", leftMargin + 2*boxWidth + boxWidth/2, boxY + 10, { align: "center" });
+      doc.text("Total Payment (incl. interest)", leftMargin + 2*boxWidth + boxWidth/2, boxY + 10, { align: "center" });
       doc.text(`Rs. ${totalPayment.toFixed(2)}`, leftMargin + 2*boxWidth + boxWidth/2, boxY + 20, { align: "center" });
       doc.setFont("helvetica", "normal");
       // Total Repayment Schedule header
@@ -675,9 +677,9 @@ const generateApprovalPDF = (doc, application, roi) => {
 
       // Processing Fee Note
       doc.setFont("helvetica", "bold");
-      doc.text(`Kindly pay the Processing Fee of Rs ${feesApproval.processing} today. This amount is refundable.This is`, 
-               leftMargin, yPosition-30);
-      doc.text(`computer generated document and does not require a signature.`, leftMargin, yPosition -25);
+      doc.text(`Kindly pay the Processing Fee of Rs ${feesApproval.processing} today. This amount is refundable.`, 
+               leftMargin, yPosition-5);
+      doc.text(`It is computer generated document and does not require a signature.`, leftMargin, yPosition );
 
       // Footer note
       // doc.setFont("helvetica", "bold");
@@ -1087,7 +1089,7 @@ const generateAgreementPDF = (application) => {
             <CardHeader>
               <div className="flex justify-between items-center">
                 <h3 className="text-lg font-semibold">{app.fullName}</h3>
-                <span className="text-sm text-gray-500">#{index + 1}</span>
+                <span className="text-sm text-gray-500">#{filteredApplications.length - index}</span>
               </div>
             </CardHeader>
             <CardContent>
