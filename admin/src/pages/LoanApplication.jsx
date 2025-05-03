@@ -630,8 +630,8 @@ const generateApprovalPDF = (doc, application, roi) => {
       // Calculate the total interest amount
       // const totalInterest = calculateTotalInterest(application.loanAmount, roi, application.duration);
       const emi = calculateEMI(application.loanAmount, roi, application.duration);
-      const totalPayment = parseFloat(emi * application.duration * 12) + application.loanAmount ;
-      const totalInterest = totalPayment - application.loanAmount;
+      const totalPayment = parseFloat(emi * application.duration * 12) ;
+      const totalInterest = parseFloat(totalPayment - application.loanAmount);
       
       // Add text to the boxes
       doc.setFontSize(10);
