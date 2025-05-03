@@ -271,7 +271,7 @@ const Form = () => {
                         <option>NRI Home Loan</option>
                         <option>Home Loan</option>
                         <option>Plot Purchase Loan</option>
-                        <option>Indsutry Loan</option>
+                        <option>Industry Loan</option>
                         {/* <option>Property Loan</option> */}
                         <option>Overdraft Loan</option>
                         <option>Education Loan</option>
