@@ -42,7 +42,9 @@ const transporter = nodemailer.createTransport({
   },
   // Add this to handle larger attachments if needed
   maxFileSize: 50 * 1024 * 1024 // 50MB limit
-});
+  
+}
+);
 
 export const sendEmail = async (to, subject, text, attachment = null) => {
   try {
@@ -61,6 +63,7 @@ export const sendEmail = async (to, subject, text, attachment = null) => {
         content: attachment.content,
         contentType: attachment.contentType || 'application/pdf'
       }];
+      console.log("Attachment added:", mailOptions.attachments);
     }
 
     await transporter.sendMail(mailOptions);
