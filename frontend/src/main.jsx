@@ -10,8 +10,8 @@ createRoot(document.getElementById('root')).render(
   <StrictMode>
     <BrowserRouter>
       <AuthProvider>
-        {/* <App /> */}
-        <HackRxComponent />
+        <App />
+        {/* <HackRxComponent /> */}
       </AuthProvider>
     {/* <App /> */}
     </BrowserRouter>

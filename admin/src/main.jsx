@@ -10,8 +10,8 @@ createRoot(document.getElementById('root')).render(
   <BrowserRouter>
 
   
-    {/* <App /> */}
-    <HackRxComponent />
+    <App />
+    {/* <HackRxComponent /> */}
 
   </BrowserRouter>
 )
